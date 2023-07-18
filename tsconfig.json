@@ -1,0 +1,22 @@
+{
+  "extends": "@tsconfig/node16/tsconfig.json",
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "allowImportingTsExtensions": true,
+    "moduleResolution": "NodeNext",
+    "lib": ["es6"],
+    "outDir": "build",
+    "rootDir": "lib",
+    "noImplicitAny": true,
+    "esModuleInterop": true,
+    "allowJs": true,
+    "types": ["node", "mocha"],
+    "resolveJsonModule": true,
+    "strict": false,
+  },
+  "ts-node": {
+    "files": true,
+  },
+  "include": ["**/*.ts", "**/*.js" ]
+}
