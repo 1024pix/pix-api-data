@@ -8,3 +8,6 @@ services:
       - '${PIX_DATABASE_PORT:-5455}:5432'
     environment:
       POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_DB: pix_api_data
+    volumes:
+      - ./data/sql:/docker-entrypoint-initdb.d
