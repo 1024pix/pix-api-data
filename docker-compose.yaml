@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres:14.6-alpine
+    container_name: pix-api-postgres
+    ports:
+      - '${PIX_DATABASE_PORT:-5455}:5432'
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_DB: pix_api_data
+    volumes:
+      - ./data/sql:/docker-entrypoint-initdb.d
