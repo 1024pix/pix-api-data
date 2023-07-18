@@ -2,8 +2,8 @@
   "name": "pix-api-data",
   "license": "AGPL-3.0",
   "engines": {
-    "node": "^16.20",
-    "npm": "^8.19.4"
+    "node": "^18.17",
+    "npm": "^9.6.7"
   },
   "type": "module",
   "scripts": {
@@ -26,11 +26,11 @@
     "lint:js:uncached": "eslint . --ext js",
     "postdeploy": "DEBUG=knex:* npm run db:migrate",
     "preinstall": "npx check-engine",
-    "start": "node index.js",
+    "start": "ts-node --esm ./lib/index.ts",
     "start:watch": "nodemon index.js",
-    "test": "NODE_ENV=test  npm run test:api",
+    "test": "NODE_ENV=test npm run test:api",
     "test:api": "status=0; npm run test:api:unit || status=1 ; for dir in $(find tests/* -maxdepth 0 -type d -not -path tests/unit) ; do npm run test:api:path -- $dir || status=1 ; done ; exit $status",
-    "test:api:path": "NODE_ENV=test mocha --exit --recursive --reporter=${MOCHA_REPORTER:-dot}",
+    "test:api:path": "NODE_ENV=test mocha --esm --config tests/.mocharc.jsonc --exit --recursive --reporter=${MOCHA_REPORTER:-dot}",
     "test:api:unit": "TEST_DATABASE_URL=postgres://should.not.reach.db.in.unit.tests REDIS_URL= npm run test:api:path -- tests/unit",
     "test:api:integration": "npm run test:api:path -- tests/integration",
     "test:api:acceptance": "npm run test:api:path -- tests/acceptance",
@@ -42,20 +42,26 @@
   "dependencies": {
     "@hapi/accept": "^6.0.0",
     "@hapi/boom": "^10.0.1",
-    "@hapi/hapi": "^21.0.0",
+    "@hapi/hapi": "^21.3.2",
     "@hapi/inert": "^7.0.0",
     "@hapi/vision": "^7.0.0",
+    "@types/mocha": "^10.0.1",
+    "@types/pino": "^7.0.5",
+    "@types/pino-pretty": "^5.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.1.0",
     "dotenv": "^16.3.1",
     "knex": "^2.5.1",
-    "nodemon": "^2.0.16",
+    "nodemon": "^3.0.1",
     "pg": "^8.11.1",
     "pino": "^8.14.1",
-    "pino-pretty": "^10.0.1"
+    "pino-pretty": "^10.0.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.1.6"
   },
   "devDependencies": {
     "@types/chai": "^4.3.5",
     "@types/express": "^4.17.17",
-    "@types/node": "^20.3.1",
+    "@types/node": "^20.4.2",
     "@types/supertest": "^2.0.12",
     "chai": "^4.3.7",
     "eslint": "^8.42.0",
@@ -64,6 +70,7 @@
     "mocha": "^10.2.0",
     "prettier": "^2.8.8",
     "source-map-support": "^0.5.21",
-    "supertest": "^6.3.3"
+    "supertest": "^6.3.3",
+    "typescript": "^5.1.6"
   }
 }

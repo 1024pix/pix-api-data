@@ -1,8 +1,9 @@
-import Hapi from '@hapi/hapi';
-import { routes } from './lib/routes.js';
-import { plugins } from './lib/infrastructure/plugins/index.js';
+import { routes } from './routes.ts';
+import Hapi, { Server } from '@hapi/hapi';
+import { ServerOptions } from '@hapi/hapi/lib/types/server/options.js';
+import { plugins } from './infrastructure/plugins/index.js';
 
-const createServer = async () => {
+const createServer = async (): Promise<Server> => {
   const server = createBareServer();
 
   await setupRoutesAndPlugins(server);
@@ -10,8 +11,8 @@ const createServer = async () => {
   return server;
 };
 
-const createBareServer = function () {
-  const serverConfiguration = {
+const createBareServer = function (): Server {
+  const serverConfiguration: ServerOptions = {
     compression: false,
     debug: { request: false, log: false },
     routes: {
@@ -30,10 +31,10 @@ const createBareServer = function () {
     },
   };
 
-  return new Hapi.server(serverConfiguration);
+  return Hapi.server(serverConfiguration);
 };
 
-const setupRoutesAndPlugins = async function (server) {
+const setupRoutesAndPlugins = async function (server: Server) {
   const configuration = [].concat(plugins, routes);
   await server.register(configuration);
 };
