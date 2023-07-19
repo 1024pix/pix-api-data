@@ -1,10 +1,11 @@
 import Hapi from '@hapi/hapi';
 import { routes } from './lib/routes.js';
+import { plugins } from './lib/infrastructure/plugins/index.js';
 
 const createServer = async () => {
   const server = createBareServer();
 
-  await server.register(routes);
+  await setupRoutesAndPlugins(server);
 
   return server;
 };
@@ -30,6 +31,11 @@ const createBareServer = function () {
   };
 
   return new Hapi.server(serverConfiguration);
+};
+
+const setupRoutesAndPlugins = async function (server) {
+  const configuration = [].concat(plugins, routes);
+  await server.register(configuration);
 };
 
 export { createServer };
