@@ -7,7 +7,7 @@ const { get } = _;
 import { config } from '../lib/config.js';
 
 import Knex from 'knex';
-import QueryBuilder from 'knex/lib/query/querybuilder.js';
+
 /*
 By default, node-postgres casts a DATE value (PostgreSQL type) as a Date Object (JS type).
 But, when dealing with dates with no time (such as birthdate for example), we want to
@@ -32,15 +32,6 @@ import * as knexConfigs from './knexfile.js';
 const { logging, environment } = config;
 const knexConfig = knexConfigs.default[environment];
 const configuredKnex = Knex(knexConfig);
-
-const originalToSQL = QueryBuilder.prototype.toSQL;
-QueryBuilder.prototype.toSQL = function () {
-  const ret = originalToSQL.apply(this);
-  const request = monitoringTools.getInContext('request');
-  const comments = [['path', get(request, 'route.path')]].map((comment) => comment.join(': ')).join(' ');
-  ret.sql = `/* ${comments} */ `.concat(ret.sql);
-  return ret;
-};
 
 async function disconnect() {
   return configuredKnex.destroy();
