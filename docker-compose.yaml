@@ -3,7 +3,7 @@ version: '3'
 services:
   postgres:
     image: postgres:14.6-alpine
-    container_name: pix-api-postgres
+    container_name: pix-api-data-postgres
     ports:
       - '${PIX_DATABASE_PORT:-5455}:5432'
     environment:
