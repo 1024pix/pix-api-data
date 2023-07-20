@@ -1,11 +1,11 @@
 import { UUID } from 'crypto';
 
-type UserCommand = {
+export type UserCommand = {
   requestId: UUID;
   params: UserCommandParam[];
 };
 
-type UserCommandParam = {
+export type UserCommandParam = {
   name: string;
   value: string | number | boolean | string[] | number[];
 };
