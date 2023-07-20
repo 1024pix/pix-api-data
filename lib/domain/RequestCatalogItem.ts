@@ -1,15 +1,15 @@
-type RequestCatalogItem = {
+export type RequestCatalogItem = {
   query: string;
   params: RequestParam[];
 };
 
-type RequestParam = {
+export type RequestParam = {
   name: string;
   type: ParamType;
   mandatory: boolean;
 };
 
-enum ParamType {
+export enum ParamType {
   STRING = 'string',
   INT = 'int',
   DATE = 'date',

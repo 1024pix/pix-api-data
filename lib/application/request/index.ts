@@ -1,5 +1,5 @@
 import { Server } from '@hapi/hapi';
-import { executeDefaultQuery } from '../../domain/ExecuteQueryUsecase.ts';
+import { executeQueryUseCase } from '../../domain/ExecuteQueryUsecase.ts';
 
 const register = async function (server: Server) {
   server.route([
@@ -7,7 +7,7 @@ const register = async function (server: Server) {
       method: 'GET',
       path: '/',
       options: {
-        handler: executeDefaultQuery,
+        handler: executeQueryUseCase.executeQuery,
       },
     },
   ]);
