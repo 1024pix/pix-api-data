@@ -1,14 +1,14 @@
-import { knex } from '../../lib/common/db/knex-database-connection.js';
-import { expect } from 'chai';
+import { expect } from "chai";
+import { createServer } from "../../server.js";
 
-describe('Acceptance | count data_ref_academies rows', function () {
-  it('It should insert data', async function () {
-    //when
-    await knex('public.data_ref_academies').select();
-    //then
-    const regionCount = await knex('public.data_ref_academies')
-      .select()
-      .count();
-    expect(regionCount).to.deep.equal([{ count: 33 }]);
+describe("Acceptance | default route", function() {
+
+  it("should return the default request result: 33", async function() {
+    // when
+    const server = await createServer();
+    const response = await server.inject({ method: "GET", url: '/' });
+
+    // then
+    expect(response.payload).to.equal('[{"count":33}]');
   });
 });
