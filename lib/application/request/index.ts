@@ -1,5 +1,5 @@
 import { Server } from '@hapi/hapi';
-import { executeDefaultQuery } from '../../domain/execute-query-usecase.js';
+import { executeDefaultQuery } from '../../domain/ExecuteQueryUsecase.ts';
 
 const register = async function (server: Server) {
   server.route([
