@@ -1,12 +1,12 @@
 type RequestCatalogItem = {
   query: string;
-  mandatoryParams: RequestParam[];
-  optionalParams: RequestParam[];
+  params: RequestParam[];
 };
 
 type RequestParam = {
   name: string;
   type: ParamType;
+  mandatory: boolean;
 };
 
 enum ParamType {
