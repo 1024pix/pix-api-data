@@ -13,10 +13,6 @@ export class Result<ResultData> {
     this.resultData = resultData;
   }
 
-  get formattedErrorMessages() {
-    return this.errorMessages.join(', ');
-  }
-
   get isFailure() {
     return !this.isSuccess;
   }

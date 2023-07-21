@@ -3,17 +3,8 @@ POST http://localhost:3000/request
 Content-Type: application/json
 
 {
-  "requestId": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
-  "params": [
-    {
-      "name": "organizationId",
-      "value": 123
-    },
-    {
-      "name": "createdAt",
-      "value": "2021-10-29T03:04:00Z"
-    }
-  ]
+  "requestId": "1b7291d4-ac51-46d2-97f1-f5f304100a29",
+  "params": []
 }
 
 ### Invalid command because requestId
