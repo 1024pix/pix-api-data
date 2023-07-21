@@ -1,13 +1,13 @@
 import {
   DatamartRepository,
   datamartRepository,
-} from '../../infrastructure/DatamartDatasource.ts';
+} from '../../infrastructure/DatamartRepository.ts';
 import {
   catalogQueryRepository,
   CatalogQueryRepository,
 } from '../../infrastructure/CatalogQueryDatasource.ts';
 import { DatamartResponse } from '../models/DatamartResponse.ts';
-import { DatamartQuery } from '../models/DatamartQuery.ts';
+import { DatamartQueryModel } from '../models/DatamartQuery.ts';
 import { UserCommand } from '../models/UserCommand.ts';
 import { QueryCatalogItem } from '../models/QueryCatalogItem.ts';
 import { Result } from '../models/Result.ts';
@@ -27,19 +27,24 @@ class ExecuteQueryUseCaseImpl implements ExecuteQueryUseCase {
   async executeQuery(
     userCommand: UserCommand,
   ): Promise<Result<DatamartResponse>> {
-    const request: QueryCatalogItem = await this.catalogQueryRepository.find(
+    const query: QueryCatalogItem = await this.catalogQueryRepository.find(
       userCommand.queryId,
     );
-    if (!request.query) {
+    if (!query.query) {
       return Result.failure(['cannot run requested query']);
     }
 
-    const datamartQuery: DatamartQuery = {
-      query: request.query,
+    const datamartQueryModel = new DatamartQueryModel({
+      query: query.query,
       paramValues: [],
       paramDefinitions: [],
-    };
-    const datamartResponse = await this.datamartRepository.find(datamartQuery);
+    });
+    if (!datamartQueryModel.isValid()) {
+      throw new Error('Bad request');
+    }
+    const datamartResponse = await this.datamartRepository.find(
+      datamartQueryModel,
+    );
     return Result.success(datamartResponse);
   }
 }

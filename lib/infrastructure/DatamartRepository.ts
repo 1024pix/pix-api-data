@@ -1,21 +1,26 @@
 import { knexDatamart } from '../common/db/knex-database-connections.js';
 import { logger } from '../common/logger/logger.js';
-import { DatamartQuery } from '../domain/models/DatamartQuery.ts';
+import { DatamartQueryModel } from '../domain/models/DatamartQuery.ts';
 import { DatamartResponse } from '../domain/models/DatamartResponse.ts';
 import { QueryBuilder } from './builder/QueryBuilder.ts';
 
 export interface DatamartRepository {
-  find(_datamartQuery: DatamartQuery): Promise<DatamartResponse>;
+  find(datamartQueryModel: DatamartQueryModel): Promise<DatamartResponse>;
 }
 class DatamartRepositoryImpl implements DatamartRepository {
-  async find(datamartQuery: DatamartQuery): Promise<DatamartResponse> {
-    const requestBuilder = new QueryBuilder(datamartQuery);
+  async find(
+    datamartQueryModel: DatamartQueryModel,
+  ): Promise<DatamartResponse> {
+    const queryBuilder = new QueryBuilder(datamartQueryModel);
     try {
       // eslint-disable-next-line knex/avoid-injections
-      const result = await knexDatamart.raw(requestBuilder.build());
+      const result = await knexDatamart.raw(queryBuilder.build());
       return result['rows'];
     } catch (e) {
-      logger.error(`Error while executing query: ${datamartQuery.query}`, e);
+      logger.error(
+        `Error while executing query: ${datamartQueryModel.query}`,
+        e,
+      );
     }
   }
 }

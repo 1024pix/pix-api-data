@@ -8,6 +8,7 @@ module.exports = {
   plugins: ['@typescript-eslint/eslint-plugin', 'knex', 'unicorn'],
   extends: [
     "@1024pix",
+    'plugin:@typescript-eslint/recommended',
     'plugin:mocha/recommended',
     'plugin:prettier/recommended',
     'plugin:chai-expect/recommended',
