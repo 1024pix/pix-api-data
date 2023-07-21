@@ -5,7 +5,7 @@
     "module": "ESNext",
     "allowImportingTsExtensions": true,
     "moduleResolution": "NodeNext",
-    "lib": ["es6"],
+    "lib": ["es6", "es2017"],
     "outDir": "build",
     "rootDir": "lib",
     "noImplicitAny": true,
