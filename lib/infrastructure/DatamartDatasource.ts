@@ -1,7 +1,7 @@
 import { knex } from '../common/db/knex-database-connection.js';
 import { logger } from '../common/logger/logger.js';
-import { DatamartRequest } from '../domain/model/DatamartRequest.ts';
-import { DatamartResponse } from '../domain/model/DatamartResponse.ts';
+import { DatamartRequest } from '../domain/models/DatamartRequest.ts';
+import { DatamartResponse } from '../domain/models/DatamartResponse.ts';
 
 export interface DatamartRepository {
   find(datamartRequest: DatamartRequest): Promise<DatamartResponse>;

@@ -1,13 +1,13 @@
 import { Server } from '@hapi/hapi';
-import { executeQueryUseCase } from '../../domain/ExecuteQueryUsecase.ts';
+import { execute } from './request.ts';
 
 const register = async function (server: Server) {
   server.route([
     {
-      method: 'GET',
-      path: '/',
+      method: 'POST',
+      path: '/request',
       options: {
-        handler: executeQueryUseCase.executeQuery,
+        handler: execute,
       },
     },
   ]);

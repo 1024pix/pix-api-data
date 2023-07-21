@@ -1,2 +1,53 @@
-// A basic request
-GET localhost:3000
+### Valid command
+POST http://localhost:3000/request
+Content-Type: application/json
+
+{
+  "requestId": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+  "params": [
+    {
+      "name": "organizationId",
+      "value": 123
+    },
+    {
+      "name": "createdAt",
+      "value": "2021-10-29T03:04:00Z"
+    }
+  ]
+}
+
+### Invalid command because requestId
+POST http://localhost:3000/request
+Content-Type: application/json
+
+{
+  "requestId": "BLABLA",
+  "params": [
+    {
+      "name": "organizationId",
+      "value": 123
+    },
+    {
+      "name": "createdAt",
+      "value": "2021-10-29T03:04:00Z"
+    }
+  ]
+}
+
+### Invalid command because params
+POST http://localhost:3000/request
+Content-Type: application/json
+
+{
+  "requestId": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+  "params": [
+    {
+      "name": "organizationId",
+      "value": null
+    },
+    {
+      "name": "createdAt",
+      "valu": "2021-10-29T03:04:00Z"
+    }
+  ]
+}

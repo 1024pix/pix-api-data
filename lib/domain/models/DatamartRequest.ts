@@ -1,5 +1,5 @@
-import { UserCommandParam } from '../UserCommand.js';
-import { RequestParam } from '../RequestCatalogItem.js';
+import { UserCommandParam } from './UserCommand.ts';
+import { RequestParam } from './RequestCatalogItem.ts';
 
 export type DatamartRequest = {
   query: string;
