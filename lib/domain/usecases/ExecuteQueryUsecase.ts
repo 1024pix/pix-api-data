@@ -36,8 +36,8 @@ class ExecuteQueryUseCaseImpl implements ExecuteQueryUseCase {
 
     const datamartQueryModel = new DatamartQueryModel({
       query: query.query,
-      paramValues: [],
-      paramDefinitions: [],
+      paramValues: userCommand.params,
+      paramDefinitions: query.params,
     });
     if (!datamartQueryModel.isValid()) {
       return Result.failure(['cannot run requested query']);
