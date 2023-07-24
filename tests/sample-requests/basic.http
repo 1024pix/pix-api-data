@@ -1,4 +1,4 @@
-### Valid command
+### Valid command -> 200
 POST http://localhost:3000/query
 Content-Type: application/json
 
@@ -7,7 +7,7 @@ Content-Type: application/json
   "params": []
 }
 
-### Invalid command because queryId
+### Invalid command because queryId -> 400
 POST http://localhost:3000/query
 Content-Type: application/json
 
@@ -25,7 +25,7 @@ Content-Type: application/json
   ]
 }
 
-### Invalid command because params
+### Invalid command because params -> 400
 POST http://localhost:3000/query
 Content-Type: application/json
 
@@ -42,3 +42,13 @@ Content-Type: application/json
     }
   ]
 }
+
+### Invalid command because query doesn't exist -> 422
+POST http://localhost:3000/query
+Content-Type: application/json
+
+{
+  "queryId": "1b7291d4-ac51-46d2-97f1-f5f304100a20",
+  "params": []
+}
+
