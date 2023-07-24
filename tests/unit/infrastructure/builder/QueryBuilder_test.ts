@@ -4,8 +4,8 @@ import { DatamartQueryModel } from '../../../../lib/domain/models/DatamartQuery.
 import { ParamType } from '../../../../lib/domain/models/QueryCatalogItem.ts';
 
 describe('Unit | Query builder', function () {
-  describe('query without optional block definition', function () {
-    it('simple query without param', function () {
+  context('query without optional block definition', function () {
+    it('it should return a query without param', function () {
       // given
       const datamartQueryModel = new DatamartQueryModel({
         query: 'select * from table_exemple\nwhere id = 1',
@@ -19,9 +19,9 @@ describe('Unit | Query builder', function () {
       const queryResult = queryBuilder.build();
 
       // then
-      expect(queryResult).to.equal('select * from table_exemple where id = 1');
+      expect(queryResult).to.equal('select * from table_exemple\nwhere id = 1');
     });
-    it('simple query with mandatory param', function () {
+    it('it should return a query with mandatory param', function () {
       // given
       const datamartQuery = new DatamartQueryModel({
         query: 'select * from table_exemple where id = {{ injectString }}',
@@ -196,12 +196,12 @@ describe('Unit | Query builder', function () {
       );
     });
   });
-  describe('query with optional block definition', function () {
-    it('without param', function () {
+  context('query with optional block definition', function () {
+    it('it should return a query without optional block', function () {
       // given
       const datamartQueryModel = new DatamartQueryModel({
         query:
-          'select * from table_exemple where id = 1 [[ AND optional = {{ optionalParam }} ]]',
+          'select * from table_exemple where id = 1 [[ AND optional = {{ optionalParam }} ]] [[ AND optional2 = {{ optional2Param }} ]]',
         paramValues: [],
         paramDefinitions: [],
       });
@@ -214,7 +214,7 @@ describe('Unit | Query builder', function () {
       // then
       expect(queryResult).to.equal('select * from table_exemple where id = 1');
     });
-    it('without good optional param string', function () {
+    it('it should return a query with one optional block', function () {
       // given
       const datamartQueryModel = new DatamartQueryModel({
         query:
@@ -242,6 +242,80 @@ describe('Unit | Query builder', function () {
       // then
       expect(queryResult).to.equal(
         "select * from table_exemple where id = 1  AND optional = 'valeur à injecter'",
+      );
+    });
+    it('it should return query with only one optional block of two', function () {
+      // given
+      const datamartQueryModel = new DatamartQueryModel({
+        query:
+          'select * from table_exemple where id = 1 \n[[ AND optional \n= {{ optionalParam }} ]]\n [[ AND optional2 = {{ optionalParam2 }} ]]',
+        paramValues: [
+          {
+            name: 'optionalParam2',
+            value: 'valeur à injecter2',
+          },
+        ],
+        paramDefinitions: [
+          {
+            name: 'optionalParam',
+            type: ParamType.STRING,
+            mandatory: false,
+          },
+          {
+            name: 'optionalParam2',
+            type: ParamType.STRING,
+            mandatory: false,
+          },
+        ],
+      });
+
+      const queryBuilder = new QueryBuilder(datamartQueryModel);
+
+      // when
+      const queryResult = queryBuilder.build();
+
+      // then
+      expect(queryResult).to.equal(
+        "select * from table_exemple where id = 1 \n\n  AND optional2 = 'valeur à injecter2'",
+      );
+    });
+    it('it should return good query when have some optional block', function () {
+      // given
+      const datamartQueryModel = new DatamartQueryModel({
+        query:
+          'select * from table_exemple where id = 1 \n[[ AND optional \n= {{ optionalParam }} ]]\n [[ AND optional2 = {{ optionalParam2 }} ]]',
+        paramValues: [
+          {
+            name: 'optionalParam',
+            value: 'valeur à injecter',
+          },
+          {
+            name: 'optionalParam2',
+            value: 'valeur à injecter2',
+          },
+        ],
+        paramDefinitions: [
+          {
+            name: 'optionalParam',
+            type: ParamType.STRING,
+            mandatory: false,
+          },
+          {
+            name: 'optionalParam2',
+            type: ParamType.STRING,
+            mandatory: false,
+          },
+        ],
+      });
+
+      const queryBuilder = new QueryBuilder(datamartQueryModel);
+
+      // when
+      const queryResult = queryBuilder.build();
+
+      // then
+      expect(queryResult).to.equal(
+        "select * from table_exemple where id = 1 \n AND optional \n= 'valeur à injecter' \n  AND optional2 = 'valeur à injecter2'",
       );
     });
   });
