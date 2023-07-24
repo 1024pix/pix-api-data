@@ -7,7 +7,7 @@ import {
   CatalogQueryRepository,
 } from '../../infrastructure/CatalogQueryRepository.ts';
 import { DatamartQueryModel } from '../models/DatamartQuery.ts';
-import { UserCommand } from '../models/UserCommand.ts';
+import { UserCommand } from '../commands/UserCommand.ts';
 import { QueryCatalogItem } from '../models/QueryCatalogItem.ts';
 import { Result } from '../models/Result.ts';
 import { DatamartResponse } from '../models/DatamartResponse.ts';
@@ -41,9 +41,8 @@ class ExecuteQueryUseCaseImpl implements ExecuteQueryUseCase {
     if (!datamartQueryModel.isValid()) {
       return Result.failure(['cannot run requested query']);
     }
-    const datamartResponse = await this.datamartRepository.find(
-      datamartQueryModel,
-    );
+    const datamartResponse: DatamartResponse =
+      await this.datamartRepository.find(datamartQueryModel);
     return Result.success(datamartResponse);
   }
 }
