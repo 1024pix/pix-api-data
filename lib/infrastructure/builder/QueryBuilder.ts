@@ -1,6 +1,6 @@
-import { DatamartRequest } from '../../domain/model/DatamartRequest.ts';
-import { UserCommandParam } from '../../domain/UserCommand.js';
-import { ParamType, RequestParam } from '../../domain/RequestCatalogItem.js';
+import { DatamartQuery } from '../../domain/models/DatamartQuery.ts';
+import { UserCommandParam } from '../../domain/models/UserCommand.ts';
+import { ParamType, QueryParam } from '../../domain/models/QueryCatalogItem.ts';
 
 const CARRIAGE_RETURN_REGEXP = /[\r\n]/g;
 const MATCHING_OPTIONAL_BLOCK_REGEXP = /((?:\[{2}.*?]{2})+),?/;
@@ -8,11 +8,11 @@ const REMOVE_OPTIONAL_CHAR_REGEXP = /\[{2}(.*)]{2}/;
 const MATCHING_PARAM_BLOCK_REGEXP = /((?:{{.*?}})+),?/;
 const PARAM_NAME_REGEXP = /{{(.*)}}/;
 
-export class RequestBuilder {
+export class QueryBuilder {
   queryInputOneLine: string;
 
-  constructor(private readonly datamartRequest: DatamartRequest) {
-    this.queryInputOneLine = datamartRequest.query.replace(
+  constructor(private readonly datamartQuery: DatamartQuery) {
+    this.queryInputOneLine = datamartQuery.query.replace(
       CARRIAGE_RETURN_REGEXP,
       ' ',
     );
@@ -21,12 +21,12 @@ export class RequestBuilder {
   build(): string {
     const queryWithoutSomeOptional = manageOptionals(
       this.queryInputOneLine,
-      this.datamartRequest.paramValues.map((paramValue) => paramValue.name),
+      this.datamartQuery.paramValues.map((paramValue) => paramValue.name),
     );
     return injectValues(
       queryWithoutSomeOptional,
-      this.datamartRequest.paramValues,
-      this.datamartRequest.paramDefinitions,
+      this.datamartQuery.paramValues,
+      this.datamartQuery.paramDefinitions,
     );
   }
 }
@@ -34,7 +34,7 @@ export class RequestBuilder {
 function injectValues(
   query: string,
   paramValues: UserCommandParam[],
-  paramDefinitions: RequestParam[],
+  paramDefinitions: QueryParam[],
 ): string {
   let queryResult = query;
   paramValues.forEach((paramValue) => {
@@ -48,7 +48,7 @@ function injectValues(
 
 function buildValue(
   paramValue: UserCommandParam,
-  paramDefinitions: RequestParam[],
+  paramDefinitions: QueryParam[],
 ): string {
   const paramDefinition = paramDefinitions.find(
     (paramDefinition) => paramDefinition.name === paramValue.name,

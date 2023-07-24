@@ -2,8 +2,8 @@ import { expect } from 'chai';
 import {
   UserCommand,
   UserCommandParam,
-} from '../../../lib/domain/models/UserCommand.ts';
-import { Result } from '../../../lib/domain/models/Result.ts';
+} from '../../../../lib/domain/models/UserCommand.ts';
+import { Result } from '../../../../lib/domain/models/Result.ts';
 
 describe('Unit | Domain | UserCommand', function () {
   describe('buildFromPayload', function () {
