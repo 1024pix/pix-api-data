@@ -1,11 +1,13 @@
 import { UserCommandParam } from './UserCommand.ts';
 import { ParamType, QueryParam } from './QueryCatalogItem.ts';
+import moment from 'moment';
 
 export interface DatamartQuery {
   query: string;
   paramValues: UserCommandParam[];
   paramDefinitions: QueryParam[];
 }
+
 export const MATCHING_OPTIONAL_BLOCK_REGEXP = /((?:\[{2}.*?]{2})+),?/;
 export const MATCHING_PARAM_BLOCK_REGEXP = /((?:{{.*?}})+),?/;
 export const PARAM_NAME_REGEXP = /{{(.*)}}/;
@@ -15,9 +17,11 @@ export class DatamartQueryModel {
   get query() {
     return this.datamartQuery.query;
   }
+
   get paramDefinitions() {
     return this.datamartQuery.paramDefinitions;
   }
+
   get paramValues() {
     return this.datamartQuery.paramValues;
   }
@@ -79,8 +83,11 @@ export class DatamartQueryModel {
   ): boolean {
     switch (paramDefinitionType) {
       case ParamType.STRING:
-      case ParamType.DATE:
         return typeof value === 'string';
+      case ParamType.DATE:
+        return (
+          typeof value === 'string' && this.checkDateFormat(value, 'YYYY-MM-DD')
+        );
       case ParamType.STRING_ARRAY:
         return (value as Array<unknown>).every(
           (item) => typeof item === 'string',
@@ -96,5 +103,9 @@ export class DatamartQueryModel {
       case ParamType.FLOAT:
         return typeof value === 'number';
     }
+  }
+
+  private checkDateFormat(value: string, pattern: string): boolean {
+    return moment(value, pattern, true).isValid();
   }
 }
