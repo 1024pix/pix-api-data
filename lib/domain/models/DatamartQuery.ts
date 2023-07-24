@@ -108,6 +108,11 @@ export class DatamartQueryModel {
       case ParamType.INT:
       case ParamType.FLOAT:
         return typeof value === 'number';
+      case ParamType.DATE_TIME:
+        return (
+          typeof value === 'string' &&
+          this.checkDateFormat(value, 'YYYY-MM-DD HH:mm:ss')
+        );
     }
   }
 
