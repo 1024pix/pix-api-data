@@ -40,7 +40,7 @@ class ExecuteQueryUseCaseImpl implements ExecuteQueryUseCase {
       paramDefinitions: [],
     });
     if (!datamartQueryModel.isValid()) {
-      throw new Error('Bad request');
+      return Result.failure(['cannot run requested query']);
     }
     const datamartResponse = await this.datamartRepository.find(
       datamartQueryModel,
