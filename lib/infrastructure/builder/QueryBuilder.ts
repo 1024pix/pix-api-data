@@ -6,17 +6,13 @@ import {
 import { UserCommandParam } from '../../domain/models/UserCommand.ts';
 import { ParamType } from '../../domain/models/QueryCatalogItem.ts';
 
-const CARRIAGE_RETURN_REGEXP = /[\r\n]/g;
-const REMOVE_OPTIONAL_CHAR_REGEXP = /\[{2}(.*)]{2}/;
+const REMOVE_OPTIONAL_CHAR_REGEXP = /\[{2}((.|\n|\r)*)]{2}/;
 
 export class QueryBuilder {
   queryInputOneLine: string;
 
   constructor(private readonly datamartRequestModel: DatamartQueryModel) {
-    this.queryInputOneLine = datamartRequestModel.query.replace(
-      CARRIAGE_RETURN_REGEXP,
-      ' ',
-    );
+    this.queryInputOneLine = datamartRequestModel.query;
   }
 
   build(): string {
@@ -25,6 +21,7 @@ export class QueryBuilder {
     );
     return this.injectValues(queryWithoutSomeOptional);
   }
+
   private injectValues(query: string): string {
     let queryResult = query;
     this.datamartRequestModel.paramValues.forEach((paramValue) => {
@@ -79,10 +76,14 @@ export class QueryBuilder {
   }
 
   private checkOptionalNeed(optional: string): boolean {
-    return MATCHING_PARAM_BLOCK_REGEXP.exec(optional)
-      .map((paramNeed) => paramNeed.replace(PARAM_NAME_REGEXP, '$1').trim())
-      .every((paramNeed) =>
-        this.datamartRequestModel.paramValueNames.includes(paramNeed),
-      );
+    return (
+      [...optional.matchAll(MATCHING_PARAM_BLOCK_REGEXP)]
+        .map((regExpMatchArray) => regExpMatchArray[0])
+        /* example: {{ myParam }}. $1 = " myParam " */
+        .map((paramNeed) => paramNeed.replace(PARAM_NAME_REGEXP, '$1').trim())
+        .every((paramNeed) =>
+          this.datamartRequestModel.paramValueNames.includes(paramNeed),
+        )
+    );
   }
 }

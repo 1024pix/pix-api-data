@@ -8,8 +8,9 @@ export interface DatamartQuery {
   paramDefinitions: QueryParam[];
 }
 
-export const MATCHING_OPTIONAL_BLOCK_REGEXP = /((?:\[{2}.*?]{2})+),?/;
-export const MATCHING_PARAM_BLOCK_REGEXP = /((?:{{.*?}})+),?/;
+export const MATCHING_OPTIONAL_BLOCK_REGEXP =
+  /((?:\[{2}(?:.|\n|\r)*?]{2})+),?/g;
+export const MATCHING_PARAM_BLOCK_REGEXP = /((?:{{.*?}})+),?/g;
 export const PARAM_NAME_REGEXP = /{{(.*)}}/;
 
 export class DatamartQueryModel {
@@ -31,7 +32,10 @@ export class DatamartQueryModel {
   }
 
   get optionalBlocks(): string[] {
-    return MATCHING_OPTIONAL_BLOCK_REGEXP.exec(this.query) ?? [];
+    const regExpMatchArrays = [
+      ...this.query.matchAll(MATCHING_OPTIONAL_BLOCK_REGEXP),
+    ];
+    return regExpMatchArrays.map((regExpMatchArray) => regExpMatchArray[0]);
   }
 
   isValid(): boolean {
@@ -59,7 +63,9 @@ export class DatamartQueryModel {
   private checkOptionalMissingArgumentIsOk(optional: string): boolean {
     return (
       new Set(
-        MATCHING_PARAM_BLOCK_REGEXP.exec(optional)
+        [...optional.matchAll(MATCHING_PARAM_BLOCK_REGEXP)]
+          .map((regExpMatchArray) => regExpMatchArray[0])
+          /* example: {{ myParam }}. $1 = " myParam " */
           .map((paramNeed) => paramNeed.replace(PARAM_NAME_REGEXP, '$1').trim())
           .map((paramNeed) => this.paramValueNames.includes(paramNeed)),
       ).size === 1
