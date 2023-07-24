@@ -1,4 +1,4 @@
-import { UserCommandParam } from './UserCommand.ts';
+import { UserCommandParam } from '../commands/UserCommand.ts';
 import { ParamType, QueryParam } from './QueryCatalogItem.ts';
 import moment from 'moment';
 

@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import {
   UserCommand,
   UserCommandParam,
-} from '../../../../lib/domain/models/UserCommand.ts';
+} from '../../../../lib/domain/commands/UserCommand.ts';
 import { Result } from '../../../../lib/domain/models/Result.ts';
 
 describe('Unit | Domain | UserCommand', function () {
