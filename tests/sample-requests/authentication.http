@@ -1,0 +1,26 @@
+### Valid command -> 200
+POST http://localhost:3000/token
+Content-Type: application/json
+
+{
+  "username": "dev",
+  "password": "LeMotDePasseQueL'UtilisateurUtiliseraitDeSonPointDeVue"
+}
+
+### Invalid command because username -> 400
+POST http://localhost:3000/token
+Content-Type: application/json
+
+{
+  "usernameeeeee": "dev",
+  "password": "LeMotDePasseQueL'UtilisateurUtiliseraitDeSonPointDeVue"
+}
+
+### Invalid command because wrong password -> 422
+POST http://localhost:3000/token
+Content-Type: application/json
+
+{
+  "username": "dev",
+  "password": "MauvaisMDP"
+}
