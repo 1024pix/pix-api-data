@@ -1,30 +1,30 @@
 /* eslint-disable */
 import { expect } from 'chai';
-import { RequestBuilder } from '../../lib/infrastructure/builder/RequestBuilder.ts';
-import { DatamartRequest } from '../../lib/domain/model/DatamartRequest.ts';
-import { ParamType } from '../../lib/domain/RequestCatalogItem.js';
+import { QueryBuilder } from '../../../../lib/infrastructure/builder/QueryBuilder.ts';
+import { DatamartQuery } from '../../../../lib/domain/models/DatamartQuery.ts';
+import { ParamType } from '../../../../lib/domain/models/QueryCatalogItem.js';
 
-describe('Unit | Request builder', function () {
-  describe('request without optional block definition', function () {
-    it('simple request without param', function () {
+describe('Unit | Query builder', function () {
+  describe('query without optional block definition', function () {
+    it('simple query without param', function () {
       // given
-      const datamartRequest: DatamartRequest = {
+      const datamartQuery: DatamartQuery = {
         query: 'select * from table_exemple\nwhere id = 1',
         paramValues: [],
         paramDefinitions: [],
       };
 
-      const requestBuilder = new RequestBuilder(datamartRequest);
+      const queryBuilder = new QueryBuilder(datamartQuery);
 
       // when
-      const queryResult = requestBuilder.build();
+      const queryResult = queryBuilder.build();
 
       // then
       expect(queryResult).to.equal('select * from table_exemple where id = 1');
     });
-    it('simple request with mandatory param', function () {
+    it('simple query with mandatory param', function () {
       // given
-      const datamartRequest: DatamartRequest = {
+      const datamartQuery: DatamartQuery = {
         query: 'select * from table_exemple where id = {{ injectString }}',
         paramValues: [
           {
@@ -41,10 +41,10 @@ describe('Unit | Request builder', function () {
         ],
       };
 
-      const requestBuilder = new RequestBuilder(datamartRequest);
+      const queryBuilder = new QueryBuilder(datamartQuery);
 
       // when
-      const queryResult = requestBuilder.build();
+      const queryResult = queryBuilder.build();
 
       // then
       expect(queryResult).to.equal(
@@ -53,7 +53,7 @@ describe('Unit | Request builder', function () {
     });
     it('with param array int', function () {
       // given
-      const datamartRequest: DatamartRequest = {
+      const datamartQuery: DatamartQuery = {
         query:
           'select * from table_exemple where id in ({{ param }})',
         paramValues: [
@@ -71,10 +71,10 @@ describe('Unit | Request builder', function () {
         ],
       };
 
-      const requestBuilder = new RequestBuilder(datamartRequest);
+      const queryBuilder = new QueryBuilder(datamartQuery);
 
       // when
-      const queryResult = requestBuilder.build();
+      const queryResult = queryBuilder.build();
 
       // then
       expect(queryResult).to.equal(
@@ -83,7 +83,7 @@ describe('Unit | Request builder', function () {
     });
     it('with param date', function () {
       // given
-      const datamartRequest: DatamartRequest = {
+      const datamartQuery: DatamartQuery = {
         query:
           'select * from table_exemple where status = {{ param }}',
         paramValues: [
@@ -101,10 +101,10 @@ describe('Unit | Request builder', function () {
         ],
       };
 
-      const requestBuilder = new RequestBuilder(datamartRequest);
+      const queryBuilder = new QueryBuilder(datamartQuery);
 
       // when
-      const queryResult = requestBuilder.build();
+      const queryResult = queryBuilder.build();
 
       // then
       expect(queryResult).to.equal(
@@ -113,7 +113,7 @@ describe('Unit | Request builder', function () {
     });
     it('with param array float', function () {
       // given
-      const datamartRequest: DatamartRequest = {
+      const datamartQuery: DatamartQuery = {
         query:
           'select * from table_exemple where id in ({{ param }})',
         paramValues: [
@@ -131,10 +131,10 @@ describe('Unit | Request builder', function () {
         ],
       };
 
-      const requestBuilder = new RequestBuilder(datamartRequest);
+      const queryBuilder = new QueryBuilder(datamartQuery);
 
       // when
-      const queryResult = requestBuilder.build();
+      const queryResult = queryBuilder.build();
 
       // then
       expect(queryResult).to.equal(
@@ -143,7 +143,7 @@ describe('Unit | Request builder', function () {
     });
     it('with param array string', function () {
       // given
-      const datamartRequest: DatamartRequest = {
+      const datamartQuery: DatamartQuery = {
         query:
           'select * from table_exemple where id in ({{ param }})',
         paramValues: [
@@ -161,10 +161,10 @@ describe('Unit | Request builder', function () {
         ],
       };
 
-      const requestBuilder = new RequestBuilder(datamartRequest);
+      const queryBuilder = new QueryBuilder(datamartQuery);
 
       // when
-      const queryResult = requestBuilder.build();
+      const queryResult = queryBuilder.build();
 
       // then
       expect(queryResult).to.equal(
@@ -173,7 +173,7 @@ describe('Unit | Request builder', function () {
     });
     it('with param array boolean', function () {
       // given
-      const datamartRequest: DatamartRequest = {
+      const datamartQuery: DatamartQuery = {
         query:
           'select * from table_exemple where status = {{ param }}',
         paramValues: [
@@ -191,10 +191,10 @@ describe('Unit | Request builder', function () {
         ],
       };
 
-      const requestBuilder = new RequestBuilder(datamartRequest);
+      const queryBuilder = new QueryBuilder(datamartQuery);
 
       // when
-      const queryResult = requestBuilder.build();
+      const queryResult = queryBuilder.build();
 
       // then
       expect(queryResult).to.equal(
@@ -202,27 +202,27 @@ describe('Unit | Request builder', function () {
       );
     });
   });
-  describe('request with optional block definition', function () {
+  describe('query with optional block definition', function () {
     it('without param', function () {
       // given
-      const datamartRequest: DatamartRequest = {
+      const datamartQuery: DatamartQuery = {
         query:
           'select * from table_exemple where id = 1 [[ AND optional = {{ optionalParam }} ]]',
         paramValues: [],
         paramDefinitions: [],
       };
 
-      const requestBuilder = new RequestBuilder(datamartRequest);
+      const queryBuilder = new QueryBuilder(datamartQuery);
 
       // when
-      const queryResult = requestBuilder.build();
+      const queryResult = queryBuilder.build();
 
       // then
       expect(queryResult).to.equal('select * from table_exemple where id = 1');
     });
     it('without good optional param string', function () {
       // given
-      const datamartRequest: DatamartRequest = {
+      const datamartQuery: DatamartQuery = {
         query:
           'select * from table_exemple where id = 1 [[ AND optional = {{ optionalParam }} ]]',
         paramValues: [
@@ -240,10 +240,10 @@ describe('Unit | Request builder', function () {
         ],
       };
 
-      const requestBuilder = new RequestBuilder(datamartRequest);
+      const queryBuilder = new QueryBuilder(datamartQuery);
 
       // when
-      const queryResult = requestBuilder.build();
+      const queryResult = queryBuilder.build();
 
       // then
       expect(queryResult).to.equal(
