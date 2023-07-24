@@ -39,11 +39,11 @@ function isValidArray(array: unknown): boolean {
 }
 
 export class UserCommand {
-  requestId: UUID;
+  queryId: UUID;
   params: UserCommandParam[];
 
-  constructor(requestId: UUID, params: UserCommandParam[]) {
-    this.requestId = requestId;
+  constructor(queryId: UUID, params: UserCommandParam[]) {
+    this.queryId = queryId;
     this.params = params;
   }
 
@@ -54,7 +54,7 @@ export class UserCommand {
     }
 
     const userCommand = new UserCommand(
-      validatedPayload.requestId,
+      validatedPayload.queryId,
       validatedPayload.params,
     );
     return Result.success(userCommand);
@@ -69,7 +69,7 @@ export type UserCommandParam = {
 function validatePayload(payload: unknown): {
   messages: string[];
   validatedPayload: {
-    requestId: UUID;
+    queryId: UUID;
     params: {
       name: string;
       value: string | number | boolean | string[] | number[];
@@ -78,25 +78,25 @@ function validatePayload(payload: unknown): {
 } {
   const messages: string[] = [];
   const validatedPayload: {
-    requestId: UUID;
+    queryId: UUID;
     params: {
       name: string;
       value: string | number | boolean | string[] | number[];
     }[];
-  } = { requestId: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', params: [] };
+  } = { queryId: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', params: [] };
   if (typeof payload !== 'object' || !payload) {
     messages.push('invalid payload');
   } else {
     Object.keys(payload)
-      .filter((key) => !['requestId', 'params'].includes(key))
+      .filter((key) => !['queryId', 'params'].includes(key))
       .forEach((key) => messages.push(`unknown attribute: "${key}"`));
 
-    if (!('requestId' in payload)) {
-      messages.push('"requestId" is mandatory');
-    } else if (!isValidUUID(payload.requestId)) {
-      messages.push('"requestId" is not a valid UUID');
+    if (!('queryId' in payload)) {
+      messages.push('"queryId" is mandatory');
+    } else if (!isValidUUID(payload.queryId)) {
+      messages.push('"queryId" is not a valid UUID');
     } else {
-      validatedPayload.requestId = payload.requestId;
+      validatedPayload.queryId = payload.queryId;
     }
 
     if (!('params' in payload)) {

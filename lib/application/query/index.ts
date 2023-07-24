@@ -1,11 +1,11 @@
 import { Server } from '@hapi/hapi';
-import { execute } from './request.ts';
+import { execute } from './query.ts';
 
 const register = async function (server: Server) {
   server.route([
     {
       method: 'POST',
-      path: '/request',
+      path: '/query',
       options: {
         handler: execute,
       },
@@ -13,5 +13,5 @@ const register = async function (server: Server) {
   ]);
 };
 
-const name = 'request-api';
+const name = 'query-api';
 export { register, name };

@@ -2,16 +2,16 @@ import { expect } from 'chai';
 import { createServer } from '../../lib/server.ts';
 import { knexAPI } from '../../lib/common/db/knex-database-connections.js';
 
-describe('Acceptance | request', function () {
+describe('Acceptance | query', function () {
   afterEach(async function () {
-    await knexAPI('catalog_requests').delete();
+    await knexAPI('catalog_queries').delete();
   });
 
   context('when payload is invalid', function () {
     it('should return a proper error response with status code 400', async function () {
       // given
       const payload = {
-        requestIdddddd: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
+        queryIdddddddd: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
         params: <any>[],
       };
 
@@ -19,7 +19,7 @@ describe('Acceptance | request', function () {
       const server = await createServer();
       const response = await server.inject({
         method: 'POST',
-        url: '/request',
+        url: '/query',
         payload,
       });
 
@@ -29,24 +29,24 @@ describe('Acceptance | request', function () {
         status: 'failure',
         data: [],
         messages: [
-          'unknown attribute: "requestIdddddd"',
-          '"requestId" is mandatory',
+          'unknown attribute: "queryIdddddddd"',
+          '"queryId" is mandatory',
         ],
       });
     });
   });
 
   context('when payload is valid', function () {
-    context('when "requestId" refers to an existing request', function () {
+    context('when "requestId" refers to an existing query', function () {
       it('should return a proper payload response with status code 200', async function () {
         // given
-        const requestId = 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11';
-        await knexAPI('catalog_requests').insert({
-          id: requestId,
-          request: 'SELECT COUNT(*) FROM public.data_ref_academies',
+        const queryId = 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11';
+        await knexAPI('catalog_queries').insert({
+          id: queryId,
+          sql_query: 'SELECT COUNT(*) FROM public.data_ref_academies',
         });
         const payload = {
-          requestId,
+          queryId,
           params: <any>[],
         };
 
@@ -54,7 +54,7 @@ describe('Acceptance | request', function () {
         const server = await createServer();
         const response = await server.inject({
           method: 'POST',
-          url: '/request',
+          url: '/query',
           payload,
         });
 
@@ -69,18 +69,18 @@ describe('Acceptance | request', function () {
     });
 
     context(
-      'when "requestId" does not refer to an existing request',
+      'when "requestId" does not refer to an existing query',
       function () {
         it('should return a proper error response with status code 422', async function () {
           // given
-          const requestId = 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11';
-          const otherRequestId = 'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee';
-          await knexAPI('catalog_requests').insert({
-            id: otherRequestId,
-            request: 'SELECT COUNT(*) FROM public.data_ref_academies',
+          const queryId = 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11';
+          const otherQueryId = 'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee';
+          await knexAPI('catalog_queries').insert({
+            id: otherQueryId,
+            sql_query: 'SELECT COUNT(*) FROM public.data_ref_academies',
           });
           const payload = {
-            requestId,
+            queryId,
             params: <any>[],
           };
 
@@ -88,7 +88,7 @@ describe('Acceptance | request', function () {
           const server = await createServer();
           const response = await server.inject({
             method: 'POST',
-            url: '/request',
+            url: '/query',
             payload,
           });
 
