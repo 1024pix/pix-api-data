@@ -1,6 +1,34 @@
 import { UUID } from 'crypto';
 import { Result } from './Result.ts';
 
+export class UserCommand {
+  queryId: UUID;
+  params: UserCommandParam[];
+
+  constructor(queryId: UUID, params: UserCommandParam[]) {
+    this.queryId = queryId;
+    this.params = params;
+  }
+
+  static buildFromPayload(payload: unknown): Result<UserCommand> {
+    const { messages, validatedPayload } = validatePayload(payload);
+    if (messages.length > 0) {
+      return Result.failure(messages);
+    }
+
+    const userCommand = new UserCommand(
+      validatedPayload.queryId,
+      validatedPayload.params,
+    );
+    return Result.success(userCommand);
+  }
+}
+
+export type UserCommandParam = {
+  name: string;
+  value: string | number | boolean | string[] | number[];
+};
+
 function isValidUUID(id: unknown): id is UUID {
   if (typeof id !== 'string') return false;
   const uuidRegExp: RegExp =
@@ -37,34 +65,6 @@ function isValidArray(array: unknown): boolean {
   }
   return ['string', 'number'].includes(allTypes[0]);
 }
-
-export class UserCommand {
-  queryId: UUID;
-  params: UserCommandParam[];
-
-  constructor(queryId: UUID, params: UserCommandParam[]) {
-    this.queryId = queryId;
-    this.params = params;
-  }
-
-  static buildFromPayload(payload: unknown): Result<UserCommand> {
-    const { messages, validatedPayload } = validatePayload(payload);
-    if (messages.length > 0) {
-      return Result.failure(messages);
-    }
-
-    const userCommand = new UserCommand(
-      validatedPayload.queryId,
-      validatedPayload.params,
-    );
-    return Result.success(userCommand);
-  }
-}
-
-export type UserCommandParam = {
-  name: string;
-  value: string | number | boolean | string[] | number[];
-};
 
 function validatePayload(payload: unknown): {
   messages: string[];
