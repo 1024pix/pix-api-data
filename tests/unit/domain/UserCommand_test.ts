@@ -11,7 +11,7 @@ describe('Unit | Domain | UserCommand', function () {
       it('should return a successful CommandResult when params is an empty array', function () {
         // given
         const validPayload = {
-          requestId: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
+          queryId: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
           params: <any>[],
         };
 
@@ -31,7 +31,7 @@ describe('Unit | Domain | UserCommand', function () {
       it('should return a successful CommandResult when params is well formed', function () {
         // given
         const validPayload = {
-          requestId: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
+          queryId: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
           params: <any>[
             { name: 'stringAttribute', value: 'value' },
             { name: 'integerAttribute', value: 123 },
@@ -79,7 +79,7 @@ describe('Unit | Domain | UserCommand', function () {
       let validPayload: any;
       beforeEach(function () {
         validPayload = {
-          requestId: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
+          queryId: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
           params: <any>[],
         };
       });
@@ -125,11 +125,11 @@ describe('Unit | Domain | UserCommand', function () {
         });
       });
 
-      context('attribute "requestId"', function () {
-        it('should return a failed CommandResult when "requestId" not present', function () {
+      context('attribute "queryId"', function () {
+        it('should return a failed CommandResult when "queryId" not present', function () {
           // given
           const invalidPayload = { ...validPayload };
-          delete invalidPayload.requestId;
+          delete invalidPayload.queryId;
 
           // when
           const commandResult: Result<UserCommand> =
@@ -138,14 +138,14 @@ describe('Unit | Domain | UserCommand', function () {
           // then
           expect(commandResult.isSuccess).to.be.false;
           expect(commandResult.errorMessages).to.have.members([
-            '"requestId" is mandatory',
+            '"queryId" is mandatory',
           ]);
           expect(commandResult.resultData).to.be.null;
         });
 
-        it('should return a failed CommandResult when "requestId" is not an UUID', function () {
+        it('should return a failed CommandResult when "queryId" is not an UUID', function () {
           // given
-          const invalidPayload = { ...validPayload, requestId: 'NOT AN UUID' };
+          const invalidPayload = { ...validPayload, queryId: 'NOT AN UUID' };
 
           // when
           const commandResult: Result<UserCommand> =
@@ -154,7 +154,7 @@ describe('Unit | Domain | UserCommand', function () {
           // then
           expect(commandResult.isSuccess).to.be.false;
           expect(commandResult.errorMessages).to.have.members([
-            '"requestId" is not a valid UUID',
+            '"queryId" is not a valid UUID',
           ]);
           expect(commandResult.resultData).to.be.null;
         });

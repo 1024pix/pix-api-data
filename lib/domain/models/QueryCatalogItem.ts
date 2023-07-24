@@ -1,9 +1,9 @@
-export type RequestCatalogItem = {
+export type QueryCatalogItem = {
   query: string;
-  params: RequestParam[];
+  params: QueryParam[];
 };
 
-export type RequestParam = {
+export type QueryParam = {
   name: string;
   type: ParamType;
   mandatory: boolean;

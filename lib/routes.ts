@@ -1,3 +1,3 @@
-import * as request from './application/request/index.ts';
+import * as request from './application/query/index.ts';
 
 export const routes = [request];

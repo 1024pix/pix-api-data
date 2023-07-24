@@ -1,18 +1,18 @@
 ### Valid command
-POST http://localhost:3000/request
+POST http://localhost:3000/query
 Content-Type: application/json
 
 {
-  "requestId": "1b7291d4-ac51-46d2-97f1-f5f304100a29",
+  "queryId": "1b7291d4-ac51-46d2-97f1-f5f304100a29",
   "params": []
 }
 
-### Invalid command because requestId
-POST http://localhost:3000/request
+### Invalid command because queryId
+POST http://localhost:3000/query
 Content-Type: application/json
 
 {
-  "requestId": "BLABLA",
+  "queryId": "BLABLA",
   "params": [
     {
       "name": "organizationId",
@@ -26,11 +26,11 @@ Content-Type: application/json
 }
 
 ### Invalid command because params
-POST http://localhost:3000/request
+POST http://localhost:3000/query
 Content-Type: application/json
 
 {
-  "requestId": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+  "queryId": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
   "params": [
     {
       "name": "organizationId",
