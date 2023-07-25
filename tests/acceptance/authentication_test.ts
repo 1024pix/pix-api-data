@@ -1,6 +1,4 @@
-import { expect } from 'chai';
-import { createServer } from '../../lib/server.ts';
-import { knexAPI } from '../../lib/common/db/knex-database-connections.js';
+import { expect, createServer, knexAPI } from '../test-helper.ts';
 import { encryptionService } from '../../lib/infrastructure/utils/EncryptionService.ts';
 
 describe('Acceptance | authentication', function () {

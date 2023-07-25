@@ -1,4 +1,4 @@
-import { expect } from 'chai';
+import { expect } from '../../../test-helper.ts';
 import { AuthenticationCommand } from '../../../../lib/domain/commands/AuthenticationCommand.ts';
 import { Result } from '../../../../lib/domain/models/Result.ts';
 
