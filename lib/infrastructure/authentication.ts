@@ -7,7 +7,7 @@ import { knexAPI } from '../common/db/knex-database-connections.js';
 async function _checkIsAuthenticated(
   request: Request,
   h: ResponseToolkit,
-  { validate }: { validate: Function },
+  { validate }: { validate: (userId: UUID) => Promise<boolean> },
 ) {
   const accessToken = jsonWebTokenService.extractTokenFromHeader(request);
   if (!accessToken) {
@@ -41,7 +41,10 @@ async function checkUserExists(userId: UUID): Promise<boolean> {
 const authentication = {
   schemeName: 'jwt-scheme',
 
-  scheme(_: unknown, { validate }: { validate: Function }) {
+  scheme(
+    _: unknown,
+    { validate }: { validate: (userId: UUID) => Promise<boolean> },
+  ) {
     return {
       authenticate: (request: Request, h: ResponseToolkit) =>
         _checkIsAuthenticated(request, h, { validate }),

@@ -33,7 +33,7 @@ class AuthenticateUserUsecaseImpl implements AuthenticateUserUsecase {
   async authenticateUser(
     authenticationCommand: AuthenticationCommand,
   ): Promise<Result<string>> {
-    const user: User = await userRepository.findByName(
+    const user: User = await this.userRepository.findByName(
       authenticationCommand.username,
     );
     if (!user) {
@@ -46,7 +46,9 @@ class AuthenticateUserUsecaseImpl implements AuthenticateUserUsecase {
     if (!arePasswordIdentical) {
       return Result.failure(['cannot authenticate user']);
     }
-    return Result.success(this.jsonWebTokenService.generateToken(user.id));
+    return Result.success(
+      await this.jsonWebTokenService.generateToken(user.id),
+    );
   }
 }
 

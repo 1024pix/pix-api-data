@@ -19,5 +19,4 @@
     "files": true,
   },
   "include": ["**/*.ts", "**/*.js" ],
-  "exclude": ["tests/**"],
 }

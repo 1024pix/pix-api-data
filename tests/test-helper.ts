@@ -1,4 +1,8 @@
-import { expect } from 'chai';
+import chai from 'chai';
+const expect = chai.expect;
+import * as sinon from 'sinon';
+import sinonChai from 'sinon-chai';
+chai.use(sinonChai);
 import { UUID } from 'crypto';
 import { createServer } from '../lib/server.ts';
 import { knexAPI } from '../lib/common/db/knex-database-connections.js';
@@ -16,4 +20,5 @@ export {
   expect,
   generateValidRequestAuthorizationHeader,
   knexAPI,
+  sinon,
 };
