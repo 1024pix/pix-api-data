@@ -15,7 +15,7 @@ export class APIResponse<TYPE_DATA> {
   ) {
     this.status = status;
     this.data = data;
-    this.messages = messages || null;
+    this.messages = messages;
   }
 
   static success<TYPE_DATA>(data: TYPE_DATA[]): APIResponse<TYPE_DATA> {
