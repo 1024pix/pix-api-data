@@ -1,4 +1,4 @@
-import { expect } from 'chai';
+import { expect } from '../../../test-helper.ts';
 import {
   UserCommand,
   UserCommandParam,

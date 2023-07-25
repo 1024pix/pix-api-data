@@ -7,7 +7,7 @@
     "moduleResolution": "NodeNext",
     "lib": ["es6", "es2017"],
     "outDir": "build",
-    "rootDir": "lib",
+    "rootDir": "/",
     "noImplicitAny": true,
     "esModuleInterop": true,
     "allowJs": true,
@@ -18,5 +18,6 @@
   "ts-node": {
     "files": true,
   },
-  "include": ["**/*.ts", "**/*.js" ]
+  "include": ["**/*.ts", "**/*.js" ],
+  "exclude": ["tests/**"],
 }

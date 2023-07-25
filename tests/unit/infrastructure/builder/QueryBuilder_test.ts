@@ -1,4 +1,4 @@
-import { expect } from 'chai';
+import { expect } from '../../../test-helper.ts';
 import { QueryBuilder } from '../../../../lib/infrastructure/builder/QueryBuilder.ts';
 import { DatamartQueryModel } from '../../../../lib/domain/models/DatamartQuery.ts';
 import { ParamType } from '../../../../lib/domain/models/QueryCatalogItem.ts';
@@ -57,8 +57,7 @@ describe('Unit | Query builder', function () {
     it('with every parameter type params', function () {
       // given
       const datamartQueryModel = new DatamartQueryModel({
-        query:
-          'select * from table_exemple where id = any({{ paramIntArray }}) and date = {{ paramDate }} and floatParam = any({{ paramFloatArray }}) and paramString = any({{ paramStringArray }}) and univers = {{ paramBoolean }}',
+        query: 'select * from table_exemple where id = any({{ paramIntArray }}) and date = {{ paramDate }} and floatParam = any({{ paramFloatArray }}) and paramString = any({{ paramStringArray }}) and univers = {{ paramBoolean }}',
         paramValues: [
           {
             name: 'paramIntArray',

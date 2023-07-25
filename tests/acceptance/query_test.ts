@@ -1,9 +1,26 @@
-import { expect } from 'chai';
-import { createServer } from '../../lib/server.ts';
-import { knexAPI } from '../../lib/common/db/knex-database-connections.js';
+import {
+  expect,
+  createServer,
+  knexAPI,
+  generateValidRequestAuthorizationHeader,
+} from '../test-helper.ts';
 
 describe('Acceptance | query', function () {
+  let headers: string;
+
+  beforeEach(async function () {
+    const userId = 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11';
+    await knexAPI('users').insert({
+      id: userId,
+      username: 'gigi_lamoroso',
+      label: "Gigi l'amoroso",
+      password: 'coucou',
+    });
+    headers = await generateValidRequestAuthorizationHeader(userId);
+  });
+
   afterEach(async function () {
+    await knexAPI('users').delete();
     await knexAPI('catalog_queries').delete();
   });
 
@@ -21,6 +38,7 @@ describe('Acceptance | query', function () {
         method: 'POST',
         url: '/query',
         payload,
+        headers: { authorization: headers },
       });
 
       // then
@@ -55,6 +73,7 @@ describe('Acceptance | query', function () {
           method: 'POST',
           url: '/query',
           payload,
+          headers: { authorization: headers },
         });
 
         // then
@@ -89,6 +108,7 @@ describe('Acceptance | query', function () {
             method: 'POST',
             url: '/query',
             payload,
+            headers: { authorization: headers },
           });
 
           // then

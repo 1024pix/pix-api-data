@@ -7,6 +7,9 @@ Content-Type: application/json
   "password": "LeMotDePasseQueL'UtilisateurUtiliseraitDeSonPointDeVue"
 }
 
+### Environment: ACCESS_TOKEN=${response.body.data}
+
+
 ### Invalid command because username -> 400
 POST http://localhost:3000/token
 Content-Type: application/json
