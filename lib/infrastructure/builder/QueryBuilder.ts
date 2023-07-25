@@ -3,10 +3,15 @@ import {
   MATCHING_PARAM_BLOCK_REGEXP,
   PARAM_NAME_REGEXP,
 } from '../../domain/models/DatamartQuery.ts';
-import { UserCommandParam } from '../../domain/models/UserCommand.ts';
-import { ParamType } from '../../domain/models/QueryCatalogItem.ts';
 
 const REMOVE_OPTIONAL_CHAR_REGEXP = /\[{2}((.|\n|\r)*)]{2}/;
+type KnexParams = {
+  [key: string]: string | number | boolean | string[] | number[];
+};
+type KnexQuery = {
+  query: string;
+  params: KnexParams;
+};
 
 export class QueryBuilder {
   queryInputOneLine: string;
@@ -15,48 +20,34 @@ export class QueryBuilder {
     this.queryInputOneLine = datamartRequestModel.query;
   }
 
-  build(): string {
+  build(): KnexQuery {
     const queryWithoutSomeOptional = this.manageOptionals(
       this.queryInputOneLine,
     );
-    return this.injectValues(queryWithoutSomeOptional);
+
+    return {
+      query: this.buildQuery(queryWithoutSomeOptional),
+      params: this.buildParams(),
+    } as KnexQuery;
   }
 
-  private injectValues(query: string): string {
+  private buildQuery(query: string): string {
     let queryResult = query;
     this.datamartRequestModel.paramValues.forEach((paramValue) => {
       queryResult = queryResult.replace(
         `{{ ${paramValue.name} }}`,
-        this.buildValue(paramValue),
+        `:${paramValue.name}`,
       );
     });
     return queryResult;
   }
 
-  private buildValue(paramValue: UserCommandParam): string {
-    const paramDefinition = this.datamartRequestModel.paramDefinitions.find(
-      (paramDefinition) => paramDefinition.name === paramValue.name,
-    );
-
-    // TODO sanitize ?
-    switch (paramDefinition.type) {
-      case ParamType.STRING:
-      case ParamType.DATE:
-        return `'${paramValue.value}'`;
-      case ParamType.STRING_ARRAY:
-        return (paramValue.value as Array<string>)
-          .map((value) => `'${value}'`)
-          .join(', ')
-          .trim();
-      case ParamType.INT_ARRAY:
-      case ParamType.FLOAT_ARRAY:
-        return (paramValue.value as Array<number>).join(', ').trim();
-      default:
-        // case ParamType.BOOLEAN:
-        // case ParamType.INT:
-        // case ParamType.FLOAT:
-        return `${paramValue.value}`;
-    }
+  private buildParams(): KnexParams {
+    const params: KnexParams = {};
+    this.datamartRequestModel.paramValues.forEach((userCommandParam) => {
+      params[userCommandParam.name] = userCommandParam.value;
+    });
+    return params;
   }
 
   private manageOptionals(query: string): string {
