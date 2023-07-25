@@ -13,7 +13,7 @@ import { QueryCatalogItem } from '../models/QueryCatalogItem.ts';
 import { Result } from '../models/Result.ts';
 
 export interface ExecuteQueryUseCase {
-  executeQuery(_userCommand: UserCommand): Promise<Result<DatamartResponse>>;
+  executeQuery(_userCommand: UserCommand): Promise<Result<string>>;
 }
 class ExecuteQueryUseCaseImpl implements ExecuteQueryUseCase {
   constructor(
@@ -24,9 +24,7 @@ class ExecuteQueryUseCaseImpl implements ExecuteQueryUseCase {
     this.catalogQueryRepository = catalogQueryRepository;
   }
 
-  async executeQuery(
-    userCommand: UserCommand,
-  ): Promise<Result<DatamartResponse>> {
+  async executeQuery(userCommand: UserCommand): Promise<Result<string>> {
     const queryCatalogItem: QueryCatalogItem =
       await this.catalogQueryRepository.find(userCommand.queryId);
     if (!queryCatalogItem.query) {
@@ -44,7 +42,7 @@ class ExecuteQueryUseCaseImpl implements ExecuteQueryUseCase {
     const datamartResponse = await this.datamartRepository.find(
       datamartQueryModel,
     );
-    return Result.success(datamartResponse);
+    return Result.success(datamartResponse.result);
   }
 }
 

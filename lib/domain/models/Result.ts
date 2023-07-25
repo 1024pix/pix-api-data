@@ -1,27 +1,27 @@
 export class Result<ResultData> {
   isSuccess: boolean;
   errorMessages: string[];
-  resultData?: ResultData;
+  resultData: ResultData;
 
   constructor(
     isSuccess: boolean,
     errorMessages: string[],
-    resultData: ResultData,
+    resultData?: ResultData,
   ) {
     this.isSuccess = isSuccess;
     this.errorMessages = errorMessages;
-    this.resultData = resultData;
+    this.resultData = resultData || null;
   }
 
   get isFailure() {
     return !this.isSuccess;
   }
 
-  static success(resultData: any) {
-    return new Result(true, [], resultData);
+  static success<ResultData>(resultData: ResultData): Result<ResultData> {
+    return new Result<ResultData>(true, [], resultData);
   }
 
-  static failure(errorMessages: string[]) {
-    return new Result(false, errorMessages, null);
+  static failure(errorMessages: string[]): Result<never> {
+    return new Result<never>(false, errorMessages);
   }
 }

@@ -1,11 +1,13 @@
-import { Request, ResponseToolkit } from '@hapi/hapi';
+import { Request, ResponseObject, ResponseToolkit } from '@hapi/hapi';
 import { UserCommand } from '../../domain/models/UserCommand.ts';
 import { Result } from '../../domain/models/Result.ts';
 import { executeQueryUseCase } from '../../domain/usecases/ExecuteQueryUsecase.ts';
 import { APIResponse } from '../APIResponse.ts';
-import { DatamartResponse } from '../../domain/models/DatamartResponse.ts';
 
-export async function execute(clientRequest: Request, h: ResponseToolkit) {
+export async function execute(
+  clientRequest: Request,
+  h: ResponseToolkit,
+): Promise<ResponseObject> {
   const userCommandValidationResult: Result<UserCommand> =
     UserCommand.buildFromPayload(clientRequest.payload);
   if (userCommandValidationResult.isFailure) {
@@ -14,10 +16,9 @@ export async function execute(clientRequest: Request, h: ResponseToolkit) {
       .code(400);
   }
 
-  const queryExecutionResult: Result<DatamartResponse> =
-    await executeQueryUseCase.executeQuery(
-      userCommandValidationResult.resultData,
-    );
+  const queryExecutionResult = await executeQueryUseCase.executeQuery(
+    userCommandValidationResult.resultData,
+  );
   if (queryExecutionResult.isFailure) {
     return h
       .response(APIResponse.failure(queryExecutionResult.errorMessages))
