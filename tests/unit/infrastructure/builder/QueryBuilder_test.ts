@@ -19,7 +19,10 @@ describe('Unit | Query builder', function () {
       const queryResult = queryBuilder.build();
 
       // then
-      expect(queryResult).to.equal('select * from table_exemple\nwhere id = 1');
+      expect(queryResult).to.deep.equal({
+        query: 'select * from table_exemple\nwhere id = 1',
+        params: {},
+      });
     });
     it('it should return a query with mandatory param', function () {
       // given
@@ -46,154 +49,83 @@ describe('Unit | Query builder', function () {
       const queryResult = queryBuilder.build();
 
       // then
-      expect(queryResult).to.equal(
-        "select * from table_exemple where id = 'valeur à injecter'",
-      );
+      expect(queryResult).to.deep.equal({
+        query: 'select * from table_exemple where id = :injectString',
+        params: { injectString: 'valeur à injecter' },
+      });
     });
-    it('with param array int', function () {
+    it('with every parameter type params', function () {
       // given
       const datamartQueryModel = new DatamartQueryModel({
-        query: 'select * from table_exemple where id in ({{ param }})',
+        query:
+          'select * from table_exemple where id = any({{ paramIntArray }}) and date = {{ paramDate }} and floatParam = any({{ paramFloatArray }}) and paramString = any({{ paramStringArray }}) and univers = {{ paramBoolean }}',
         paramValues: [
           {
-            name: 'param',
+            name: 'paramIntArray',
             value: [1, 2],
           },
-        ],
-        paramDefinitions: [
           {
-            name: 'param',
-            type: ParamType.INT_ARRAY,
-            mandatory: true,
-          },
-        ],
-      });
-
-      const queryBuilder = new QueryBuilder(datamartQueryModel);
-
-      // when
-      const queryResult = queryBuilder.build();
-
-      // then
-      expect(queryResult).to.equal(
-        'select * from table_exemple where id in (1, 2)',
-      );
-    });
-    it('with param date', function () {
-      // given
-      const datamartQueryModel = new DatamartQueryModel({
-        query: 'select * from table_exemple where status = {{ param }}',
-        paramValues: [
-          {
-            name: 'param',
+            name: 'paramDate',
             value: '2013-07-21 15:18:34',
           },
-        ],
-        paramDefinitions: [
           {
-            name: 'param',
-            type: ParamType.DATE,
-            mandatory: true,
-          },
-        ],
-      });
-
-      const queryBuilder = new QueryBuilder(datamartQueryModel);
-
-      // when
-      const queryResult = queryBuilder.build();
-
-      // then
-      expect(queryResult).to.equal(
-        "select * from table_exemple where status = '2013-07-21 15:18:34'",
-      );
-    });
-    it('with param array float', function () {
-      // given
-      const datamartQueryModel = new DatamartQueryModel({
-        query: 'select * from table_exemple where id in ({{ param }})',
-        paramValues: [
-          {
-            name: 'param',
+            name: 'paramFloatArray',
             value: [1.2, 2],
           },
-        ],
-        paramDefinitions: [
           {
-            name: 'param',
-            type: ParamType.FLOAT_ARRAY,
-            mandatory: true,
-          },
-        ],
-      });
-
-      const queryBuilder = new QueryBuilder(datamartQueryModel);
-
-      // when
-      const queryResult = queryBuilder.build();
-
-      // then
-      expect(queryResult).to.equal(
-        'select * from table_exemple where id in (1.2, 2)',
-      );
-    });
-    it('with param array string', function () {
-      // given
-      const datamartQueryModel = new DatamartQueryModel({
-        query: 'select * from table_exemple where id in ({{ param }})',
-        paramValues: [
-          {
-            name: 'param',
+            name: 'paramStringArray',
             value: ['value1', 'value2'],
           },
-        ],
-        paramDefinitions: [
           {
-            name: 'param',
-            type: ParamType.STRING_ARRAY,
-            mandatory: true,
-          },
-        ],
-      });
-
-      const queryBuilder = new QueryBuilder(datamartQueryModel);
-
-      // when
-      const queryResult = queryBuilder.build();
-
-      // then
-      expect(queryResult).to.equal(
-        "select * from table_exemple where id in ('value1', 'value2')",
-      );
-    });
-    it('with param array boolean', function () {
-      // given
-      const datamartQueryModel = new DatamartQueryModel({
-        query: 'select * from table_exemple where status = {{ param }}',
-        paramValues: [
-          {
-            name: 'param',
+            name: 'paramBoolean',
             value: true,
           },
         ],
         paramDefinitions: [
           {
-            name: 'param',
+            name: 'paramIntArray',
+            type: ParamType.INT_ARRAY,
+            mandatory: true,
+          },
+          {
+            name: 'paramDate',
+            type: ParamType.DATE,
+            mandatory: true,
+          },
+          {
+            name: 'paramFloatArray',
+            type: ParamType.FLOAT_ARRAY,
+            mandatory: true,
+          },
+          {
+            name: 'paramStringArray',
+            type: ParamType.STRING_ARRAY,
+            mandatory: true,
+          },
+          {
+            name: 'paramBoolean',
             type: ParamType.BOOLEAN,
             mandatory: true,
           },
         ],
       });
-
       const queryBuilder = new QueryBuilder(datamartQueryModel);
 
       // when
       const queryResult = queryBuilder.build();
 
       // then
-      expect(queryResult).to.equal(
-        'select * from table_exemple where status = true',
-      );
+      expect(queryResult).to.deep.equal({
+        query:
+          'select * from table_exemple where id = any(:paramIntArray) and date = :paramDate and floatParam = any(:paramFloatArray) and paramString = any(:paramStringArray) and univers = :paramBoolean',
+        params: {
+          paramIntArray: [1, 2],
+          paramDate: '2013-07-21 15:18:34',
+          paramFloatArray: [1.2, 2],
+          paramStringArray: ['value1', 'value2'],
+          paramBoolean: true,
+        },
+      });
     });
   });
   context('query with optional block definition', function () {
@@ -212,7 +144,10 @@ describe('Unit | Query builder', function () {
       const queryResult = queryBuilder.build();
 
       // then
-      expect(queryResult).to.equal('select * from table_exemple where id = 1');
+      expect(queryResult).to.deep.equal({
+        query: 'select * from table_exemple where id = 1',
+        params: {},
+      });
     });
     it('it should return a query with one optional block', function () {
       // given
@@ -240,9 +175,11 @@ describe('Unit | Query builder', function () {
       const queryResult = queryBuilder.build();
 
       // then
-      expect(queryResult).to.equal(
-        "select * from table_exemple where id = 1  AND optional = 'valeur à injecter'",
-      );
+      expect(queryResult).to.deep.equal({
+        query:
+          'select * from table_exemple where id = 1  AND optional = :optionalParam',
+        params: { optionalParam: 'valeur à injecter' },
+      });
     });
     it('it should return query with only one optional block of two', function () {
       // given
@@ -275,9 +212,11 @@ describe('Unit | Query builder', function () {
       const queryResult = queryBuilder.build();
 
       // then
-      expect(queryResult).to.equal(
-        "select * from table_exemple where id = 1 \n\n  AND optional2 = 'valeur à injecter2'",
-      );
+      expect(queryResult).to.deep.equal({
+        query:
+          'select * from table_exemple where id = 1 \n\n  AND optional2 = :optionalParam2',
+        params: { optionalParam2: 'valeur à injecter2' },
+      });
     });
     it('it should return good query when have some optional block', function () {
       // given
@@ -314,9 +253,14 @@ describe('Unit | Query builder', function () {
       const queryResult = queryBuilder.build();
 
       // then
-      expect(queryResult).to.equal(
-        "select * from table_exemple where id = 1 \n AND optional \n= 'valeur à injecter' \n  AND optional2 = 'valeur à injecter2'",
-      );
+      expect(queryResult).to.deep.equal({
+        query:
+          'select * from table_exemple where id = 1 \n AND optional \n= :optionalParam \n  AND optional2 = :optionalParam2',
+        params: {
+          optionalParam: 'valeur à injecter',
+          optionalParam2: 'valeur à injecter2',
+        },
+      });
     });
   });
 });
