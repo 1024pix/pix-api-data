@@ -1,13 +1,10 @@
 import { routes } from './routes.ts';
-import Hapi, { Server } from '@hapi/hapi';
-import { ServerOptions } from '@hapi/hapi/lib/types/server/options.js';
-import { plugins } from './infrastructure/plugins/index.js';
+import Hapi, { Server, ServerOptions } from '@hapi/hapi';
+import { plugins } from './common/logger/plugins/plugins.ts';
 
 const createServer = async (): Promise<Server> => {
   const server = createBareServer();
-
   await setupRoutesAndPlugins(server);
-
   return server;
 };
 
