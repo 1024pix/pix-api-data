@@ -7,6 +7,20 @@ Content-Type: application/json
   "params": []
 }
 
+### Valid command -> 200
+POST http://localhost:3000/query
+Content-Type: application/json
+
+{
+  "queryId": "b1e20492-8775-47f3-926d-3729ee2b836d",
+  "params": [
+    {
+      "name": "id_list",
+      "value": [1, 10, 20, 30]
+    }
+  ]
+}
+
 ### Invalid command because queryId -> 400
 POST http://localhost:3000/query
 Content-Type: application/json

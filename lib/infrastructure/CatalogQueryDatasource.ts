@@ -9,13 +9,22 @@ export interface CatalogQueryRepository {
 class CatalogQueryRepositoryImpl implements CatalogQueryRepository {
   async find(queryId: UUID): Promise<QueryCatalogItem> {
     try {
-      const result = await knexAPI('catalog_queries')
+      const catalogQueryDTO = await knexAPI('catalog_queries')
         .select(['sql_query'])
         .where('id', queryId)
         .first();
+      const catalogQueryParamsDTO = await knexAPI('catalog_query_params')
+        .select(['name', 'type', 'mandatory'])
+        .where('catalog_query_id', queryId);
       return {
-        query: result?.['sql_query'],
-        params: [],
+        query: catalogQueryDTO?.['sql_query'],
+        params: catalogQueryParamsDTO.map(
+          (paramDTO: { name: string; type: string; mandatory: boolean }) => ({
+            name: paramDTO.name,
+            type: paramDTO.type,
+            mandatory: paramDTO.mandatory,
+          }),
+        ),
       };
     } catch (e) {
       logger.error(`Error when fetching query for id : ${queryId}`, e);

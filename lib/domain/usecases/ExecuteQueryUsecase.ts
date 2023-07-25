@@ -27,17 +27,16 @@ class ExecuteQueryUseCaseImpl implements ExecuteQueryUseCase {
   async executeQuery(
     userCommand: UserCommand,
   ): Promise<Result<DatamartResponse>> {
-    const query: QueryCatalogItem = await this.catalogQueryRepository.find(
-      userCommand.queryId,
-    );
-    if (!query.query) {
+    const queryCatalogItem: QueryCatalogItem =
+      await this.catalogQueryRepository.find(userCommand.queryId);
+    if (!queryCatalogItem.query) {
       return Result.failure(['cannot run requested query']);
     }
 
     const datamartQueryModel = new DatamartQueryModel({
-      query: query.query,
+      query: queryCatalogItem.query,
       paramValues: userCommand.params,
-      paramDefinitions: query.params,
+      paramDefinitions: queryCatalogItem.params,
     });
     if (!datamartQueryModel.isValid()) {
       return Result.failure(['cannot run requested query']);
