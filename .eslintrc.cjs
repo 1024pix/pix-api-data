@@ -29,7 +29,6 @@ module.exports = {
     'no-console': 'error',
     'mocha/no-hooks-for-single-case': 'off',
     'no-sync': 'error',
-    'knex/avoid-injections': 'error',
     'mocha/no-exclusive-tests': 'error',
     'mocha/no-pending-tests': 'error',
     'mocha/no-skipped-tests': 'error',

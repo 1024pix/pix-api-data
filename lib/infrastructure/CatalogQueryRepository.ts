@@ -1,7 +1,10 @@
 import { UUID } from 'crypto';
 import { knexAPI } from '../common/db/knex-database-connections.js';
 import { logger } from '../common/logger/logger.js';
-import { QueryCatalogItem } from '../domain/models/QueryCatalogItem.ts';
+import {
+  QueryCatalogItem,
+  QueryParam,
+} from '../domain/models/QueryCatalogItem.ts';
 
 export interface CatalogQueryRepository {
   find(_requestId: UUID): Promise<QueryCatalogItem>;
@@ -19,11 +22,12 @@ class CatalogQueryRepositoryImpl implements CatalogQueryRepository {
       return {
         query: catalogQueryDTO?.['sql_query'],
         params: catalogQueryParamsDTO.map(
-          (paramDTO: { name: string; type: string; mandatory: boolean }) => ({
-            name: paramDTO.name,
-            type: paramDTO.type,
-            mandatory: paramDTO.mandatory,
-          }),
+          (paramDTO: { name: string; type: string; mandatory: boolean }) =>
+            ({
+              name: paramDTO.name,
+              type: paramDTO.type,
+              mandatory: paramDTO.mandatory,
+            } as QueryParam),
         ),
       };
     } catch (e) {

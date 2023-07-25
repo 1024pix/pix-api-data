@@ -14,7 +14,6 @@ class DatamartRepositoryImpl implements DatamartRepository {
     const queryBuilder = new QueryBuilder(datamartQueryModel);
     try {
       const knexQuery = queryBuilder.build();
-      // eslint-disable-next-line knex/avoid-injections
       const result = await knexDatamart.raw(knexQuery.query, knexQuery.params);
       return {
         result: result['rows'],
