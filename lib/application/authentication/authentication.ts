@@ -17,15 +17,17 @@ export async function authenticate(clientRequest: Request, h: ResponseToolkit) {
       .code(400);
   }
 
-  const userAuthenticationResult: Result<string> =
+  const userAuthenticationResult =
     await authenticateUserUsecase.authenticateUser(
       authenticationCommandValidationResult.resultData,
     );
   if (userAuthenticationResult.isFailure) {
     return h
       .response(APIResponse.failure(userAuthenticationResult.errorMessages))
-      .code(422);
+      .code(401);
   }
 
-  return h.response(APIResponse.success([userAuthenticationResult.resultData]));
+  return h.response(
+    APIResponse.authenticationSuccess(userAuthenticationResult.resultData),
+  );
 }

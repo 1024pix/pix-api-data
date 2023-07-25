@@ -1,4 +1,3 @@
-// @ts-ignore
 import bcrypt from 'bcrypt';
 import { config } from '../../common/config.js';
 

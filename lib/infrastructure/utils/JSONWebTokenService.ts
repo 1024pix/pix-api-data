@@ -1,9 +1,11 @@
-// @ts-ignore
 import { UUID } from 'crypto';
 import { config } from '../../common/config.js';
 import { Request } from '@hapi/hapi';
-// @ts-ignore
 import jsonwebtoken from 'jsonwebtoken';
+
+export type AuthenticationToken = {
+  user_id: UUID;
+};
 
 export interface JSONWebTokenService {
   generateToken(_userId: UUID): Promise<string>;
@@ -12,7 +14,7 @@ export interface JSONWebTokenService {
 }
 
 class JSONWebTokenImpl implements JSONWebTokenService {
-  generateToken(userId: UUID): Promise<string> {
+  async generateToken(userId: UUID): Promise<string> {
     return jsonwebtoken.sign(
       { user_id: userId },
       config.authentication.secret,
@@ -31,13 +33,13 @@ class JSONWebTokenImpl implements JSONWebTokenService {
     return authorizationHeader.replace('Bearer ', '');
   }
 
-  getDecodedToken(token: string): { user_id: UUID } {
+  getDecodedToken(token: string): AuthenticationToken {
     try {
-      const { user_id } = jsonwebtoken.verify(
+      const decodedToken = jsonwebtoken.verify(
         token,
         config.authentication.secret,
-      );
-      return { user_id };
+      ) as { user_id: UUID };
+      return { user_id: decodedToken.user_id } as AuthenticationToken;
     } catch (err) {
       return null;
     }
