@@ -1,19 +1,20 @@
-import { logger } from '../../common/logger/logger.js';
+import { logger } from '../logger.js';
+import { Server, Plugin } from '@hapi/hapi';
 
-const plugin = {
+const plugin: Plugin<any> = {
   name: 'hapi-pino',
-  register: async function (server, options) {
+  register: async function (server: Server, options: any): Promise<void> {
     const logger = options.instance;
 
-    server.ext('onPostStart', async function () {
+    server.ext('onPostStart', async function (): Promise<any> {
       logger.info(server.info, 'server started');
     });
 
-    server.ext('onPostStop', async function () {
+    server.ext('onPostStop', async function (): Promise<void> {
       logger.info(server.info, 'server stopped');
     });
 
-    server.events.on('log', function (event) {
+    server.events.on('log', function (event): void {
       logger.info({ tags: event.tags, data: event.data });
     });
 

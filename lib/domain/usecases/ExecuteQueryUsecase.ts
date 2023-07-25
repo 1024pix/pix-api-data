@@ -5,7 +5,7 @@ import {
 import {
   catalogQueryRepository,
   CatalogQueryRepository,
-} from '../../infrastructure/CatalogQueryDatasource.ts';
+} from '../../infrastructure/CatalogQueryRepository.ts';
 import { DatamartResponse } from '../models/DatamartResponse.ts';
 import { DatamartQueryModel } from '../models/DatamartQuery.ts';
 import { UserCommand } from '../models/UserCommand.ts';
