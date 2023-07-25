@@ -27,7 +27,6 @@ describe('Acceptance | query', function () {
       expect(response.statusCode).to.equal(400);
       expect(JSON.parse(response.payload)).to.deep.equal({
         status: 'failure',
-        data: [],
         messages: [
           'unknown attribute: "queryIdddddddd"',
           '"queryId" is mandatory',
@@ -96,7 +95,6 @@ describe('Acceptance | query', function () {
           expect(response.statusCode).to.equal(422);
           expect(JSON.parse(response.payload)).to.deep.equal({
             status: 'failure',
-            data: [],
             messages: ['cannot run requested query'],
           });
         });
