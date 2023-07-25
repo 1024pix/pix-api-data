@@ -25,5 +25,7 @@ export async function execute(
       .code(422);
   }
 
-  return h.response(APIResponse.success([queryExecutionResult.resultData]));
+  return h.response(
+    APIResponse.success(queryExecutionResult.resultData.result),
+  );
 }

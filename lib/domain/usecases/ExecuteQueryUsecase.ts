@@ -6,14 +6,14 @@ import {
   catalogQueryRepository,
   CatalogQueryRepository,
 } from '../../infrastructure/CatalogQueryRepository.ts';
-import { DatamartResponse } from '../models/DatamartResponse.ts';
 import { DatamartQueryModel } from '../models/DatamartQuery.ts';
 import { UserCommand } from '../models/UserCommand.ts';
 import { QueryCatalogItem } from '../models/QueryCatalogItem.ts';
 import { Result } from '../models/Result.ts';
+import { DatamartResponse } from '../models/DatamartResponse.ts';
 
 export interface ExecuteQueryUseCase {
-  executeQuery(_userCommand: UserCommand): Promise<Result<string>>;
+  executeQuery(_userCommand: UserCommand): Promise<Result<DatamartResponse>>;
 }
 class ExecuteQueryUseCaseImpl implements ExecuteQueryUseCase {
   constructor(
@@ -24,7 +24,9 @@ class ExecuteQueryUseCaseImpl implements ExecuteQueryUseCase {
     this.catalogQueryRepository = catalogQueryRepository;
   }
 
-  async executeQuery(userCommand: UserCommand): Promise<Result<string>> {
+  async executeQuery(
+    userCommand: UserCommand,
+  ): Promise<Result<DatamartResponse>> {
     const queryCatalogItem: QueryCatalogItem =
       await this.catalogQueryRepository.find(userCommand.queryId);
     if (!queryCatalogItem.query) {
@@ -42,7 +44,7 @@ class ExecuteQueryUseCaseImpl implements ExecuteQueryUseCase {
     const datamartResponse = await this.datamartRepository.find(
       datamartQueryModel,
     );
-    return Result.success(datamartResponse.result);
+    return Result.success(datamartResponse);
   }
 }
 

@@ -1,3 +1,3 @@
 export type DatamartResponse = {
-  result: string;
+  result: object[];
 };

@@ -1,12 +1,12 @@
-export class Result<ResultData> {
+export class Result<RESULT_DATA> {
   isSuccess: boolean;
   errorMessages: string[];
-  resultData: ResultData;
+  resultData: RESULT_DATA;
 
   constructor(
     isSuccess: boolean,
     errorMessages: string[],
-    resultData?: ResultData,
+    resultData?: RESULT_DATA,
   ) {
     this.isSuccess = isSuccess;
     this.errorMessages = errorMessages;
@@ -17,8 +17,8 @@ export class Result<ResultData> {
     return !this.isSuccess;
   }
 
-  static success<ResultData>(resultData: ResultData): Result<ResultData> {
-    return new Result<ResultData>(true, [], resultData);
+  static success<RESULT_DATA>(resultData: RESULT_DATA): Result<RESULT_DATA> {
+    return new Result<RESULT_DATA>(true, [], resultData);
   }
 
   static failure(errorMessages: string[]): Result<never> {

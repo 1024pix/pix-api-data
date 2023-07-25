@@ -61,7 +61,7 @@ describe('Acceptance | query', function () {
         expect(response.statusCode).to.equal(200);
         expect(JSON.parse(response.payload)).to.deep.equal({
           status: 'success',
-          data: [[{ count: 33 }]],
+          data: [{ count: 33 }],
           messages: [],
         });
       });
