@@ -11,7 +11,7 @@ class UserRepositoryImpl implements UserRepository {
       .where('username', name)
       .first();
     if (!result) return null;
-    return new User(result.id, result.username, result.password);
+    return new User(result.id, result.username, result.hashed_password);
   }
 }
 

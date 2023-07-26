@@ -1,7 +1,7 @@
 import {
   userRepository,
   UserRepository,
-} from '../../infrastructure/UserDatasource.ts';
+} from '../../infrastructure/UserRepository.ts';
 import {
   encryptionService,
   EncryptionService,

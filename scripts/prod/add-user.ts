@@ -33,7 +33,7 @@ const addUser = async (user: User): Promise<void> => {
       .insert({
         username: user.username,
         label: user.label,
-        password: hashedPassword,
+        hashed_password: hashedPassword,
       })
       .returning(['username', 'label', 'id']);
     logger.info(
