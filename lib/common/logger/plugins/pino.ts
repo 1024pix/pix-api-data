@@ -1,4 +1,4 @@
-import { logger } from '../logger.js';
+import { logger } from '../Logger.ts';
 import { Server, Plugin } from '@hapi/hapi';
 
 const plugin: Plugin<any> = {

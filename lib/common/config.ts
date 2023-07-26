@@ -3,23 +3,38 @@ import ms from 'ms';
 
 dotenv.config();
 
-function _getLogForHumans() {
+function _getLogForHumans(): boolean {
   const processOutputingToTerminal = process.stdout.isTTY;
   const forceJSONLogs = process.env.LOG_FOR_HUMANS === 'false';
   return processOutputingToTerminal && !forceJSONLogs;
 }
 
-function isFeatureEnabled(environmentVariable) {
+function isFeatureEnabled(environmentVariable: string): boolean {
   return environmentVariable === 'true';
 }
+export type Logging = {
+  enabled: boolean;
+  logLevel: string;
+  logForHumans: boolean;
+};
+export type Authentication = {
+  accessTokenLifespanMS: number;
+  secret: string;
+  bcryptNumberOfSaltRounds: number;
+};
+export type Config = {
+  environment: string;
+  logging: Logging;
+  authentication: Authentication;
+};
 
-function _getNumber(numberAsString, defaultValue) {
+function _getNumber(numberAsString: string, defaultValue: number): number {
   const number = parseInt(numberAsString, 10);
   return isNaN(number) ? defaultValue : number;
 }
 
-const configuration = (function () {
-  const config = {
+function buildConfiguration(): Config {
+  return {
     environment: process.env.NODE_ENV || 'development',
     logging: {
       enabled: isFeatureEnabled(process.env.LOG_ENABLED),
@@ -35,8 +50,6 @@ const configuration = (function () {
       ),
     },
   };
+}
 
-  return config;
-})();
-
-export { configuration as config };
+export const config = buildConfiguration();

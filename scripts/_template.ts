@@ -3,7 +3,7 @@ dotenv.config();
 import perf_hooks from 'perf_hooks';
 import * as url from 'url';
 const { performance } = perf_hooks;
-import { logger } from '../lib/common/logger/logger.js';
+import { logger } from '../lib/common/logger/Logger.ts';
 import {
   knexAPI,
   disconnect,
