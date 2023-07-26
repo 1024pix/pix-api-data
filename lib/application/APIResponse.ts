@@ -1,4 +1,5 @@
 import { config } from '../common/config.ts';
+import { logger } from '../common/logger/Logger.ts';
 
 export enum APIResponseStatuses {
   SUCCESS = 'success',
@@ -37,6 +38,7 @@ export class APIResponse<TYPE_DATA> {
   }
 
   static failure(messages: string[]): APIResponse<never> {
+    logger.warn(messages.join('\n'));
     return new APIResponse(APIResponseStatuses.FAILURE, messages);
   }
 }
