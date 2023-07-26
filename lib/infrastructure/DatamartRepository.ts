@@ -1,5 +1,5 @@
 import { knexDatamart } from '../common/db/knex-database-connections.js';
-import { logger } from '../common/logger/logger.js';
+import { logger } from '../common/logger/Logger.ts';
 import { DatamartQueryModel } from '../domain/models/DatamartQuery.ts';
 import { DatamartResponse } from '../domain/models/DatamartResponse.ts';
 import { QueryBuilder } from './builder/QueryBuilder.ts';

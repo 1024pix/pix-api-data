@@ -1,4 +1,4 @@
-import { config } from '../common/config.js';
+import { config } from '../common/config.ts';
 
 export enum APIResponseStatuses {
   SUCCESS = 'success',

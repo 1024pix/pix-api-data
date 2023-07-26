@@ -1,6 +1,6 @@
 import { UUID } from 'crypto';
 import { knexAPI } from '../common/db/knex-database-connections.js';
-import { logger } from '../common/logger/logger.js';
+import { logger } from '../common/logger/Logger.ts';
 import {
   QueryCatalogItem,
   QueryParam,

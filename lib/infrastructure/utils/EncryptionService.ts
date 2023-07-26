@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import { config } from '../../common/config.js';
+import { config } from '../../common/config.ts';
 
 export interface EncryptionService {
   hashPassword(_password: string): Promise<string>;

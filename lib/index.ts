@@ -4,7 +4,7 @@ dotenv.config();
 
 import { createServer } from './server.ts';
 import { Server } from '@hapi/hapi';
-import { logger } from './common/logger/logger.js';
+import { logger } from './common/logger/Logger.ts';
 
 let server: Server;
 

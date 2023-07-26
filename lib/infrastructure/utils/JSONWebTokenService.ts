@@ -1,5 +1,5 @@
 import { UUID } from 'crypto';
-import { config } from '../../common/config.js';
+import { config } from '../../common/config.ts';
 import { Request } from '@hapi/hapi';
 import jsonwebtoken from 'jsonwebtoken';
 const { sign, verify } = jsonwebtoken;
@@ -7,7 +7,6 @@ const { sign, verify } = jsonwebtoken;
 export type AuthenticationToken = {
   user_id: UUID;
 };
-
 export interface JSONWebTokenService {
   generateToken(_userId: UUID): Promise<string>;
   extractTokenFromHeader(_request: Request): string;

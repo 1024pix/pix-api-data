@@ -4,7 +4,7 @@
     "target": "ESNext",
     "module": "ESNext",
     "allowImportingTsExtensions": true,
-    "moduleResolution": "NodeNext",
+    "moduleResolution": "node",
     "lib": ["es6", "es2017"],
     "outDir": "build",
     "rootDir": "/",
@@ -19,4 +19,5 @@
     "files": true,
   },
   "include": ["**/*.ts", "**/*.js" ],
+  "exclude": ["node_modules", "build"]
 }
