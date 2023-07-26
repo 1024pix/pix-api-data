@@ -15,7 +15,22 @@ async function generateValidRequestAuthorizationHeader(
   return `Bearer ${accessToken}`;
 }
 
+function catchErr(
+  promiseFn: (...args: unknown[]) => Promise<unknown>,
+  ctx: unknown = undefined,
+) {
+  return async (...args2: unknown[]) => {
+    try {
+      await promiseFn.call(ctx, ...args2);
+    } catch (err: unknown) {
+      return err;
+    }
+    throw new Error('Expected an error, but none was thrown.');
+  };
+}
+
 export {
+  catchErr,
   createServer,
   expect,
   generateValidRequestAuthorizationHeader,
