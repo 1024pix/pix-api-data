@@ -1,9 +1,10 @@
 import { logger } from '../Logger.ts';
 import { Server, Plugin } from '@hapi/hapi';
+import { Logger } from 'pino';
 
-const plugin: Plugin<any> = {
+const plugin: Plugin<unknown> = {
   name: 'hapi-pino',
-  register: async function (server: Server, options: any): Promise<void> {
+  register: async (server: Server, options: Options): Promise<void> => {
     const logger = options.instance;
 
     server.ext('onPostStart', async function (): Promise<any> {
@@ -18,7 +19,7 @@ const plugin: Plugin<any> = {
       logger.info({ tags: event.tags, data: event.data });
     });
 
-    server.events.on('request', function (request, event) {
+    server.events.on('request', function (request, event): void {
       if (event.channel !== 'error') {
         return;
       }
@@ -28,29 +29,35 @@ const plugin: Plugin<any> = {
             tags: event.tags,
             err: event.error,
           },
-          'query error',
+          'request error',
         );
       }
     });
 
-    server.events.on('response', (request) => {
+    server.events.on('response', (request): void => {
       const info = request.info;
-      logger.info(
-        {
-          queryParams: request.query,
-          req: request,
-          res: request.raw.res,
-          responseTime:
-            (info.completed !== undefined ? info.completed : info.responded) -
-            info.received,
-        },
-        'query completed',
-      );
+
+      logger.info({
+        method: request.method,
+        path: request.path,
+        queryParams: request.query,
+        responseTime:
+          (info.completed !== undefined ? info.completed : info.responded) -
+          info.received,
+        status: 'request completed',
+      });
+      logger.trace({
+        req: request,
+        res: request.raw.res,
+      });
     });
   },
 };
 
-const options = {
+type Options = {
+  instance: Logger;
+};
+const options: Options = {
   instance: logger,
 };
 
