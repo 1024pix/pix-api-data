@@ -2,7 +2,7 @@ import {
   DatamartQueryModel,
   MATCHING_PARAM_BLOCK_REGEXP,
   PARAM_NAME_REGEXP,
-} from '../../domain/models/DatamartQuery.ts';
+} from '../../domain/models/DatamartQuery.js';
 
 const REMOVE_OPTIONAL_CHAR_REGEXP = /\[{2}((.|\n|\r)*)]{2}/;
 type KnexParams = {

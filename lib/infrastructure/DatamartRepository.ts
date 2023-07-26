@@ -1,8 +1,7 @@
 import { knexDatamart } from '../common/db/knex-database-connections.js';
-import { logger } from '../common/logger/Logger.ts';
-import { DatamartQueryModel } from '../domain/models/DatamartQuery.ts';
-import { DatamartResponse } from '../domain/models/DatamartResponse.ts';
-import { QueryBuilder } from './builder/QueryBuilder.ts';
+import type { DatamartResponse } from '../domain/models/DatamartResponse.js';
+import { QueryBuilder } from './builder/QueryBuilder.js';
+import type { DatamartQueryModel } from '../domain/models/DatamartQuery.js';
 
 export interface DatamartRepository {
   find(datamartQueryModel: DatamartQueryModel): Promise<DatamartResponse>;
@@ -12,18 +11,11 @@ class DatamartRepositoryImpl implements DatamartRepository {
     datamartQueryModel: DatamartQueryModel,
   ): Promise<DatamartResponse> {
     const queryBuilder = new QueryBuilder(datamartQueryModel);
-    try {
-      const knexQuery = queryBuilder.build();
-      const result = await knexDatamart.raw(knexQuery.query, knexQuery.params);
-      return {
-        result: result['rows'],
-      } as DatamartResponse;
-    } catch (e) {
-      logger.error(
-        `Error while executing query: ${datamartQueryModel.query}`,
-        e,
-      );
-    }
+    const knexQuery = queryBuilder.build();
+    const result = await knexDatamart.raw(knexQuery.query, knexQuery.params);
+    return {
+      result: result['rows'],
+    } as DatamartResponse;
   }
 }
 

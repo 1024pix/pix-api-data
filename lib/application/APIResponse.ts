@@ -1,5 +1,5 @@
-import { config } from '../common/config.ts';
-import { logger } from '../common/logger/Logger.ts';
+import { config } from '../common/config.js';
+import { logger } from '../common/logger/Logger.js';
 
 export enum APIResponseStatuses {
   SUCCESS = 'success',

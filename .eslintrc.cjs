@@ -13,12 +13,16 @@ module.exports = {
     'plugin:prettier/recommended',
     'plugin:chai-expect/recommended',
     'plugin:n/recommended',
-    'plugin:import/recommended',
   ],
   root: true,
   env: {
     node: true,
     jest: true,
+  },
+  "settings": {
+    "node": {
+      "tryExtensions": [".js", ".json", ".node", ".ts", ".d.ts"]
+    },
   },
   ignorePatterns: ['.eslintrc.js'],
   rules: {
@@ -50,6 +54,8 @@ module.exports = {
           'split2',
           'stream-to-promise',
           'pino-pretty',
+          'pg',
+          'sinon-chai'
         ],
       },
     ],

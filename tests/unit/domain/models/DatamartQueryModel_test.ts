@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import { DatamartQueryModel } from '../../../../lib/domain/models/DatamartQuery.ts';
-import { ParamType } from '../../../../lib/domain/models/QueryCatalogItem.ts';
+import { DatamartQueryModel } from '../../../../lib/domain/models/DatamartQuery.js';
+import { ParamType } from '../../../../lib/domain/models/QueryCatalogItem.js';
 
 describe('Unit | DatamartQueryModel', function () {
   describe('isValid()', function () {

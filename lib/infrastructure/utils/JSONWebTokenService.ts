@@ -1,6 +1,6 @@
-import { UUID } from 'crypto';
-import { config } from '../../common/config.ts';
-import { Request } from '@hapi/hapi';
+import type { UUID } from 'crypto';
+import { config } from '../../common/config.js';
+import type { Request } from '@hapi/hapi';
 import jsonwebtoken from 'jsonwebtoken';
 const { sign, verify } = jsonwebtoken;
 
@@ -21,10 +21,10 @@ class JSONWebTokenImpl implements JSONWebTokenService {
   }
 
   extractTokenFromHeader(request: Request): string {
-    if (!request.headers.authorization) {
+    if (!request.headers['authorization']) {
       return '';
     }
-    const authorizationHeader = request.headers.authorization;
+    const authorizationHeader = request.headers['authorization'];
     if (!authorizationHeader || !authorizationHeader.startsWith('Bearer ')) {
       return '';
     }

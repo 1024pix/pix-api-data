@@ -1,7 +1,6 @@
-import { logger } from '../Logger.ts';
-import { Server, Plugin } from '@hapi/hapi';
-import { Logger } from 'pino';
-
+import { logger } from '../Logger.js';
+import type { Server, Plugin } from '@hapi/hapi';
+import type { Logger } from 'pino';
 const plugin: Plugin<unknown> = {
   name: 'hapi-pino',
   register: async (server: Server, options: Options): Promise<void> => {
@@ -19,7 +18,9 @@ const plugin: Plugin<unknown> = {
       logger.info({ tags: event.tags, data: event.data });
     });
 
-    server.events.on('request', function (request, event): void {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    server.events.on('request', (request, event): void => {
       if (event.channel !== 'error') {
         return;
       }

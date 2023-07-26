@@ -1,7 +1,7 @@
-import { routes } from './routes.ts';
+import { routes } from './routes.js';
 import Hapi, { Server, ServerOptions } from '@hapi/hapi';
-import { plugins } from './common/logger/plugins/plugins.ts';
-import { authentication } from './infrastructure/authentication.ts';
+import { plugins } from './common/logger/plugins/plugins.js';
+import { authentication } from './infrastructure/authentication.js';
 
 const createServer = async (): Promise<Server> => {
   const server = createBareServer();
@@ -35,7 +35,7 @@ const createBareServer = function (): Server {
         emptyStatusCode: 204,
       },
     },
-    port: process.env.PORT || 3000,
+    port: process.env['PORT'] || 3000,
     router: {
       isCaseSensitive: false,
       stripTrailingSlash: true,

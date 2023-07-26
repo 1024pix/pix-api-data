@@ -2,9 +2,9 @@ import * as dotenv from 'dotenv';
 
 dotenv.config();
 
-import { createServer } from './server.ts';
-import { Server } from '@hapi/hapi';
-import { logger } from './common/logger/Logger.ts';
+import type { Server } from '@hapi/hapi';
+import { logger } from './common/logger/Logger.js';
+import { createServer } from './server.js';
 import { disconnect } from './common/db/knex-database-connections.js';
 let server: Server;
 

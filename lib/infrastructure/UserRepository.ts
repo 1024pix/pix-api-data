@@ -1,5 +1,5 @@
 import { knexAPI } from '../common/db/knex-database-connections.js';
-import { User } from '../domain/models/User.ts';
+import { User } from '../domain/models/User.js';
 
 export interface UserRepository {
   findByName(_name: string): Promise<User>;

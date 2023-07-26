@@ -1,6 +1,6 @@
-import { expect, catchErr, knexAPI, sinon } from '../../../test-helper.ts';
-import { User, addUser } from '../../../../scripts/prod/add-user.ts';
-import { encryptionService } from '../../../../lib/infrastructure/utils/EncryptionService.ts';
+import { expect, catchErr, knexAPI, sinon } from '../../../test-helper.js';
+import { User, addUser } from '../../../../scripts/prod/add-user.js';
+import { encryptionService } from '../../../../lib/infrastructure/utils/EncryptionService.js';
 
 describe('Integration | scripts-prod | Add user', function () {
   afterEach(async function () {

@@ -1,5 +1,5 @@
-import { Server } from '@hapi/hapi';
-import { execute } from './query.ts';
+import type { Server } from '@hapi/hapi';
+import { execute } from './query.js';
 
 const register = async function (server: Server) {
   server.route([

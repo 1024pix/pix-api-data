@@ -3,7 +3,7 @@ import {
   createServer,
   knexAPI,
   generateValidRequestAuthorizationHeader,
-} from '../../test-helper.ts';
+} from '../../test-helper.js';
 
 describe('Acceptance | query', function () {
   let headers: string;

@@ -399,6 +399,7 @@ dist
 .webpack
 .serverless/**/*.zip
 commit-template
+build
 
 # misc
 **/.eslintcache
