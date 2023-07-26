@@ -14,7 +14,7 @@ describe('Acceptance | query', function () {
       id: userId,
       username: 'gigi_lamoroso',
       label: "Gigi l'amoroso",
-      password: 'coucou',
+      hashed_password: 'coucou',
     });
     headers = await generateValidRequestAuthorizationHeader(userId);
   });

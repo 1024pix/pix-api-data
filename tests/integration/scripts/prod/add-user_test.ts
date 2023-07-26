@@ -23,13 +23,13 @@ describe('Integration | scripts-prod | Add user', function () {
     expect(usersDTO.length).to.equal(1);
     const arePasswordsIdentical = await encryptionService.checkPassword(
       userToAdd.password,
-      usersDTO[0].password,
+      usersDTO[0].hashed_password,
     );
     sinon.assert.match(usersDTO[0], {
       id: sinon.match.string,
       username: userToAdd.username,
       label: userToAdd.label,
-      password: sinon.match.string,
+      hashed_password: sinon.match.string,
       created_at: sinon.match.date,
     });
     expect(arePasswordsIdentical).to.be.true;
@@ -43,7 +43,7 @@ describe('Integration | scripts-prod | Add user', function () {
     await knexAPI('users').insert({
       username: 'fifi_brindacier',
       label: 'Une fille super costaude et rousse de surcroît',
-      password: 'fifiDu31_pectoraux',
+      hashed_password: 'fifiDu31_pectoraux',
     });
     const userToAdd: User = {
       username: 'fifi_brindacier',

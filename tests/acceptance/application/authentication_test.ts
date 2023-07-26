@@ -47,7 +47,7 @@ describe('Acceptance | authentication', function () {
           id: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
           username: 'gigi_lamoroso',
           label: "Gigi l'amoroso",
-          password: hashedPassword,
+          hashed_password: hashedPassword,
         });
         const payload = {
           username: 'dalida',
@@ -81,7 +81,7 @@ describe('Acceptance | authentication', function () {
           id: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
           username: 'gigi_lamoroso',
           label: "Gigi l'amoroso",
-          password: hashedPassword,
+          hashed_password: hashedPassword,
         });
         const payload = {
           username: 'gigi_lamoroso',
@@ -115,7 +115,7 @@ describe('Acceptance | authentication', function () {
           id: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
           username: 'gigi_lamoroso',
           label: "Gigi l'amoroso",
-          password: hashedPassword,
+          hashed_password: hashedPassword,
         });
         const payload = {
           username: 'gigi_lamoroso',
