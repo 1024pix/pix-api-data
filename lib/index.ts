@@ -5,7 +5,7 @@ dotenv.config();
 import { createServer } from './server.ts';
 import { Server } from '@hapi/hapi';
 import { logger } from './common/logger/Logger.ts';
-
+import { disconnect } from './common/db/knex-database-connections.js';
 let server: Server;
 
 const start = async function () {
@@ -14,7 +14,12 @@ const start = async function () {
 };
 
 async function _exitOnSignal() {
-  await server.stop({ timeout: 30000 });
+  try {
+    await server.stop({ timeout: 30000 });
+    await disconnect();
+  } catch (error) {
+    logger.error("Erreur lors de l'arrêt du serveur:", error);
+  }
 }
 
 const SIGTERM = 'SIGTERM';
