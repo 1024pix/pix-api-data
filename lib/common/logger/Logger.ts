@@ -1,6 +1,6 @@
 import * as pino from 'pino';
 import * as pinoPretty from 'pino-pretty';
-import { config } from '../config.ts';
+import { config } from '../config.js';
 
 const { logging } = config;
 

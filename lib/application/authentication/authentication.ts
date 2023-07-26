@@ -1,8 +1,8 @@
-import { Request, ResponseToolkit } from '@hapi/hapi';
-import { Result } from '../../domain/models/Result.ts';
-import { AuthenticationCommand } from '../../domain/commands/AuthenticationCommand.ts';
-import { APIResponse } from '../APIResponse.ts';
-import { authenticateUserUsecase } from '../../domain/usecases/AuthenticateUserUsercase.ts';
+import type { Request, ResponseToolkit } from '@hapi/hapi';
+import type { Result } from '../../domain/models/Result.js';
+import { AuthenticationCommand } from '../../domain/commands/AuthenticationCommand.js';
+import { APIResponse } from '../APIResponse.js';
+import { authenticateUserUsecase } from '../../domain/usecases/AuthenticateUserUsercase.js';
 
 export async function authenticate(clientRequest: Request, h: ResponseToolkit) {
   const authenticationCommandValidationResult: Result<AuthenticationCommand> =

@@ -1,16 +1,16 @@
 import {
   DatamartRepository,
   datamartRepository,
-} from '../../infrastructure/DatamartRepository.ts';
+} from '../../infrastructure/DatamartRepository.js';
 import {
   catalogQueryRepository,
   CatalogQueryRepository,
-} from '../../infrastructure/CatalogQueryRepository.ts';
-import { DatamartQueryModel } from '../models/DatamartQuery.ts';
-import { UserCommand } from '../commands/UserCommand.ts';
-import { QueryCatalogItem } from '../models/QueryCatalogItem.ts';
-import { Result } from '../models/Result.ts';
-import { DatamartResponse } from '../models/DatamartResponse.ts';
+} from '../../infrastructure/CatalogQueryRepository.js';
+import { DatamartQueryModel } from '../models/DatamartQuery.js';
+import type { UserCommand } from '../commands/UserCommand.js';
+import type { QueryCatalogItem } from '../models/QueryCatalogItem.js';
+import { Result } from '../models/Result.js';
+import type { DatamartResponse } from '../models/DatamartResponse.js';
 
 export interface ExecuteQueryUseCase {
   executeQuery(_userCommand: UserCommand): Promise<Result<DatamartResponse>>;

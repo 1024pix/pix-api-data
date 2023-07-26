@@ -1,7 +1,7 @@
-import { expect } from '../../../test-helper.ts';
-import { QueryBuilder } from '../../../../lib/infrastructure/builder/QueryBuilder.ts';
-import { DatamartQueryModel } from '../../../../lib/domain/models/DatamartQuery.ts';
-import { ParamType } from '../../../../lib/domain/models/QueryCatalogItem.ts';
+import { expect } from '../../../test-helper.js';
+import { QueryBuilder } from '../../../../lib/infrastructure/builder/QueryBuilder.js';
+import { DatamartQueryModel } from '../../../../lib/domain/models/DatamartQuery.js';
+import { ParamType } from '../../../../lib/domain/models/QueryCatalogItem.js';
 
 describe('Unit | Query builder', function () {
   context('query without optional block definition', function () {

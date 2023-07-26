@@ -1,18 +1,18 @@
 import {
   userRepository,
   UserRepository,
-} from '../../infrastructure/UserRepository.ts';
+} from '../../infrastructure/UserRepository.js';
 import {
   encryptionService,
   EncryptionService,
-} from '../../infrastructure/utils/EncryptionService.ts';
+} from '../../infrastructure/utils/EncryptionService.js';
 import {
   jsonWebTokenService,
   JSONWebTokenService,
-} from '../../infrastructure/utils/JSONWebTokenService.ts';
-import { Result } from '../models/Result.ts';
-import { AuthenticationCommand } from '../commands/AuthenticationCommand.ts';
-import { User } from '../models/User.ts';
+} from '../../infrastructure/utils/JSONWebTokenService.js';
+import { Result } from '../models/Result.js';
+import type { AuthenticationCommand } from '../commands/AuthenticationCommand.js';
+import type { User } from '../models/User.js';
 
 export interface AuthenticateUserUsecase {
   authenticateUser(

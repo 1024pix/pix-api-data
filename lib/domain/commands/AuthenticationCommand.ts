@@ -1,4 +1,4 @@
-import { Result } from '../models/Result.ts';
+import { Result } from '../models/Result.js';
 
 export class AuthenticationCommand {
   username: string;

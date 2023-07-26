@@ -1,5 +1,5 @@
-import { UUID } from 'crypto';
-import { Result } from '../models/Result.ts';
+import type { UUID } from 'crypto';
+import { Result } from '../models/Result.js';
 
 export class UserCommand {
   queryId: UUID;

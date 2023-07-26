@@ -1,9 +1,9 @@
-import { expect } from '../../../test-helper.ts';
+import { expect } from '../../../test-helper.js';
 import {
   UserCommand,
   UserCommandParam,
-} from '../../../../lib/domain/commands/UserCommand.ts';
-import { Result } from '../../../../lib/domain/models/Result.ts';
+} from '../../../../lib/domain/commands/UserCommand.js';
+import type { Result } from '../../../../lib/domain/models/Result.js';
 
 describe('Unit | Domain | UserCommand', function () {
   describe('buildFromPayload', function () {

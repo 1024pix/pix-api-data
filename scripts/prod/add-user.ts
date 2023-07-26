@@ -3,8 +3,8 @@ dotenv.config();
 import perf_hooks from 'perf_hooks';
 import * as url from 'url';
 const { performance } = perf_hooks;
-import { logger } from '../../lib/common/logger/Logger.ts';
-import { encryptionService } from '../../lib/infrastructure/utils/EncryptionService.ts';
+import { logger } from '../../lib/common/logger/Logger';
+import { encryptionService } from '../../lib/infrastructure/utils/EncryptionService';
 import {
   knexAPI,
   disconnect,

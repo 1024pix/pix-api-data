@@ -1,8 +1,8 @@
-import { Request, ResponseObject, ResponseToolkit } from '@hapi/hapi';
-import { UserCommand } from '../../domain/commands/UserCommand.ts';
-import { Result } from '../../domain/models/Result.ts';
-import { executeQueryUseCase } from '../../domain/usecases/ExecuteQueryUsecase.ts';
-import { APIResponse } from '../APIResponse.ts';
+import type { Request, ResponseObject, ResponseToolkit } from '@hapi/hapi';
+import { UserCommand } from '../../domain/commands/UserCommand.js';
+import type { Result } from '../../domain/models/Result.js';
+import { executeQueryUseCase } from '../../domain/usecases/ExecuteQueryUsecase.js';
+import { APIResponse } from '../APIResponse.js';
 
 export async function execute(
   clientRequest: Request,

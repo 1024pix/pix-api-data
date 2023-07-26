@@ -1,12 +1,16 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import chai from 'chai';
 const expect = chai.expect;
 import * as sinon from 'sinon';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import sinonChai from 'sinon-chai';
 chai.use(sinonChai);
-import { UUID } from 'crypto';
-import { createServer } from '../lib/server.ts';
+import type { UUID } from 'crypto';
+import { createServer } from '../lib/server';
 import { knexAPI } from '../lib/common/db/knex-database-connections.js';
-import { jsonWebTokenService } from '../lib/infrastructure/utils/JSONWebTokenService.ts';
+import { jsonWebTokenService } from '../lib/infrastructure/utils/JSONWebTokenService';
 
 async function generateValidRequestAuthorizationHeader(
   userId: UUID,

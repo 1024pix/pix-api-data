@@ -5,7 +5,7 @@ dotenv.config();
 
 function _getLogForHumans(): boolean {
   const processOutputingToTerminal = process.stdout.isTTY;
-  const forceJSONLogs = process.env.LOG_FOR_HUMANS === 'false';
+  const forceJSONLogs = process.env['LOG_FOR_HUMANS'] === 'false';
   return processOutputingToTerminal && !forceJSONLogs;
 }
 
@@ -35,17 +35,17 @@ function _getNumber(numberAsString: string, defaultValue: number): number {
 
 function buildConfiguration(): Config {
   return {
-    environment: process.env.NODE_ENV || 'development',
+    environment: process.env['NODE_ENV'] || 'development',
     logging: {
-      enabled: isFeatureEnabled(process.env.LOG_ENABLED),
-      logLevel: process.env.LOG_LEVEL || 'info',
+      enabled: isFeatureEnabled(process.env['LOG_ENABLED']),
+      logLevel: process.env['LOG_LEVEL'] || 'info',
       logForHumans: _getLogForHumans(),
     },
     authentication: {
-      accessTokenLifespanMS: ms(process.env.ACCESS_TOKEN_LIFESPAN || '20m'),
-      secret: process.env.JWT_SECRET,
+      accessTokenLifespanMS: ms(process.env['ACCESS_TOKEN_LIFESPAN'] || '20m'),
+      secret: process.env['JWT_SECRET'],
       bcryptNumberOfSaltRounds: _getNumber(
-        process.env.BCRYPT_NUMBER_OF_SALT_ROUNDS,
+        process.env['BCRYPT_NUMBER_OF_SALT_ROUNDS'],
         10,
       ),
     },

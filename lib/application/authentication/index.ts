@@ -1,5 +1,5 @@
-import { Server } from '@hapi/hapi';
-import { authenticate } from './authentication.ts';
+import type { Server } from '@hapi/hapi';
+import { authenticate } from './authentication.js';
 
 const register = async function (server: Server) {
   server.route([

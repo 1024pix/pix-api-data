@@ -1,6 +1,6 @@
-import { expect, createServer, knexAPI, sinon } from '../../test-helper.ts';
-import { encryptionService } from '../../../lib/infrastructure/utils/EncryptionService.ts';
-import { config } from '../../../lib/common/config.ts';
+import { expect, createServer, knexAPI, sinon } from '../../test-helper.js';
+import { encryptionService } from '../../../lib/infrastructure/utils/EncryptionService.js';
+import { config } from '../../../lib/common/config.js';
 
 describe('Acceptance | authentication', function () {
   afterEach(async function () {
