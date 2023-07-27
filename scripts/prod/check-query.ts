@@ -4,7 +4,10 @@ import perf_hooks from 'perf_hooks';
 import * as url from 'url';
 const { performance } = perf_hooks;
 import { logger } from '../../lib/common/logger/Logger.js';
-import { disconnect } from '../../lib/common/db/knex-database-connections.js';
+import {
+  knexAPI,
+  disconnect,
+} from '../../lib/common/db/knex-database-connections.js';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import { readFile } from 'fs/promises';
@@ -24,9 +27,17 @@ const parseMe = yargs(hideBin(process.argv))
     type: 'string',
     description: 'Chemin vers le fichier contenant les données',
   })
+  .option('generateSQL', {
+    type: 'boolean',
+    description:
+      "Option pour générer le SQL d'insertion de la requête et de ses paramètres",
+  })
   .help();
 
-const checkQuery = async (filePath: FilePath): Promise<string[][]> => {
+const checkQuery = async (
+  filePath: FilePath,
+  generateSQL: boolean,
+): Promise<{ messagesByLine: string[][]; sql: string[][] }> => {
   const messagesByLine: string[][] = [];
   let buffer: Buffer;
   try {
@@ -41,13 +52,35 @@ const checkQuery = async (filePath: FilePath): Promise<string[][]> => {
     throw new Error(JSON.stringify(parsedCSVData.errors));
   }
   const data: string[][] = parsedCSVData.data as string[][];
+  const queries: QueryChecker[] = [];
   for (const [lineNumber, line] of data.entries()) {
     const queryChecker = QueryChecker.fromCSVLine(line, lineNumber);
+    queries.push(queryChecker);
     messagesByLine[lineNumber] = queryChecker.check();
   }
 
-  return messagesByLine;
+  const sql: string[][] = [];
+  if (generateSQL) {
+    for (const [index, queryCheck] of queries.entries()) {
+      sql[index] = queryCheck.generateSQL();
+    }
+  }
+
+  return {
+    messagesByLine,
+    sql,
+  };
 };
+
+export class FilePath {
+  file: string;
+  fullPath: string;
+
+  constructor(currentDir: string, file: string) {
+    this.file = file;
+    this.fullPath = path.join(currentDir, file);
+  }
+}
 
 type ProvidedParam = {
   name: string;
@@ -62,6 +95,7 @@ class QueryChecker {
   optionalParamsInQuery: string[];
   lineNumberInCSV: number;
   providedParams: ProvidedParam[];
+  isValid: boolean;
 
   constructor(
     query: string,
@@ -75,6 +109,7 @@ class QueryChecker {
     this.optionalParamsInQuery = optionalParamsInQuery;
     this.lineNumberInCSV = lineNumberInCSV;
     this.providedParams = providedParams;
+    this.isValid = false;
   }
 
   static fromCSVLine(csvLine: string[], lineNumber: number): QueryChecker {
@@ -120,11 +155,33 @@ class QueryChecker {
         );
       }
     }
+    this.isValid = errorMessages.length === 0;
     return errorMessages;
   }
 
-  isQueryEmpty() {
+  isQueryEmpty(): boolean {
     return this.query.trim().length === 0;
+  }
+
+  generateSQL(): string[] {
+    if (!this.isValid) return ['Requête invalide, pas de SQL généré.'];
+    const sqlQueries: string[] = [];
+    sqlQueries.push(
+      knexAPI('catalog_queries').insert({ sql_query: this.query }).toString(),
+    );
+    for (const providedParam of this.providedParams) {
+      sqlQueries.push(
+        knexAPI('catalog_query_params')
+          .insert({
+            catalog_query_id: '<REPLACE_ME_WITH_CATALOG_QUERY_ID>',
+            name: providedParam.name,
+            type: providedParam.type,
+            mandatory: providedParam.mandatory,
+          })
+          .toString(),
+      );
+    }
+    return sqlQueries;
   }
 }
 
@@ -282,21 +339,15 @@ const modulePath = url.fileURLToPath(import.meta.url);
 const isLaunchedFromCommandLine = process.argv[1] === modulePath;
 const __filename = modulePath;
 
-export class FilePath {
-  file: string;
-  fullPath: string;
-
-  constructor(currentDir: string, file: string) {
-    this.file = file;
-    this.fullPath = path.join(currentDir, file);
-  }
-}
-
 async function main() {
   const startTime = performance.now();
   logger.info(`Script ${__filename} has started`);
-  const { file }: { file: string } = await parseMe.argv;
-  const messagesByLine = await checkQuery(new FilePath(__dirname, file));
+  const { file, generateSQL }: { file: string; generateSQL: boolean } =
+    await parseMe.argv;
+  const { messagesByLine } = await checkQuery(
+    new FilePath(__dirname, file),
+    generateSQL,
+  );
   for (const [line, messages] of messagesByLine.entries()) {
     logger.info(
       `Erreurs pour la ligne n°${line}: ${

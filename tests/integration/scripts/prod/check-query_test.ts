@@ -4,12 +4,12 @@ import * as url from 'url';
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
 describe('Integration | scripts-prod | Check query', function () {
-  it('should check queries and dumpe expected errors', async function () {
+  it('should check queries and dump expected errors', async function () {
     // given
-    const filePath = new FilePath(__dirname, './queries-test.csv');
+    const filePath = new FilePath(__dirname, './queries-syntax-test.csv');
 
     // when
-    const messagesByLine = await checkQuery(filePath);
+    const { messagesByLine } = await checkQuery(filePath, false);
 
     // then
     expect(messagesByLine[0]).to.have.members(['Pas de requête.']);
@@ -44,5 +44,24 @@ describe('Integration | scripts-prod | Check query', function () {
     ]);
     expect(messagesByLine[10]).to.be.empty;
     expect(messagesByLine[11]).to.be.empty;
+  });
+  it('should generate the expected SQL for valid queries', async function () {
+    // given
+    const filePath = new FilePath(__dirname, './queries-sql-test.csv');
+
+    // when
+    const { sql } = await checkQuery(filePath, true);
+
+    // then
+    expect(sql[0]).to.have.members(['Requête invalide, pas de SQL généré.']);
+    expect(sql[1]).to.have.members([
+      `insert into "catalog_queries" ("sql_query") values ('select * from t where id = 1')`,
+    ]);
+    expect(sql[2]).to.have.members([
+      `insert into "catalog_queries" ("sql_query") values ('select * from t where id = {{ mandatoryParam }} [[ AND optional = {{ optionalParam }} ]] [[ AND optional2 = {{ optionalParam2 }} ]]')`,
+      `insert into "catalog_query_params" ("catalog_query_id", "mandatory", "name", "type") values ('<REPLACE_ME_WITH_CATALOG_QUERY_ID>', true, 'mandatoryParam', 'int')`,
+      `insert into "catalog_query_params" ("catalog_query_id", "mandatory", "name", "type") values ('<REPLACE_ME_WITH_CATALOG_QUERY_ID>', false, 'optionalParam', 'string')`,
+      `insert into "catalog_query_params" ("catalog_query_id", "mandatory", "name", "type") values ('<REPLACE_ME_WITH_CATALOG_QUERY_ID>', false, 'optionalParam2', 'date-time')`,
+    ]);
   });
 });
