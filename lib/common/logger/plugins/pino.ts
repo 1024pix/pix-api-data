@@ -1,6 +1,7 @@
 import { logger } from '../Logger.js';
-import type { Server, Plugin } from '@hapi/hapi';
+import type { Plugin, Server } from '@hapi/hapi';
 import type { Logger } from 'pino';
+
 const plugin: Plugin<unknown> = {
   name: 'hapi-pino',
   register: async (server: Server, options: Options): Promise<void> => {
@@ -38,19 +39,18 @@ const plugin: Plugin<unknown> = {
     server.events.on('response', (request): void => {
       const info = request.info;
 
-      logger.info({
-        method: request.method,
-        path: request.path,
-        queryParams: request.query,
-        responseTime:
-          (info.completed !== undefined ? info.completed : info.responded) -
-          info.received,
-        status: 'request completed',
-      });
-      logger.trace({
-        req: request,
-        res: request.raw.res,
-      });
+      logger.info(
+        {
+          queryParams: request.query,
+          responseTime:
+            (info.completed !== undefined ? info.completed : info.responded) -
+            info.received,
+          payload: request.auth.isAuthenticated ? request.payload : {},
+          req: request,
+          res: request.raw.res,
+        },
+        'request completed',
+      );
     });
   },
 };
