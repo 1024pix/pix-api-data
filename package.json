@@ -1,5 +1,6 @@
 {
   "name": "pix-api-data",
+  "version": "0.1.0",
   "license": "AGPL-3.0",
   "engines": {
     "node": "18.16.1",
