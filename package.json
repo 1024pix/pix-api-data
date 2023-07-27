@@ -77,8 +77,10 @@
   },
   "devDependencies": {
     "@1024pix/eslint-config": "^1.0.0",
+    "@ls-lint/ls-lint": "^2.0.1",
     "@tsconfig/node-lts-strictest-esm": "^18.12.1",
     "chai": "^4.3.7",
+    "depcheck": "^1.4.3",
     "eslint": "^8.42.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-chai-expect": "^3.0.0",
