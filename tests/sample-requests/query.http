@@ -1,7 +1,7 @@
 ### Valid command -> 200
 POST http://localhost:3000/query
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNDU2ZjlkNDctMzlhNy00ZGU2LWFkYTItZTQ3NjYyYjc5YmYzIiwiaWF0IjoxNjkwMjk0NTM3LCJleHAiOjE2OTM4OTQ1Mzd9.vY6HTQERdId-KtqdSFpu00Uq4xJuO8dLXOtQuE6vxmg
+Authorization: Bearer {{ auth_token }}
 
 {
   "queryId": "1b7291d4-ac51-46d2-97f1-f5f304100a29",
@@ -11,6 +11,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNDU2Z
 ### Valid command -> 200
 POST http://localhost:3000/query
 Content-Type: application/json
+Authorization: Bearer {{ auth_token }}
 
 {
   "queryId": "b1e20492-8775-47f3-926d-3729ee2b836d",
@@ -25,6 +26,7 @@ Content-Type: application/json
 ### Invalid command because queryId -> 400
 POST http://localhost:3000/query
 Content-Type: application/json
+Authorization: Bearer {{ auth_token }}
 
 {
   "queryId": "BLABLA",
@@ -43,6 +45,7 @@ Content-Type: application/json
 ### Invalid command because params -> 400
 POST http://localhost:3000/query
 Content-Type: application/json
+Authorization: Bearer {{ auth_token }}
 
 {
   "queryId": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
@@ -61,6 +64,7 @@ Content-Type: application/json
 ### Invalid command because query doesn't exist -> 422
 POST http://localhost:3000/query
 Content-Type: application/json
+Authorization: Bearer {{ auth_token }}
 
 {
   "queryId": "1b7291d4-ac51-46d2-97f1-f5f304100a20",

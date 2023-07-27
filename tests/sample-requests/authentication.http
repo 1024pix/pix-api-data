@@ -7,6 +7,10 @@ Content-Type: application/json
   "password": "LeMotDePasseQueL'UtilisateurUtiliseraitDeSonPointDeVue"
 }
 
+> {%
+    client.global.set("auth_token", response.body.data.access_token);
+%}
+
 ### Environment: ACCESS_TOKEN=${response.body.data}
 
 
