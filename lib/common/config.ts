@@ -34,7 +34,7 @@ function _getNumber(numberAsString: string, defaultValue: number): number {
 }
 
 function buildConfiguration(): Config {
-  return {
+  const config = {
     environment: process.env['NODE_ENV'] || 'development',
     logging: {
       enabled: isFeatureEnabled(process.env['LOG_ENABLED']),
@@ -50,6 +50,10 @@ function buildConfiguration(): Config {
       ),
     },
   };
+  if (config.environment === 'test') {
+    config.logging.enabled = false;
+  }
+  return config;
 }
 
 export const config = buildConfiguration();
