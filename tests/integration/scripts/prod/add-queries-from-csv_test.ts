@@ -5,7 +5,7 @@ import {
 } from '../../../../scripts/prod/add-queries-from-csv.js';
 
 describe('Integration | scripts-prod | Add queries from csv', function () {
-  let dryRun: boolean, checkOnly: boolean;
+  let dryRun: boolean;
 
   afterEach(async function () {
     await knexAPI('catalog_query_params').delete();
@@ -15,7 +15,6 @@ describe('Integration | scripts-prod | Add queries from csv', function () {
   context('query checking', function () {
     beforeEach(function () {
       dryRun = true;
-      checkOnly = true;
     });
 
     it('should check queries and dump expected errors', async function () {
@@ -26,7 +25,7 @@ describe('Integration | scripts-prod | Add queries from csv', function () {
       );
 
       // when
-      const { errorMessagesByQuery } = await doJob(filePath, checkOnly, dryRun);
+      const { errorMessagesByQuery } = await doJob(filePath, dryRun);
 
       // then
       const [{ count: insertedQueriesCnt }] = await knexAPI(
@@ -79,7 +78,6 @@ describe('Integration | scripts-prod | Add queries from csv', function () {
   context('dry run', function () {
     beforeEach(function () {
       dryRun = true;
-      checkOnly = false;
     });
 
     it('should generate the expected SQL when all queries are valid without effectively inserting records', async function () {
@@ -90,7 +88,7 @@ describe('Integration | scripts-prod | Add queries from csv', function () {
       );
 
       // when
-      const { sqlByQuery } = await doJob(filePath, checkOnly, dryRun);
+      const { sqlByQuery } = await doJob(filePath, dryRun);
 
       // then
       const [{ count: insertedQueriesCnt }] = await knexAPI(
@@ -130,7 +128,6 @@ describe('Integration | scripts-prod | Add queries from csv', function () {
   context('real execution', function () {
     beforeEach(function () {
       dryRun = false;
-      checkOnly = false;
     });
 
     it('should not insert anything if not all queries are valid', async function () {
@@ -141,7 +138,7 @@ describe('Integration | scripts-prod | Add queries from csv', function () {
       );
 
       // when
-      await doJob(filePath, checkOnly, dryRun);
+      await doJob(filePath, dryRun);
 
       // then
       const [{ count: insertedQueriesCnt }] = await knexAPI(
@@ -166,7 +163,7 @@ describe('Integration | scripts-prod | Add queries from csv', function () {
       );
 
       // when
-      await doJob(filePath, checkOnly, dryRun);
+      await doJob(filePath, dryRun);
 
       // then
       const catalogQueriesDTO = await knexAPI('catalog_queries')

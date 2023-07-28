@@ -18,7 +18,6 @@ import {
 } from '../../lib/domain/models/DatamartQuery.js';
 import { ParamType } from '../../lib/domain/models/QueryCatalogItem.js';
 import type { Knex } from 'knex';
-
 dotenv.config();
 const { performance } = perf_hooks;
 
@@ -28,11 +27,6 @@ const parseMe = yargs(hideBin(process.argv))
     type: 'string',
     description: 'Chemin vers le fichier contenant les données',
   })
-  .option('checkOnly', {
-    type: 'boolean',
-    description:
-      'Option pour seulement effectuer une vérification des requêtes dans le fichier sans tenter de les insérer',
-  })
   .option('dryRun', {
     type: 'boolean',
     description:
@@ -40,130 +34,7 @@ const parseMe = yargs(hideBin(process.argv))
   })
   .help();
 
-const doJob = async (
-  filePath: FilePath,
-  checkOnly: boolean,
-  dryRun: boolean,
-): Promise<{ errorMessagesByQuery: string[][]; sqlByQuery: string[][] }> => {
-  logger.info(`Récupération des requêtes depuis le fichier...`);
-  const { errorMessagesByQuery, queries } = await parseQueriesFromCsv(filePath);
-  if (checkOnly) {
-    logger.info(`Récupération OK, ${queries.length} requêtes trouvées.`);
-    return {
-      errorMessagesByQuery,
-      sqlByQuery: [],
-    };
-  }
-  if (queries.length === 0 || queries.some((query) => !query.isValid)) {
-    logger.error(
-      'Sortie prématurée: au moins une requête dans le fichier est invalide.',
-    );
-    return {
-      errorMessagesByQuery,
-      sqlByQuery: [],
-    };
-  }
-  logger.info(`Récupération OK, ${queries.length} requêtes trouvées.`);
-
-  logger.info(
-    `Insertion des requêtes dans le catalogue...${dryRun ? 'TEST-BLANC' : ''}`,
-  );
-  const sqlByQuery: string[][] = [];
-  const trx = await knexAPI.transaction();
-  try {
-    for (const query of queries) {
-      sqlByQuery[query.lineNumberInCSV] = await addQueryToCatalog(query, trx);
-    }
-    if (dryRun) await trx.rollback();
-    else await trx.commit();
-  } catch (err) {
-    logger.error(
-      `Sortie prématurée: l'insertion en catalogue s'est mal passée.`,
-    );
-    await trx.rollback();
-    throw err;
-  }
-
-  return {
-    errorMessagesByQuery: [],
-    sqlByQuery,
-  };
-};
-
-const parseQueriesFromCsv = async (
-  filePath: FilePath,
-): Promise<{ errorMessagesByQuery: string[][]; queries: QueryChecker[] }> => {
-  const errorMessagesByQuery: string[][] = [];
-  let buffer: Buffer;
-  try {
-    buffer = await readFile(filePath.fullPath);
-  } catch (err) {
-    logger.error('Erreur lors de la lecture du fichier');
-    throw err;
-  }
-  const parsedCSVData = Papa.parse(buffer.toString(), { delimiter: ',' });
-  if (parsedCSVData.errors.length > 0) {
-    logger.error('Erreur lors du parsing CSV');
-    throw new Error(JSON.stringify(parsedCSVData.errors));
-  }
-  const data: string[][] = parsedCSVData.data as string[][];
-  const queries: QueryChecker[] = [];
-  const dataWithoutEmptyLines = data.filter((line) =>
-    line.some((cell) => cell.trim().length > 0),
-  );
-  for (const [lineNumber, line] of dataWithoutEmptyLines.entries()) {
-    const queryChecker = QueryChecker.fromCSVLine(line, lineNumber);
-    queries.push(queryChecker);
-    errorMessagesByQuery[lineNumber] = queryChecker.check();
-  }
-
-  return {
-    errorMessagesByQuery,
-    queries,
-  };
-};
-
-const addQueryToCatalog = async (
-  queryChecker: QueryChecker,
-  trx: Knex.Transaction,
-): Promise<string[]> => {
-  const sqlQueries: string[] = [];
-  const knexQueryToExecute_query = trx('catalog_queries')
-    .insert({
-      sql_query: queryChecker.query,
-    })
-    .returning('id');
-  sqlQueries.push(knexQueryToExecute_query.toString());
-  const [{ id }] = await knexQueryToExecute_query;
-  for (const providedParam of queryChecker.providedParams) {
-    const knexQueryToExecute_param = trx('catalog_query_params').insert({
-      catalog_query_id: id,
-      name: providedParam.name,
-      type: providedParam.type,
-      mandatory: providedParam.mandatory,
-    });
-    sqlQueries.push(knexQueryToExecute_param.toString());
-    await knexQueryToExecute_param;
-  }
-  return sqlQueries;
-};
-
-export class FilePath {
-  file: string;
-  fullPath: string;
-
-  constructor(currentDir: string, file: string) {
-    this.file = file;
-    this.fullPath = path.join(currentDir, file);
-  }
-}
-
-type ProvidedParam = {
-  name: string;
-  type: string;
-  mandatory: boolean;
-  provided: boolean;
-};
+export { FilePath, doJob };
 
 class QueryChecker {
   query: string;
@@ -238,6 +109,123 @@ class QueryChecker {
   isQueryEmpty(): boolean {
     return this.query.trim().length === 0;
   }
+}
+
+class FilePath {
+  file: string;
+  fullPath: string;
+
+  constructor(currentDir: string, file: string) {
+    this.file = file;
+    this.fullPath = path.join(currentDir, file);
+  }
+}
+
+type ProvidedParam = {
+  name: string;
+  type: string;
+  mandatory: boolean;
+  provided: boolean;
+};
+
+const doJob = async (
+  filePath: FilePath,
+  dryRun: boolean,
+): Promise<{ errorMessagesByQuery: string[][]; sqlByQuery: string[][] }> => {
+  logger.info(`Récupération des requêtes depuis le fichier...`);
+  const { errorMessagesByQuery, queries } = await parseQueriesFromCsv(filePath);
+  if (queries.length === 0 || queries.some((query) => !query.isValid)) {
+    logger.error(
+      'Sortie prématurée: au moins une requête dans le fichier est invalide.',
+    );
+    return {
+      errorMessagesByQuery,
+      sqlByQuery: [],
+    };
+  }
+  logger.info(`Récupération OK, ${queries.length} requêtes trouvées.`);
+
+  logger.info(
+    `Insertion des requêtes dans le catalogue...${dryRun ? 'TEST-BLANC' : ''}`,
+  );
+  const sqlByQuery: string[][] = [];
+  const trx = await knexAPI.transaction();
+  try {
+    for (const query of queries) {
+      sqlByQuery[query.lineNumberInCSV] = await addQueryToCatalog(query, trx);
+    }
+    if (dryRun) await trx.rollback();
+    else await trx.commit();
+  } catch (err) {
+    logger.error(
+      `Sortie prématurée: l'insertion en catalogue s'est mal passée.`,
+    );
+    await trx.rollback();
+    throw err;
+  }
+
+  return {
+    errorMessagesByQuery: [],
+    sqlByQuery,
+  };
+};
+
+async function parseQueriesFromCsv(
+  filePath: FilePath,
+): Promise<{ errorMessagesByQuery: string[][]; queries: QueryChecker[] }> {
+  const errorMessagesByQuery: string[][] = [];
+  let buffer: Buffer;
+  try {
+    buffer = await readFile(filePath.fullPath);
+  } catch (err) {
+    logger.error('Erreur lors de la lecture du fichier');
+    throw err;
+  }
+  const parsedCSVData = Papa.parse(buffer.toString(), { delimiter: ',' });
+  if (parsedCSVData.errors.length > 0) {
+    logger.error('Erreur lors du parsing CSV');
+    throw new Error(JSON.stringify(parsedCSVData.errors));
+  }
+  const data: string[][] = parsedCSVData.data as string[][];
+  const queries: QueryChecker[] = [];
+  const dataWithoutEmptyLines = data.filter((line) =>
+    line.some((cell) => cell.trim().length > 0),
+  );
+  for (const [lineNumber, line] of dataWithoutEmptyLines.entries()) {
+    const queryChecker = QueryChecker.fromCSVLine(line, lineNumber);
+    queries.push(queryChecker);
+    errorMessagesByQuery[lineNumber] = queryChecker.check();
+  }
+
+  return {
+    errorMessagesByQuery,
+    queries,
+  };
+}
+
+async function addQueryToCatalog(
+  queryChecker: QueryChecker,
+  trx: Knex.Transaction,
+): Promise<string[]> {
+  const sqlQueries: string[] = [];
+  const knexQueryToExecute_query = trx('catalog_queries')
+    .insert({
+      sql_query: queryChecker.query,
+    })
+    .returning('id');
+  sqlQueries.push(knexQueryToExecute_query.toString());
+  const [{ id }] = await knexQueryToExecute_query;
+  for (const providedParam of queryChecker.providedParams) {
+    const knexQueryToExecute_param = trx('catalog_query_params').insert({
+      catalog_query_id: id,
+      name: providedParam.name,
+      type: providedParam.type,
+      mandatory: providedParam.mandatory,
+    });
+    sqlQueries.push(knexQueryToExecute_param.toString());
+    await knexQueryToExecute_param;
+  }
+  return sqlQueries;
 }
 
 function extractOptionalParameters(query: string): {
@@ -395,32 +383,20 @@ const isLaunchedFromCommandLine = process.argv[1] === modulePath;
 const __filename = modulePath;
 
 async function main() {
-  console.log(process.cwd());
-  console.log('COUCOU');
   const startTime = performance.now();
   logger.info(`Script ${__filename} has started`);
-  const {
-    file,
-    checkOnly,
-    dryRun,
-  }: { file: string; checkOnly: boolean; dryRun: boolean } = await parseMe.argv;
+  const { file, dryRun }: { file: string; dryRun: boolean } =
+    await parseMe.argv;
   logger.info(`Script lancé avec le fichier ${file}.`);
-  if (checkOnly) {
+  if (dryRun) {
     logger.info(
-      `En mode vérification uniquement, aucune opération en BDD ne sera effectuée`,
+      `En mode exécution, DRY_RUN activé, script lancé à blanc, aucune persistance en BDD.`,
     );
   } else {
-    if (dryRun) {
-      logger.info(
-        `En mode exécution, DRY_RUN activé, script lancé à blanc, aucune persistance en BDD.`,
-      );
-    } else {
-      logger.info(`En mode exécution avec insertion en BDD.`);
-    }
+    logger.info(`En mode exécution avec insertion en BDD.`);
   }
   const { errorMessagesByQuery, sqlByQuery } = await doJob(
     new FilePath(process.cwd(), file),
-    checkOnly,
     dryRun,
   );
   for (const [line, messages] of errorMessagesByQuery.entries()) {
@@ -454,5 +430,3 @@ async function main() {
     }
   }
 })();
-
-export { doJob };
