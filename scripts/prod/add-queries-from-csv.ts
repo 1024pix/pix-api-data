@@ -23,7 +23,6 @@ dotenv.config();
 const { performance } = perf_hooks;
 
 const PARAM_NAME_GLOBAL_REGEXP = new RegExp(PARAM_NAME_REGEXP, 'g');
-const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 const parseMe = yargs(hideBin(process.argv))
   .option('file', {
     type: 'string',
@@ -396,6 +395,8 @@ const isLaunchedFromCommandLine = process.argv[1] === modulePath;
 const __filename = modulePath;
 
 async function main() {
+  console.log(process.cwd());
+  console.log('COUCOU');
   const startTime = performance.now();
   logger.info(`Script ${__filename} has started`);
   const {
@@ -418,7 +419,7 @@ async function main() {
     }
   }
   const { errorMessagesByQuery, sqlByQuery } = await doJob(
-    new FilePath(__dirname, file),
+    new FilePath(process.cwd(), file),
     checkOnly,
     dryRun,
   );

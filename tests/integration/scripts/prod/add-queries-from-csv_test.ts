@@ -3,8 +3,6 @@ import {
   FilePath,
   doJob,
 } from '../../../../scripts/prod/add-queries-from-csv.js';
-import * as url from 'url';
-const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
 describe('Integration | scripts-prod | Add queries from csv', function () {
   let dryRun: boolean, checkOnly: boolean;
@@ -22,7 +20,10 @@ describe('Integration | scripts-prod | Add queries from csv', function () {
 
     it('should check queries and dump expected errors', async function () {
       // given
-      const filePath = new FilePath(__dirname, './queries-checkonly-test.csv');
+      const filePath = new FilePath(
+        process.cwd(),
+        'tests/integration/scripts/prod/queries-checkonly-test.csv',
+      );
 
       // when
       const { errorMessagesByQuery } = await doJob(filePath, checkOnly, dryRun);
@@ -83,7 +84,10 @@ describe('Integration | scripts-prod | Add queries from csv', function () {
 
     it('should generate the expected SQL when all queries are valid without effectively inserting records', async function () {
       // given
-      const filePath = new FilePath(__dirname, './queries-dryrun-test.csv');
+      const filePath = new FilePath(
+        process.cwd(),
+        'tests/integration/scripts/prod/queries-dryrun-test.csv',
+      );
 
       // when
       const { sqlByQuery } = await doJob(filePath, checkOnly, dryRun);
@@ -131,7 +135,10 @@ describe('Integration | scripts-prod | Add queries from csv', function () {
 
     it('should not insert anything if not all queries are valid', async function () {
       // given
-      const filePath = new FilePath(__dirname, './queries-failexec-test.csv');
+      const filePath = new FilePath(
+        process.cwd(),
+        'tests/integration/scripts/prod/queries-failexec-test.csv',
+      );
 
       // when
       await doJob(filePath, checkOnly, dryRun);
@@ -154,8 +161,8 @@ describe('Integration | scripts-prod | Add queries from csv', function () {
     it('should insert in database queries and params when all queries from file are valid', async function () {
       // given
       const filePath = new FilePath(
-        __dirname,
-        './queries-successexec-test.csv',
+        process.cwd(),
+        'tests/integration/scripts/prod/queries-successexec-test.csv',
       );
 
       // when
