@@ -1,3 +1,2 @@
-"select * from t where id = {{ mandatoryParam }}","{name:'mandatory_param', type: 'int', mandatory: 'true'}",
 "select * from t where id = 1",
 "select * from t where id = {{ mandatoryParam }} [[ AND optional = {{ optionalParam }} ]] [[ AND optional2 = {{ optionalParam2 }} ]]","{name:'mandatoryParam', type: 'int', mandatory: 'true'}","{name:'optionalParam', type: 'string', mandatory: 'false'}","{name:'optionalParam2', type: 'date-time', mandatory: 'false'}"

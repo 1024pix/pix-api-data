@@ -1,4 +1,4 @@
-
+"","{name:'mandatoryParam', type: 'int', mandatory: 'true'}"
 "select * from t where id = {{ mandatoryParam }}",
 "select * from t where id = {{ mandatoryParam }}","{name:'mandatory_param', type: 'int', mandatory: 'true'}",
 "select * from t where id = {{ mandatoryParam }}","{name : 'mandatoryParam', type: 'imaginary-type', mandatory: 'true'}",
