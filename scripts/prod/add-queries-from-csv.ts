@@ -117,7 +117,7 @@ class FilePath {
 
   constructor(currentDir: string, file: string) {
     this.file = file;
-    this.fullPath = path.join(currentDir, file);
+    this.fullPath = path.isAbsolute(file) ? file : path.join(currentDir, file);
   }
 }
 
