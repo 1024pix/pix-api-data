@@ -1,4 +1,4 @@
-import { ParamType, QueryParam } from '../models/QueryCatalogItem';
+import { ParamType, QueryParam } from '../models/QueryCatalogItem.js';
 import moment from 'moment';
 
 export class UserCommandParam {

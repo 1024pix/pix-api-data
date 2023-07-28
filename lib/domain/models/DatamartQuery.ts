@@ -1,5 +1,5 @@
 import type { QueryParam } from './QueryCatalogItem.js';
-import type { UserCommandParam } from '../commands/UserCommandParam';
+import type { UserCommandParam } from './UserCommandParam';
 
 export interface DatamartQuery {
   query: string;

@@ -1,7 +1,6 @@
 import { expect } from '../../../test-helper.js';
-import { UserCommandParam } from '../../../../lib/domain/commands/UserCommandParam.js';
+import { UserCommandParam } from '../../../../lib/domain/models/UserCommandParam.js';
 import { ParamType, QueryParam } from '../../../../lib/domain/models/QueryCatalogItem.js';
-import { DatamartQueryModel } from '../../../../lib/domain/models/DatamartQuery';
 
 describe('Unit | Domain | UserCommandParam', function () {
   context(

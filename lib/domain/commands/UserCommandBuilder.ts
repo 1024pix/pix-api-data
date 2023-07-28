@@ -1,7 +1,7 @@
 import type { UUID } from 'crypto';
 import { Result } from '../models/Result.js';
-import { UserCommandParam } from './UserCommandParam';
-import { UserCommand } from './UserCommand';
+import { UserCommandParam } from '../models/UserCommandParam.js';
+import { UserCommand } from '../models/UserCommand.js';
 
 export class UserCommandBuilder {
   constructor(private readonly payload: unknown) {}

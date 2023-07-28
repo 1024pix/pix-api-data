@@ -1,12 +1,12 @@
 import { expect } from '../../../test-helper.js';
 import {
   UserCommand,
-} from '../../../../lib/domain/commands/UserCommand.js';
+} from '../../../../lib/domain/models/UserCommand.js';
 import type { Result } from '../../../../lib/domain/models/Result.js';
 import { UserCommandBuilder } from '../../../../lib/domain/commands/UserCommandBuilder';
-import { UserCommandParam } from '../../../../lib/domain/commands/UserCommandParam';
+import { UserCommandParam } from '../../../../lib/domain/models/UserCommandParam';
 
-describe('Unit | Domain | UserCommand', function () {
+describe('Unit | Domain | UserCommandBuilder', function () {
   describe('buildFromPayload', function () {
     context('when payload is valid', function () {
       it('should return a successful CommandResult when params is an empty array', function () {
