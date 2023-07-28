@@ -21,7 +21,6 @@
     "lint": "run-p --continue-on-error 'lint:!(fix)'",
     "lint:fix": "run-p --continue-on-error lint:*:fix",
     "lint:dependencies": "depcheck",
-    "lint:file-and-directory-names": "ls-lint",
     "lint:js": "eslint . --ext js --cache --cache-strategy content",
     "lint:js:fix": "npm run lint:js -- --fix",
     "lint:js:uncached": "eslint . --ext js",
@@ -41,14 +40,12 @@
     "test:lint": "npm test && npm run lint"
   },
   "dependencies": {
-    "@hapi/accept": "^6.0.0",
     "@hapi/boom": "^10.0.1",
     "@hapi/hapi": "^21.3.2",
     "@hapi/inert": "^7.0.0",
     "@hapi/vision": "^7.0.0",
     "@types/bcrypt": "^5.0.0",
     "@types/chai": "^4.3.5",
-    "@types/express": "^4.17.17",
     "@types/hapi__hapi": "^21.0.0",
     "@types/jsonwebtoken": "^9.0.2",
     "@types/mocha": "^10.0.1",
@@ -58,7 +55,6 @@
     "@types/pino-pretty": "^5.0.0",
     "@types/sinon": "^10.0.15",
     "@types/sinon-chai": "^3.2.9",
-    "@types/supertest": "^2.0.12",
     "@types/yargs": "^17.0.24",
     "@typescript-eslint/eslint-plugin": "^6.1.0",
     "bcrypt": "^5.1.0",
@@ -77,14 +73,13 @@
   },
   "devDependencies": {
     "@1024pix/eslint-config": "^1.0.0",
-    "@ls-lint/ls-lint": "^2.0.1",
     "@tsconfig/node-lts-strictest-esm": "^18.12.1",
+    "@typescript-eslint/parser": "^6.2.0",
     "chai": "^4.3.7",
     "depcheck": "^1.4.3",
     "eslint": "^8.42.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-chai-expect": "^3.0.0",
-    "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-knex": "^0.2.1",
     "eslint-plugin-mocha": "^10.1.0",
     "eslint-plugin-n": "^16.0.1",
@@ -95,8 +90,6 @@
     "prettier": "^2.8.8",
     "sinon": "^15.2.0",
     "sinon-chai": "^3.7.0",
-    "source-map-support": "^0.5.21",
-    "supertest": "^6.3.3",
     "typescript": "^5.1.6"
   }
 }
