@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "license": "AGPL-3.0",
   "engines": {
-    "node": "18.16.1",
+    "node": "18.17.0",
     "npm": "^9.5.1"
   },
   "type": "module",
