@@ -40,6 +40,7 @@ module.exports = {
     'no-empty-function': 'error',
     'n/no-process-exit': 'error',
     'unicorn/no-empty-file': 'error',
+    'n/no-missing-import': 'off',
     'n/no-unpublished-import': [
       'error',
       {

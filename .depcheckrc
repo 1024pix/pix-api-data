@@ -1,0 +1,1 @@
+ignores: ["@tsconfig/node-lts-strictest-esm"]
