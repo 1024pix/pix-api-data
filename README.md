@@ -143,11 +143,31 @@ SELECT nom, region FROM data_ref_academies WHERE id <> ALL( {{ id_array }} )
 ```
 
 ### Insertion dans la base
-Pour le moment il n'existe pas de cli/interface pour des insertions dans la base `DATAMART_DATABASE`,
-il faut se connecter directement sur la base `pix_api_data` et exécuter les lignes de commande d'insertions
+Il est possible d'insérer les requêtes et les paramètres associés à la main directement sur la base `pix_api_data` de la façon suivante:
 ```sql
 INSERT INTO catalog_queries(query_id, sql_query, created_at) VALUES (UUID, my_query, my_params);
 INSERT INTO catalog_query_params(catalog_query_id, name, type, mandatory) VALUES (UUID, name, param_type, boolean);
+```
+:warning: **Cette méthode est néanmoins grande source d'erreurs de saisie.**
+
+C'est pourquoi un script a été mis à disposition afin d'accompagner les équipes responsables de l'élaboration du catalogue
+dans la réalisation et l'insertion de requêtes.
+
+Ce script prend en paramètre un fichier CSV (avec pour séparateur `,`) construit de la manière suivante : `requete,param1,param2,param3,...,paramN`.
+
+Exemple : [exemple de fichier csv valide](docs%2Ffiles%2Fexample-file-csv-query-insertion.csv)
+
+Il permet de:
+- Vérifier la correspondance des paramètres présents dans la requête avec ceux fournis dans le CSV
+- Tester/effectuer, dans le cas où le fichier est valide, l'insertion dans le catalogue des requêtes et de leurs paramètres
+
+Il s'utilise sur un container Scalingo de la manière suivante :
+```bash
+scalingo -a <nom-application-scalingo> run --file ./my_awesome_queries.csv node build/scripts/prod/add-queries-from-csv.js --file /tmp/uploads/my_awesome_queries.csv
+```
+Le script est assorti d'une option `--run` laquelle permet de réaliser et de persister l'insertion des requêtes.
+```bash
+scalingo -a <nom-application-scalingo> run --file ./my_awesome_queries.csv node build/scripts/prod/add-queries-from-csv.js --file /tmp/uploads/my_awesome_queries.csv --run
 ```
 
 ## Ajout d'un utilisateur
@@ -155,7 +175,7 @@ INSERT INTO catalog_query_params(catalog_query_id, name, type, mandatory) VALUES
 Il est réalisé en ajoutant un enregistrement dans la tables Users en BDD à l'aide des commandes suivantes :
 
 ```bash
-scalingo --app pix-api-data-production run node build/scripts/prod/add-user.js --username <userName> --label <userLabel> --password <userPassword>
+scalingo --app <nom-application-scalingo> run node build/scripts/prod/add-user.js --username <userName> --label <userLabel> --password <userPassword>
 ```
 
 ## Utilisation de l'API
