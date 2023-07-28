@@ -64,7 +64,7 @@ describe('Acceptance | query', function () {
         });
         const payload = {
           queryId,
-          params: <any>[],
+          params: [],
         };
 
         // when

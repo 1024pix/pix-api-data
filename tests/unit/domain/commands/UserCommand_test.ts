@@ -1,9 +1,10 @@
 import { expect } from '../../../test-helper.js';
 import {
   UserCommand,
-  UserCommandParam,
 } from '../../../../lib/domain/commands/UserCommand.js';
 import type { Result } from '../../../../lib/domain/models/Result.js';
+import { UserCommandBuilder } from '../../../../lib/domain/commands/UserCommandBuilder';
+import { UserCommandParam } from '../../../../lib/domain/commands/UserCommandParam';
 
 describe('Unit | Domain | UserCommand', function () {
   describe('buildFromPayload', function () {
@@ -17,7 +18,7 @@ describe('Unit | Domain | UserCommand', function () {
 
         // when
         const commandResult: Result<UserCommand> =
-          UserCommand.buildFromPayload(validPayload);
+          new UserCommandBuilder(validPayload).build();
 
         // then
         const expectedUserCommand = new UserCommand(
@@ -45,26 +46,17 @@ describe('Unit | Domain | UserCommand', function () {
 
         // when
         const commandResult: Result<UserCommand> =
-          UserCommand.buildFromPayload(validPayload);
+          new UserCommandBuilder(validPayload).build();
 
         // then
         const expectedParams: UserCommandParam[] = [];
-        expectedParams.push({ name: 'stringAttribute', value: 'value' });
-        expectedParams.push({ name: 'integerAttribute', value: 123 });
-        expectedParams.push({ name: 'floatAttribute', value: 1.23 });
-        expectedParams.push({ name: 'booleanAttribute', value: true });
-        expectedParams.push({
-          name: 'stringArrayAttribute',
-          value: ['some', 'strings'],
-        });
-        expectedParams.push({
-          name: 'integerArrayAttribute',
-          value: [-123, 456],
-        });
-        expectedParams.push({
-          name: 'floatArrayAttribute',
-          value: [1.23, -45.6],
-        });
+        expectedParams.push(new UserCommandParam('stringAttribute', 'value'));
+        expectedParams.push(new UserCommandParam('integerAttribute', 123));
+        expectedParams.push(new UserCommandParam('floatAttribute',1.23));
+        expectedParams.push(new UserCommandParam('booleanAttribute',true ));
+        expectedParams.push(new UserCommandParam('stringArrayAttribute', ['some', 'strings']));
+        expectedParams.push(new UserCommandParam('integerArrayAttribute',[-123, 456]));
+        expectedParams.push(new UserCommandParam('floatArrayAttribute',[1.23, -45.6]));
         const expectedUserCommand = new UserCommand(
           'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
           expectedParams,
@@ -91,7 +83,7 @@ describe('Unit | Domain | UserCommand', function () {
 
           // when
           const commandResult: Result<UserCommand> =
-            UserCommand.buildFromPayload(invalidPayload);
+            new UserCommandBuilder(invalidPayload).build();
 
           // then
           expect(commandResult.isSuccess).to.be.false;
@@ -113,7 +105,7 @@ describe('Unit | Domain | UserCommand', function () {
 
           // when
           const commandResult: Result<UserCommand> =
-            UserCommand.buildFromPayload(invalidPayload);
+            new UserCommandBuilder(invalidPayload).build();
 
           // then
           expect(commandResult.isSuccess).to.be.false;
@@ -133,7 +125,7 @@ describe('Unit | Domain | UserCommand', function () {
 
           // when
           const commandResult: Result<UserCommand> =
-            UserCommand.buildFromPayload(invalidPayload);
+            new UserCommandBuilder(invalidPayload).build();
 
           // then
           expect(commandResult.isSuccess).to.be.false;
@@ -149,7 +141,7 @@ describe('Unit | Domain | UserCommand', function () {
 
           // when
           const commandResult: Result<UserCommand> =
-            UserCommand.buildFromPayload(invalidPayload);
+            new UserCommandBuilder(invalidPayload).build();
 
           // then
           expect(commandResult.isSuccess).to.be.false;
@@ -168,7 +160,7 @@ describe('Unit | Domain | UserCommand', function () {
 
           // when
           const commandResult: Result<UserCommand> =
-            UserCommand.buildFromPayload(invalidPayload);
+            new UserCommandBuilder(invalidPayload).build();
 
           // then
           expect(commandResult.isSuccess).to.be.false;
@@ -184,7 +176,7 @@ describe('Unit | Domain | UserCommand', function () {
 
           // when
           const commandResult: Result<UserCommand> =
-            UserCommand.buildFromPayload(invalidPayload);
+            new UserCommandBuilder(invalidPayload).build();
 
           // then
           expect(commandResult.isSuccess).to.be.false;
@@ -215,7 +207,7 @@ describe('Unit | Domain | UserCommand', function () {
 
           // when
           const commandResult: Result<UserCommand> =
-            UserCommand.buildFromPayload(invalidPayload);
+            new UserCommandBuilder(invalidPayload).build();
 
           // then
           expect(commandResult.isSuccess).to.be.false;
@@ -243,7 +235,7 @@ describe('Unit | Domain | UserCommand', function () {
 
           // when
           const commandResult: Result<UserCommand> =
-            UserCommand.buildFromPayload(invalidPayload);
+            new UserCommandBuilder(invalidPayload).build();
 
           // then
           expect(commandResult.isSuccess).to.be.false;
@@ -290,7 +282,7 @@ describe('Unit | Domain | UserCommand', function () {
 
           // when
           const commandResult: Result<UserCommand> =
-            UserCommand.buildFromPayload(invalidPayload);
+            new UserCommandBuilder(invalidPayload).build();
 
           // then
           expect(commandResult.isSuccess).to.be.false;
