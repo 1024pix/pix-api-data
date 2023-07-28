@@ -111,6 +111,10 @@ jobs:
             TEST_DATABASE_API_URL: postgres://circleci@pg-api:5432/circleci
             TEST_DATABASE_DATAMART_URL: postgres://circleci@pg-datamart:5432/circleci
           when: always
+      - run:
+          name: Build
+          command: npm run build
+          when: always
       - store_test_results:
           path: /home/circleci/test-results
       - store_artifacts:
