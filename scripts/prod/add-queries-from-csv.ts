@@ -27,10 +27,10 @@ const parseMe = yargs(hideBin(process.argv))
     type: 'string',
     description: 'Chemin vers le fichier contenant les données',
   })
-  .option('dryRun', {
+  .option('run', {
     type: 'boolean',
     description:
-      "Option pour exécuter le script à blanc (ne produira que les sorties console sans réaliser d'insertion en BDD)",
+      "Option pour effectuer et persister l'insertion en BDD des requêtes dans le catalogue à condition qu'elles soient toutes valides.",
   })
   .help();
 
@@ -130,7 +130,7 @@ type ProvidedParam = {
 
 const doJob = async (
   filePath: FilePath,
-  dryRun: boolean,
+  run: boolean,
 ): Promise<{ errorMessagesByQuery: string[][]; sqlByQuery: string[][] }> => {
   logger.info(`Récupération des requêtes depuis le fichier...`);
   const { errorMessagesByQuery, queries } = await parseQueriesFromCsv(filePath);
@@ -146,7 +146,7 @@ const doJob = async (
   logger.info(`Récupération OK, ${queries.length} requêtes trouvées.`);
 
   logger.info(
-    `Insertion des requêtes dans le catalogue...${dryRun ? 'TEST-BLANC' : ''}`,
+    `Insertion des requêtes dans le catalogue...${run ? '' : 'TEST-BLANC'}`,
   );
   const sqlByQuery: string[][] = [];
   const trx = await knexAPI.transaction();
@@ -154,8 +154,8 @@ const doJob = async (
     for (const query of queries) {
       sqlByQuery[query.lineNumberInCSV] = await addQueryToCatalog(query, trx);
     }
-    if (dryRun) await trx.rollback();
-    else await trx.commit();
+    if (run) await trx.commit();
+    else await trx.rollback();
   } catch (err) {
     logger.error(
       `Sortie prématurée: l'insertion en catalogue s'est mal passée.`,
@@ -362,7 +362,11 @@ function checkParam(
   }
   if (!isTypeInParamTypeEnum(providedParamWithName.type)) {
     errorMessages.push(
-      `Paramètre facultatif "${param}" présent dans la requête et dans les paramètres fournis mais avec un type inexistant (type "${providedParamWithName.type}" indiqué).`,
+      `Paramètre ${
+        shouldBeMandatory ? 'obligatoire' : 'facultatif'
+      } "${param}" présent dans la requête et dans les paramètres fournis mais avec un type inexistant (type "${
+        providedParamWithName.type
+      }" indiqué).`,
     );
   }
   return errorMessages;
@@ -385,19 +389,16 @@ const __filename = modulePath;
 async function main() {
   const startTime = performance.now();
   logger.info(`Script ${__filename} has started`);
-  const { file, dryRun }: { file: string; dryRun: boolean } =
-    await parseMe.argv;
+  const { file, run }: { file: string; run: boolean } = await parseMe.argv;
   logger.info(`Script lancé avec le fichier ${file}.`);
-  if (dryRun) {
-    logger.info(
-      `En mode exécution, DRY_RUN activé, script lancé à blanc, aucune persistance en BDD.`,
-    );
+  if (!run) {
+    logger.info(`Test à blanc, aucune insertion persistée`);
   } else {
-    logger.info(`En mode exécution avec insertion en BDD.`);
+    logger.info(`Exécution réelle avec persistence des insertions.`);
   }
   const { errorMessagesByQuery, sqlByQuery } = await doJob(
     new FilePath(process.cwd(), file),
-    dryRun,
+    run,
   );
   for (const [line, messages] of errorMessagesByQuery.entries()) {
     logger.info(

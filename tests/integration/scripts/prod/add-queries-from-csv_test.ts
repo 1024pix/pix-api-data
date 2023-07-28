@@ -5,7 +5,7 @@ import {
 } from '../../../../scripts/prod/add-queries-from-csv.js';
 
 describe('Integration | scripts-prod | Add queries from csv', function () {
-  let dryRun: boolean;
+  let run: boolean;
 
   afterEach(async function () {
     await knexAPI('catalog_query_params').delete();
@@ -14,7 +14,7 @@ describe('Integration | scripts-prod | Add queries from csv', function () {
 
   context('query checking', function () {
     beforeEach(function () {
-      dryRun = true;
+      run = false;
     });
 
     it('should check queries and dump expected errors', async function () {
@@ -25,7 +25,7 @@ describe('Integration | scripts-prod | Add queries from csv', function () {
       );
 
       // when
-      const { errorMessagesByQuery } = await doJob(filePath, dryRun);
+      const { errorMessagesByQuery } = await doJob(filePath, run);
 
       // then
       const [{ count: insertedQueriesCnt }] = await knexAPI(
@@ -49,7 +49,7 @@ describe('Integration | scripts-prod | Add queries from csv', function () {
         'Paramètre "mandatory_param" listé dans les paramètres fournis mais pas présent dans la requête.',
       ]);
       expect(errorMessagesByQuery[3]).to.have.members([
-        'Paramètre facultatif "mandatoryParam" présent dans la requête et dans les paramètres fournis mais avec un type inexistant (type "imaginary-type" indiqué).',
+        'Paramètre obligatoire "mandatoryParam" présent dans la requête et dans les paramètres fournis mais avec un type inexistant (type "imaginary-type" indiqué).',
       ]);
       expect(errorMessagesByQuery[4]).to.have.members([
         'Paramètre obligatoire "mandatoryParam" présent dans la requête en tant qu\'obligatoire mais fourni en tant que paramètre facultatif.',
@@ -77,7 +77,7 @@ describe('Integration | scripts-prod | Add queries from csv', function () {
 
   context('dry run', function () {
     beforeEach(function () {
-      dryRun = true;
+      run = false;
     });
 
     it('should generate the expected SQL when all queries are valid without effectively inserting records', async function () {
@@ -88,7 +88,7 @@ describe('Integration | scripts-prod | Add queries from csv', function () {
       );
 
       // when
-      const { sqlByQuery } = await doJob(filePath, dryRun);
+      const { sqlByQuery } = await doJob(filePath, run);
 
       // then
       const [{ count: insertedQueriesCnt }] = await knexAPI(
@@ -127,7 +127,7 @@ describe('Integration | scripts-prod | Add queries from csv', function () {
 
   context('real execution', function () {
     beforeEach(function () {
-      dryRun = false;
+      run = true;
     });
 
     it('should not insert anything if not all queries are valid', async function () {
@@ -138,7 +138,7 @@ describe('Integration | scripts-prod | Add queries from csv', function () {
       );
 
       // when
-      await doJob(filePath, dryRun);
+      await doJob(filePath, run);
 
       // then
       const [{ count: insertedQueriesCnt }] = await knexAPI(
@@ -163,7 +163,7 @@ describe('Integration | scripts-prod | Add queries from csv', function () {
       );
 
       // when
-      await doJob(filePath, dryRun);
+      await doJob(filePath, run);
 
       // then
       const catalogQueriesDTO = await knexAPI('catalog_queries')
