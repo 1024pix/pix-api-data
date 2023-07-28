@@ -54,7 +54,7 @@ describe('Acceptance | query', function () {
   });
 
   context('when payload is valid', function () {
-    context('when "requestId" refers to an existing query', function () {
+    context('when "queryId" refers to an existing query', function () {
       it('should return a proper payload response with status code 200', async function () {
         // given
         const queryId = 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11';
@@ -86,39 +86,36 @@ describe('Acceptance | query', function () {
       });
     });
 
-    context(
-      'when "requestId" does not refer to an existing query',
-      function () {
-        it('should return a proper error response with status code 422', async function () {
-          // given
-          const queryId = 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11';
-          const otherQueryId = 'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee';
-          await knexAPI('catalog_queries').insert({
-            id: otherQueryId,
-            sql_query: 'SELECT COUNT(*) FROM public.data_ref_academies',
-          });
-          const payload = {
-            queryId,
-            params: <any>[],
-          };
-
-          // when
-          const server = await createServer();
-          const response = await server.inject({
-            method: 'POST',
-            url: '/query',
-            payload,
-            headers: { authorization: headers },
-          });
-
-          // then
-          expect(response.statusCode).to.equal(422);
-          expect(JSON.parse(response.payload)).to.deep.equal({
-            status: 'failure',
-            messages: ['cannot run requested query'],
-          });
+    context('when "queryId" does not refer to an existing query', function () {
+      it('should return a proper error response with status code 422', async function () {
+        // given
+        const queryId = 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11';
+        const otherQueryId = 'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee';
+        await knexAPI('catalog_queries').insert({
+          id: otherQueryId,
+          sql_query: 'SELECT COUNT(*) FROM public.data_ref_academies',
         });
-      },
-    );
+        const payload = {
+          queryId,
+          params: <any>[],
+        };
+
+        // when
+        const server = await createServer();
+        const response = await server.inject({
+          method: 'POST',
+          url: '/query',
+          payload,
+          headers: { authorization: headers },
+        });
+
+        // then
+        expect(response.statusCode).to.equal(422);
+        expect(JSON.parse(response.payload)).to.deep.equal({
+          status: 'failure',
+          messages: ['cannot run requested query'],
+        });
+      });
+    });
   });
 });
