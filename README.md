@@ -163,11 +163,11 @@ Il permet de:
 
 Il s'utilise sur un container Scalingo de la manière suivante :
 ```bash
-scalingo -a <nom-application-scalingo> run --file ./my_awesome_queries.csv node build/scripts/prod/add-queries-from-csv.js --file /tmp/uploads/my_awesome_queries.csv
+scalingo -a <nom-application-scalingo> run --file ./my_awesome_queries.csv "node build/scripts/prod/add-queries-from-csv.js --file /tmp/uploads/my_awesome_queries.csv"
 ```
 Le script est assorti d'une option `--run` laquelle permet de réaliser et de persister l'insertion des requêtes.
 ```bash
-scalingo -a <nom-application-scalingo> run --file ./my_awesome_queries.csv node build/scripts/prod/add-queries-from-csv.js --file /tmp/uploads/my_awesome_queries.csv --run
+scalingo -a <nom-application-scalingo> run --file ./my_awesome_queries.csv "node build/scripts/prod/add-queries-from-csv.js --file /tmp/uploads/my_awesome_queries.csv --run"
 ```
 
 ## Ajout d'un utilisateur
@@ -175,7 +175,7 @@ scalingo -a <nom-application-scalingo> run --file ./my_awesome_queries.csv node 
 Il est réalisé en ajoutant un enregistrement dans la tables Users en BDD à l'aide des commandes suivantes :
 
 ```bash
-scalingo --app <nom-application-scalingo> run node build/scripts/prod/add-user.js --username <userName> --label <userLabel> --password <userPassword>
+scalingo --app <nom-application-scalingo> run "node build/scripts/prod/add-user.js --username <userName> --label <userLabel> --password <userPassword>"
 ```
 
 ## Utilisation de l'API
