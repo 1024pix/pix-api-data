@@ -18,7 +18,6 @@ import {
 } from '../../lib/domain/models/DatamartQuery.js';
 import { ParamType } from '../../lib/domain/models/QueryCatalogItem.js';
 import type { Knex } from 'knex';
-import Transaction = Knex.Transaction;
 
 dotenv.config();
 const { performance } = perf_hooks;
@@ -127,7 +126,7 @@ const parseQueriesFromCsv = async (
 
 const addQueryToCatalog = async (
   queryChecker: QueryChecker,
-  trx: Transaction,
+  trx: Knex.Transaction,
 ): Promise<string[]> => {
   const sqlQueries: string[] = [];
   const knexQueryToExecute_query = trx('catalog_queries')
