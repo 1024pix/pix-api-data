@@ -128,7 +128,7 @@ SELECT nom, region FROM data_ref_academies WHERE 1=1 AND [[ (id = {{ id_1 }} OR 
 
 
 ##### Cas particulier des clauses : WHERE ... IN
-L'injection d'un tableau via `knex` obglige l'utilisation du `= ANY()` à la place du `IN`. En effet un tableau`[1, 2]`sera converti en `'{1,2}'`.
+L'injection d'un tableau via `knex` oblige l'utilisation du `= ANY()` à la place du `IN`. En effet un tableau`[1, 2]`sera converti en `'{1,2}'`.
 
 Exemple:
 ```sql
@@ -155,7 +155,7 @@ INSERT INTO catalog_query_params(catalog_query_id, name, type, mandatory) VALUES
 Il est réalisé en ajoutant un enregistrement dans la tables Users en BDD à l'aide des commandes suivantes :
 
 ```bash
-scalingo --app pix-api-data-production run ts-node --esm scripts/prod/add-user.ts --username <userName> --label <userLabel> --password <userPassword>
+scalingo --app pix-api-data-production run node build/scripts/prod/add-user.js --username <userName> --label <userLabel> --password <userPassword>
 ```
 
 ## Utilisation de l'API
@@ -172,7 +172,7 @@ avec en paramètre
 "password": "LeMotDePasseQueL'UtilisateurUtiliseraitDeSonPointDeVue"
 }
 ```
-On recupérera le token dans la réponse
+On récupérera le token dans la réponse
 ```
 ACCESS_TOKEN=${response.body.data}
 ```
