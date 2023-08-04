@@ -7,7 +7,7 @@ import {
   CatalogQueryRepository,
 } from '../../infrastructure/CatalogQueryRepository.js';
 import { DatamartQueryModel } from '../models/DatamartQuery.js';
-import type { UserCommand } from '../commands/UserCommand.js';
+import type { UserCommand } from '../models/UserCommand.js';
 import type { QueryCatalogItem } from '../models/QueryCatalogItem.js';
 import { Result } from '../models/Result.js';
 import type { DatamartResponse } from '../models/DatamartResponse.js';
@@ -29,7 +29,10 @@ class ExecuteQueryUseCaseImpl implements ExecuteQueryUseCase {
   ): Promise<Result<DatamartResponse>> {
     const queryCatalogItem: QueryCatalogItem =
       await this.catalogQueryRepository.find(userCommand.queryId);
-    if (!queryCatalogItem.query) {
+    if (
+      !queryCatalogItem.query ||
+      !userCommand.isValid(queryCatalogItem.params)
+    ) {
       return Result.failure(['cannot run requested query']);
     }
 

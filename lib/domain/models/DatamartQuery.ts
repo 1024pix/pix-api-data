@@ -1,6 +1,5 @@
-import type { UserCommandParam } from '../commands/UserCommand.js';
-import { ParamType, QueryParam } from './QueryCatalogItem.js';
-import moment from 'moment';
+import type { QueryParam } from './QueryCatalogItem.js';
+import type { UserCommandParam } from './UserCommandParam';
 
 export interface DatamartQuery {
   query: string;
@@ -39,11 +38,7 @@ export class DatamartQueryModel {
   }
 
   isValid(): boolean {
-    return (
-      this.checkMandatoryParams() &&
-      this.checkOptionalParams() &&
-      this.checkValueTypes()
-    );
+    return this.checkMandatoryParams() && this.checkOptionalParams();
   }
 
   private checkMandatoryParams(): boolean {
@@ -70,53 +65,5 @@ export class DatamartQueryModel {
           .map((paramNeed) => this.paramValueNames.includes(paramNeed)),
       ).size === 1
     );
-  }
-
-  private checkValueTypes(): boolean {
-    return this.paramValues.every((paramValue) => {
-      return this.checkValue(
-        paramValue.value,
-        this.paramDefinitions.find(
-          (paramDefinition) => paramDefinition.name === paramValue.name,
-        ).type,
-      );
-    });
-  }
-
-  private checkValue(
-    value: string | number | boolean | string[] | number[],
-    paramDefinitionType: ParamType,
-  ): boolean {
-    switch (paramDefinitionType) {
-      case ParamType.STRING:
-        return typeof value === 'string';
-      case ParamType.DATE:
-        return (
-          typeof value === 'string' && this.checkDateFormat(value, 'YYYY-MM-DD')
-        );
-      case ParamType.STRING_ARRAY:
-        return (value as Array<unknown>).every(
-          (item) => typeof item === 'string',
-        );
-      case ParamType.INT_ARRAY:
-      case ParamType.FLOAT_ARRAY:
-        return (value as Array<unknown>).every(
-          (item) => typeof item === 'number',
-        );
-      case ParamType.BOOLEAN:
-        return typeof value === 'boolean';
-      case ParamType.INT:
-      case ParamType.FLOAT:
-        return typeof value === 'number';
-      case ParamType.DATE_TIME:
-        return (
-          typeof value === 'string' &&
-          this.checkDateFormat(value, 'YYYY-MM-DD HH:mm:ss')
-        );
-    }
-  }
-
-  private checkDateFormat(value: string, pattern: string): boolean {
-    return moment(value, pattern, true).isValid();
   }
 }
