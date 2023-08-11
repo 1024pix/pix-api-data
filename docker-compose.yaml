@@ -2,7 +2,7 @@ version: '3'
 
 services:
   postgres-api:
-    image: postgres:14.6-alpine
+    image: postgres:14.9-alpine
     container_name: pix-api-data-postgres
     ports:
       - '${PIX_DATABASE_PORT_API:-5455}:5432'
@@ -13,7 +13,7 @@ services:
       - .env
 
   postgres-datamart:
-    image: postgres:14.6-alpine
+    image: postgres:14.9-alpine
     container_name: pix-api-data-postgres-datamart
     ports:
       - '${PIX_DATABASE_PORT_DATAMART:-5456}:5432'
