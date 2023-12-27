@@ -39,12 +39,12 @@ executors:
         type: string
     docker:
       - image: cimg/node:<<parameters.node-version>>
-      - image: postgres:14.6-alpine
+      - image: postgres:14.10-alpine
         name: pg-api
         environment:
           POSTGRES_USER: circleci
           POSTGRES_HOST_AUTH_METHOD: trust
-      - image: postgres:14.6-alpine
+      - image: postgres:14.10-alpine
         name: pg-datamart
         environment:
           POSTGRES_USER: circleci
