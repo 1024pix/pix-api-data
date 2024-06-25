@@ -1,7 +1,5 @@
 {
-"extension": ["js", "cjs", "mjs","ts"],
-  "node-option": [
-    "experimental-specifier-resolution=node",
-    "loader=ts-node/esm"
-  ]
+  "$schema": "https://json.schemastore.org/mocharc.json",
+  "require": "tsx",
+  "extension": ["js", "cjs", "mjs","ts"]
 }

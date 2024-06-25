@@ -3,17 +3,17 @@
   "version": "0.3.0",
   "license": "AGPL-3.0",
   "engines": {
-    "node": "18.16.1",
-    "npm": "^9.5.1"
+    "node": "20.14.0",
+    "npm": "^10.7.0"
   },
   "type": "module",
   "scripts": {
     "build": "tsc",
     "clean": "rm -rf node_modules build",
     "db:new-migration": "npx knex --knexfile ./lib/common/db/knexfile_api.js  migrate:make $migrationname",
-    "db:create": "ts-node --esm ./lib/common/db/create-database.js",
-    "db:delete": "ts-node --esm ./lib/common/db/drop-database.js",
-    "db:empty": "ts-node --esm ./lib/common/db/empty-database.js",
+    "db:create": "tsx ./lib/common/db/create-database.js",
+    "db:delete": "tsx ./lib/common/db/drop-database.js",
+    "db:empty": "tsx ./lib/common/db/empty-database.js",
     "db:migrate": "knex --knexfile ./lib/common/db/knexfile_api.js  migrate:latest",
     "db:rollback:latest": "knex --knexfile ./lib/common/db/knexfile_api.js  migrate:down",
     "db:prepare": "npm run db:delete && npm run db:create && npm run db:migrate",
@@ -27,9 +27,9 @@
     "lint:js:uncached": "eslint . --ext js",
     "postdeploy": "DEBUG=knex:* npm run db:migrate",
     "preinstall": "npx check-engine",
-    "start": "ts-node --esm ./lib/index.ts",
+    "start": "tsx ./lib/index.ts",
     "start:prod": "npm run build && node ./build/lib",
-    "start:watch": "nodemon ts-node --esm ./lib/index.ts",
+    "start:watch": "nodemon tsx ./lib/index.ts",
     "test": "NODE_ENV=test npm run db:prepare && npm run test:api",
     "test:api": "status=0; npm run test:api:unit || status=1 ; for dir in $(find tests/* -maxdepth 0 -type d -not -path tests/unit -not -path tests/sample-requests) ; do npm run test:api:path -- $dir || status=1 ; done ; exit $status",
     "test:api:path": "NODE_ENV=test mocha --esm --config tests/.mocharc.jsonc --exit --recursive --reporter=${MOCHA_REPORTER:-dot}",
@@ -58,7 +58,6 @@
     "pg": "^8.11.1",
     "pino": "^8.14.1",
     "pino-pretty": "^10.0.1",
-    "ts-node": "^10.9.1",
     "yargs": "^17.7.2"
   },
   "devDependencies": {
@@ -95,6 +94,7 @@
     "prettier": "^2.8.8",
     "sinon": "^15.2.0",
     "sinon-chai": "^3.7.0",
+    "tsx": "^4.15.7",
     "typescript": "^5.1.6"
   }
 }
