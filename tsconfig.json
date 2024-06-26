@@ -2,20 +2,16 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "extends": "@tsconfig/node-lts-strictest-esm/tsconfig.json",
   "compilerOptions": {
-    "moduleResolution": "Node",
-    "lib": ["ES2022"],
+    "moduleResolution": "node",
+    "lib": ["es2023"],
     "outDir": "build",
     "rootDir": "./",
     "allowJs": true,
     "types": ["node", "mocha"],
     "strict": false,
     "ignoreDeprecations": "5.0",
+    "esModuleInterop": true,
     "exactOptionalPropertyTypes": false,
-  },
-  "ts-node": {
-    "esm": true,
-    "transpileOnly": true,
-    "experimentalSpecifierResolution": "node"
   },
   "include": ["**/*.ts", "**/*.js" ],
   "exclude": ["node_modules", "build", "tests"]
