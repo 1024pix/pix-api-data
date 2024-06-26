@@ -1,6 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import chai from 'chai';
+import * as chai from 'chai';
 const expect = chai.expect;
 import * as sinon from 'sinon';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
