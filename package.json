@@ -71,7 +71,6 @@
     "@types/ms": "^0.7.31",
     "@types/node": "^20.4.2",
     "@types/papaparse": "^5.3.7",
-    "@types/pino": "^7.0.5",
     "@types/pino-pretty": "^5.0.0",
     "@types/sinon": "^10.0.15",
     "@types/sinon-chai": "^3.2.9",
