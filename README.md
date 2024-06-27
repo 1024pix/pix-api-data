@@ -110,7 +110,7 @@ Si le type envoyé ne correspond pas au type défini, l'api renverra une erreur.
 
 ##### Caractère obligatoire / facultatif
 
-Il est possible de définir un bloc comme étant facultatif à l'aide de crochets. Le bloc entre crochets ne sera ajouté que si les paramètres sont renseignées dans l'appel.
+Il est possible de définir un bloc comme étant facultatif à l'aide de crochets. Le bloc entre crochets ne sera ajouté que si les paramètres sont renseignés dans l'appel.
 
 Exemple :
 ```sql
@@ -183,7 +183,7 @@ scalingo --app <nom-application-scalingo> run "node build/scripts/prod/add-user.
 ### Authentification
 Il faut récupérer un token en se connectant avec un login/mot de passe valide via un
 ```
-POST http://DATABASE_API_URL/token
+POST http://API_URL/token
 ```
 avec en paramètre
 ```
@@ -200,7 +200,7 @@ ACCESS_TOKEN=${response.body.data}
 ### Utilisation d'une requête
 Sans paramètre utilisé dans la requête
 ```
-POST http://DATABASE_API_URL:3000/query
+POST http://API_URL:3000/query
 ```
 Pour l'autorisation:
 ```
@@ -217,7 +217,7 @@ et en paramètre de post
 Avec paramètre utilisé dans la requête
 Il n'y a pas besoin de spécifier si les paramètres sont obligatoires voir [ici](#caractère-obligatoire--facultatif)
 ```
-POST http://DATABASE_API_URL:3000/query
+POST http://API_URL:3000/query
 ```
 Pour l'autorisation:
 ```
