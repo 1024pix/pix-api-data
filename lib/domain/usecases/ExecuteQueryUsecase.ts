@@ -1,21 +1,22 @@
 import {
+  CatalogQueryRepository,
+  catalogQueryRepository,
+} from '../../infrastructure/CatalogQueryRepository.js';
+import {
   DatamartRepository,
   datamartRepository,
 } from '../../infrastructure/DatamartRepository.js';
-import {
-  catalogQueryRepository,
-  CatalogQueryRepository,
-} from '../../infrastructure/CatalogQueryRepository.js';
-import { DatamartQueryModel } from '../models/DatamartQuery.js';
 import type { UserCommand } from '../commands/UserCommand.js';
+import { DatamartQueryModel } from '../models/DatamartQuery.js';
+import type { DatamartResponse } from '../models/DatamartResponse.js';
 import type { QueryCatalogItem } from '../models/QueryCatalogItem.js';
 import { Result } from '../models/Result.js';
-import type { DatamartResponse } from '../models/DatamartResponse.js';
 
 export interface ExecuteQueryUseCase {
   executeQuery(_userCommand: UserCommand): Promise<Result<DatamartResponse>>;
 }
-class ExecuteQueryUseCaseImpl implements ExecuteQueryUseCase {
+
+export class ExecuteQueryUseCaseImpl implements ExecuteQueryUseCase {
   constructor(
     private readonly datamartRepository: DatamartRepository,
     private readonly catalogQueryRepository: CatalogQueryRepository,
@@ -41,6 +42,7 @@ class ExecuteQueryUseCaseImpl implements ExecuteQueryUseCase {
     if (!datamartQueryModel.isValid()) {
       return Result.failure(['cannot run requested query']);
     }
+
     const datamartResponse: DatamartResponse =
       await this.datamartRepository.find(datamartQueryModel);
     return Result.success(datamartResponse);
