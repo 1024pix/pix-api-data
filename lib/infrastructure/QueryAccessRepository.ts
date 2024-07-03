@@ -55,5 +55,5 @@ function transformToQueryAccess(
   }, {}) as QueryAccess;
 }
 
-export const QueryAccessRepository: QueryAccessRepository =
+export const queryAccessRepository: QueryAccessRepository =
   new QueryAccessRepositoryImpl();

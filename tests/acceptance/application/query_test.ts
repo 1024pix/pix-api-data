@@ -4,12 +4,14 @@ import {
   knexAPI,
   generateValidRequestAuthorizationHeader,
 } from '../../test-helper.js';
+import { UUID } from 'crypto';
 
 describe('Acceptance | query', function () {
   let headers: string;
+  let userId: UUID;
 
   beforeEach(async function () {
-    const userId = 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11';
+    userId = 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11';
     await knexAPI('users').insert({
       id: userId,
       username: 'gigi_lamoroso',
@@ -20,6 +22,7 @@ describe('Acceptance | query', function () {
   });
 
   afterEach(async function () {
+    await knexAPI('query_access').delete();
     await knexAPI('users').delete();
     await knexAPI('catalog_queries').delete();
   });
@@ -55,41 +58,84 @@ describe('Acceptance | query', function () {
 
   context('when payload is valid', function () {
     context('when "queryId" refers to an existing query', function () {
-      it('should return a proper payload response with status code 200', async function () {
-        // given
-        const queryId = 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11';
-        await knexAPI('catalog_queries').insert({
-          id: queryId,
-          sql_query: 'SELECT COUNT(*) FROM public.data_ref_academies',
-        });
-        const payload = {
-          queryId,
-          params: <any>[],
-        };
+      context('when user is not authorized to run the query', function () {
+        it('should return a proper error with status code 403', async function () {
+          // given
+          const queryId = 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11';
+          await knexAPI('catalog_queries').insert({
+            id: queryId,
+            sql_query: 'SELECT COUNT(*) FROM public.data_ref_academies',
+          });
+          await knexAPI('query_access').insert({
+            query_id: queryId,
+            user_id: userId,
+          });
+          const payload = {
+            queryId,
+            params: <any>[],
+          };
 
-        // when
-        const server = await createServer();
-        const response = await server.inject({
-          method: 'POST',
-          url: '/query',
-          payload,
-          headers: { authorization: headers },
+          // when
+          const server = await createServer();
+          const response = await server.inject({
+            method: 'POST',
+            url: '/query',
+            payload,
+            headers: { authorization: headers },
+          });
+
+          // then
+          expect(response.statusCode).to.equal(200);
+          expect(JSON.parse(response.payload)).to.deep.equal({
+            status: 'success',
+            data: [{ count: 33 }],
+            messages: [],
+          });
+        });
+      });
+
+      context('when user is authorized to run the query', function () {
+        it('should return a proper payload response with status code 200', async function () {
+          // given
+          const queryId = '26f6efcc-ce13-4b20-b6ea-5bebae6115af';
+          await knexAPI('catalog_queries').insert({
+            id: queryId,
+            sql_query: 'SELECT COUNT(*) FROM public.data_ref_academies',
+          });
+          await knexAPI('query_access').insert({
+            query_id: queryId,
+            user_id: userId,
+          });
+          const payload = {
+            queryId,
+            params: <any>[],
+          };
+
+          // when
+          const server = await createServer();
+          const response = await server.inject({
+            method: 'POST',
+            url: '/query',
+            payload,
+            headers: { authorization: headers },
+          });
+
+          // then
+          expect(response.statusCode).to.equal(200);
+          expect(JSON.parse(response.payload)).to.deep.equal({
+            status: 'success',
+            data: [{ count: 33 }],
+            messages: [],
+          });
         });
 
-        // then
-        expect(response.statusCode).to.equal(200);
-        expect(JSON.parse(response.payload)).to.deep.equal({
-          status: 'success',
-          data: [{ count: 33 }],
-          messages: [],
-        });
       });
     });
 
     context('when "queryId" does not refer to an existing query', function () {
       it('should return a proper error response with status code 422', async function () {
         // given
-        const queryId = 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11';
+        const queryId = '26f6efcc-ce13-4b20-b6ea-5bebae6115af';
         const otherQueryId = 'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee';
         await knexAPI('catalog_queries').insert({
           id: otherQueryId,
