@@ -287,23 +287,21 @@ describe('Unit | DatamartQueryModel', function () {
     });
 
     context('when too many parameters are passed by the user', function() {
-      it('should throw an error', function() {
+      it('should return false', function() {
         // given
-        try {
-          new DatamartQueryModel({
-            query: 'select * from table_exemple where date = {{ dateParam }}',
-            paramValues: [
-              {
-                name: 'dateParam',
-                value: '2013-07-21 12:12:12',
-              },
-            ],
-            paramDefinitions: [],
-          });
-        } catch (e) {
-          // then
-          expect(e.message).to.equal('Cannot read properties of undefined (reading \'type\')');
-        }
+        const query: DatamartQueryModel = new DatamartQueryModel({
+          query: 'select * from table_exemple where date = {{ dateParam }}',
+          paramValues: [
+            {
+              name: 'dateParam',
+              value: '2013-07-21 12:12:12',
+            },
+          ],
+          paramDefinitions: [],
+        });
+
+        // then
+        expect(query.isValid()).to.be.false;
       });
     });
   });

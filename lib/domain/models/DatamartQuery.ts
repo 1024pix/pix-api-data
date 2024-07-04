@@ -1,6 +1,7 @@
+import moment from 'moment';
+
 import type { UserCommandParam } from '../commands/UserCommand.js';
 import { ParamType, QueryParam } from './QueryCatalogItem.js';
-import moment from 'moment';
 
 export interface DatamartQuery {
   query: string;
@@ -74,12 +75,11 @@ export class DatamartQueryModel {
 
   private checkValueTypes(): boolean {
     return this.paramValues.every((paramValue) => {
-      return this.checkValue(
-        paramValue.value,
-        this.paramDefinitions.find(
-          (paramDefinition) => paramDefinition.name === paramValue.name,
-        ).type,
-      );
+      const paramDefinition = this.paramDefinitions.find((paramDefinition) => paramDefinition.name === paramValue.name);
+      if (!paramDefinition) {
+        return false;
+      }
+      return this.checkValue(paramValue.value, paramDefinition.type);
     });
   }
 
