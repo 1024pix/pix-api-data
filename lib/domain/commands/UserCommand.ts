@@ -4,13 +4,22 @@ import { Result } from '../models/Result.js';
 export class UserCommand {
   queryId: UUID;
   params: UserCommandParam[];
+  requesterId: UUID
 
-  constructor(queryId: UUID, params: UserCommandParam[]) {
+  constructor(queryId: UUID, params: UserCommandParam[], requesterId: UUID) {
     this.queryId = queryId;
     this.params = params;
+    this.requesterId = requesterId;
   }
 
-  static buildFromPayload(payload: unknown): Result<UserCommand> {
+  static buildFromPayload(
+    payload: unknown,
+    requesterId: unknown,
+  ): Result<UserCommand> {
+    if (!isValidUUID(requesterId)) {
+      return Result.failure(['"requesterId" is not a valid UUID']);
+    }
+
     const { messages, validatedPayload } = validatePayload(payload);
     if (messages.length > 0) {
       return Result.failure(messages);
@@ -19,6 +28,7 @@ export class UserCommand {
     const userCommand = new UserCommand(
       validatedPayload.queryId,
       validatedPayload.params,
+      requesterId,
     );
     return Result.success(userCommand);
   }
