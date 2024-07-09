@@ -1,3 +1,26 @@
+# [0.4.0](https://github.com/1024pix/pix-api-data/compare/v0.3.0...v0.4.0) (2024-07-09)
+
+### :arrow_up: Montée de version
+
+- [#40](https://github.com/1024pix/pix-api-data/pull/40) Replace dependency npm-run-all with npm-run-all2 ^5.0.0 (dossier racine) 
+- [#48](https://github.com/1024pix/pix-api-data/pull/48) Update dependency @types/sinon to v17 (dossier racine) 
+- [#37](https://github.com/1024pix/pix-api-data/pull/37) Update dependency eslint-config-prettier to v9 (dossier racine) 
+- [#50](https://github.com/1024pix/pix-api-data/pull/50) Update dependency eslint-plugin-n to v17 (dossier racine) 
+- [#28](https://github.com/1024pix/pix-api-data/pull/28) Update dependency eslint-plugin-prettier to v5 (dossier racine) 
+- [#51](https://github.com/1024pix/pix-api-data/pull/51) Update dependency eslint-plugin-unicorn to v54 (dossier racine) 
+- [#53](https://github.com/1024pix/pix-api-data/pull/53) Update dependency knex to v3 (dossier racine) 
+- [#41](https://github.com/1024pix/pix-api-data/pull/41) Update dependency node to v20 
+- [#52](https://github.com/1024pix/pix-api-data/pull/52) Update dependency npm-run-all2 to v6 (dossier racine) 
+- [#54](https://github.com/1024pix/pix-api-data/pull/54) Update dependency pino to v9 (dossier racine) 
+- [#56](https://github.com/1024pix/pix-api-data/pull/56) Update dependency pino-pretty to v11 (dossier racine) 
+- [#47](https://github.com/1024pix/pix-api-data/pull/47) Update dependency postgres to v14.12 
+- [#55](https://github.com/1024pix/pix-api-data/pull/55) Update dependency sinon to v18 (dossier racine) 
+- [#45](https://github.com/1024pix/pix-api-data/pull/45) Update typescript-eslint monorepo to v7 (dossier racine) (major) 
+
+### :coffee: Autre
+
+- [#60](https://github.com/1024pix/pix-api-data/pull/60) Ajouter un ADR sur le choix d'un nouveau datawarehouse (PIX-13323).
+
 # pix-api-data Changelog
 
 ## v0.3.0 (28/07/2023)
