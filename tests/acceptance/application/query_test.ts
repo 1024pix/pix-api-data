@@ -47,11 +47,9 @@ describe('Acceptance | query', function () {
       // then
       expect(response.statusCode).to.equal(400);
       expect(JSON.parse(response.payload)).to.deep.equal({
-        status: 'failure',
-        messages: [
-          'unknown attribute: "queryIdddddddd"',
-          '"queryId" is mandatory',
-        ],
+        statusCode: 400,
+        error: 'Bad Request',
+        message: 'Invalid request payload input',
       });
     });
   });
@@ -136,7 +134,7 @@ describe('Acceptance | query', function () {
       it('should return a proper error response with status code 422', async function () {
         // given
         const queryId = '26f6efcc-ce13-4b20-b6ea-5bebae6115af';
-        const otherQueryId = 'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee';
+        const otherQueryId = '11a1aaaa-aa11-1a11-a1aa-1aaaaa1111aa';
         await knexAPI('catalog_queries').insert({
           id: otherQueryId,
           sql_query: 'SELECT COUNT(*) FROM public.data_ref_academies',
