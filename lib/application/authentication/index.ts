@@ -12,7 +12,7 @@ const register = async function (server: Server) {
         auth: false,
         validate: {
           payload: Joi.object({
-            user: Joi.string().required(),
+            username: Joi.string().required(),
             password: Joi.string().required(),
           }).label('AuthenticationPayload'),
         },

@@ -26,11 +26,9 @@ describe('Acceptance | authentication', function () {
       // then
       expect(response.statusCode).to.equal(400);
       expect(JSON.parse(response.payload)).to.deep.equal({
-        status: 'failure',
-        messages: [
-          'unknown attribute: "usernameeeeeeeeuh"',
-          '"username" is mandatory',
-        ],
+        error: "Bad Request",
+        message: "Invalid request payload input",
+        statusCode: 400
       });
     });
   });
