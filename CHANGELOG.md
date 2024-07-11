@@ -1,5 +1,11 @@
 # [0.4.0](https://github.com/1024pix/pix-api-data/compare/v0.3.0...v0.4.0) (2024-07-09)
 
+## v0.5.0 (11/07/2024)
+
+
+### :rocket: Amélioration
+- [#6](https://github.com/1024pix/pix-api-data/pull/6) [FEATURE] Ajouter une documentation de nos routes (PIX-13391).
+
 ### :arrow_up: Montée de version
 
 - [#40](https://github.com/1024pix/pix-api-data/pull/40) Replace dependency npm-run-all with npm-run-all2 ^5.0.0 (dossier racine) 
