@@ -3,14 +3,15 @@ dotenv.config();
 import perf_hooks from 'perf_hooks';
 import * as url from 'url';
 const { performance } = perf_hooks;
-import { logger } from '../../lib/common/logger/Logger';
-import { encryptionService } from '../../lib/infrastructure/utils/EncryptionService';
-import {
-  knexAPI,
-  disconnect,
-} from '../../lib/common/db/knex-database-connections.js';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
+
+import {
+  disconnect,
+  knexAPI,
+} from '../../lib/common/db/knex-database-connections.js';
+import { logger } from '../../lib/common/logger/Logger.js';
+import { encryptionService } from '../../lib/infrastructure/utils/EncryptionService.js';
 const parseMe = yargs(hideBin(process.argv))
   .option('username', {
     type: 'string',

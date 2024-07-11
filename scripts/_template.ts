@@ -3,11 +3,11 @@ dotenv.config();
 import perf_hooks from 'perf_hooks';
 import * as url from 'url';
 const { performance } = perf_hooks;
-import { logger } from '../lib/common/logger/Logger';
 import {
-  knexAPI,
   disconnect,
+  knexAPI,
 } from '../lib/common/db/knex-database-connections.js';
+import { logger } from '../lib/common/logger/Logger.js';
 /* If you use command line args, uncomment me
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';

@@ -1,7 +1,8 @@
-import { routes } from './routes.js';
 import Hapi, { Server, ServerOptions } from '@hapi/hapi';
-import { plugins } from './common/logger/plugins/plugins.js';
+
 import { authentication } from './infrastructure/authentication.js';
+import { plugins } from './infrastructure/plugins/plugins.js';
+import { routes } from './routes.js';
 
 const createServer = async (): Promise<Server> => {
   const server = createBareServer();
