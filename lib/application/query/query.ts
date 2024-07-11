@@ -1,4 +1,5 @@
 import type { Request, ResponseObject, ResponseToolkit } from '@hapi/hapi';
+
 import { UserCommand } from '../../domain/commands/UserCommand.js';
 import type { Result } from '../../domain/models/Result.js';
 import { executeQueryUseCase } from '../../domain/usecases/ExecuteQueryUsecase.js';
