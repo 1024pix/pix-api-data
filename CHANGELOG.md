@@ -1,3 +1,9 @@
+## [0.5.2](https://github.com/1024pix/pix-api-data/compare/v0.5.1...v0.5.2) (2024-07-16)
+
+### :arrow_up: Montée de version
+
+- [#8](https://github.com/1024pix/pix-api-data/pull/8) Update dependency node to v20.15.1
+
 ## [0.5.1](https://github.com/1024pix/pix-api-data/compare/v0.5.0...v0.5.1) (2024-07-11)
 
 # [0.4.0](https://github.com/1024pix/pix-api-data/compare/v0.3.0...v0.4.0) (2024-07-09)
