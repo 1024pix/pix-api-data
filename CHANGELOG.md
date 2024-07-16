@@ -1,3 +1,10 @@
+## [0.5.3](https://github.com/1024pix/pix-api-data/compare/v0.5.2...v0.5.3) (2024-07-16)
+
+### :arrow_up: Montée de version
+
+- [#9](https://github.com/1024pix/pix-api-data/pull/9) Lock file maintenance (dossier racine) 
+- [#4](https://github.com/1024pix/pix-api-data/pull/4) Update dependency postgres to v15
+
 ## [0.5.2](https://github.com/1024pix/pix-api-data/compare/v0.5.1...v0.5.2) (2024-07-16)
 
 ### :arrow_up: Montée de version
