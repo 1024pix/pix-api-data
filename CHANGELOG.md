@@ -1,3 +1,9 @@
+## [0.5.4](https://github.com/1024pix/pix-api-data/compare/v0.5.3...v0.5.4) (2024-07-18)
+
+### :arrow_up: Montée de version
+
+- [#10](https://github.com/1024pix/pix-api-data/pull/10) Update dependency @1024pix/eslint-config to ^1.3.7 (dossier racine)
+
 ## [0.5.3](https://github.com/1024pix/pix-api-data/compare/v0.5.2...v0.5.3) (2024-07-16)
 
 ### :arrow_up: Montée de version
