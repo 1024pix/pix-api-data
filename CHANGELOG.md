@@ -1,3 +1,9 @@
+## [0.5.6](https://github.com/1024pix/pix-api-data/compare/v0.5.5...v0.5.6) (2024-07-29)
+
+### :arrow_up: Montée de version
+
+- [#1](https://github.com/1024pix/pix-api-data/pull/1) Update dependency chai to v5 (dossier racine)
+
 ## [0.5.5](https://github.com/1024pix/pix-api-data/compare/v0.5.4...v0.5.5) (2024-07-29)
 
 ### :arrow_up: Montée de version
