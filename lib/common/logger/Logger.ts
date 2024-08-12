@@ -9,7 +9,6 @@ const { logging } = config;
 let prettyPrint;
 if (logging.logForHumans) {
   const omitDay = 'HH:MM:ss';
-  // @ts-expect-error pino pretty does not have a named export
   prettyPrint = pinoPretty.default({
     sync: true,
     colorize: true,
