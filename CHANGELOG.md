@@ -1,3 +1,9 @@
+## [0.5.9](https://github.com/1024pix/pix-api-data/compare/v0.5.8...v0.5.9) (2024-08-20)
+
+### :arrow_up: Montée de version
+
+- [#14](https://github.com/1024pix/pix-api-data/pull/14) Update dependency eslint-plugin-unicorn to v55 (dossier racine)
+
 ## [0.5.8](https://github.com/1024pix/pix-api-data/compare/v0.5.7...v0.5.8) (2024-08-20)
 
 ### :arrow_up: Montée de version
