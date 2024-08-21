@@ -25,7 +25,7 @@ export interface AuthenticateUserUsecase {
     _authenticationCommand: AuthenticationCommand,
   ) => Promise<Result<string>>;
 }
-class AuthenticateUserUsecaseImpl implements AuthenticateUserUsecase {
+export class AuthenticateUserUsecaseImpl implements AuthenticateUserUsecase {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly encryptionService: EncryptionService,

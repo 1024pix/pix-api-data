@@ -31,6 +31,10 @@ function catchErr(
   };
 }
 
+afterEach(function() {
+  sinon.restore();
+})
+
 export {
   catchErr,
   createServer,
