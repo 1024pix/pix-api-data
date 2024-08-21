@@ -19,6 +19,7 @@ import {
 import { Result } from '../models/Result.js';
 import type { AuthenticationCommand } from '../commands/AuthenticationCommand.js';
 import type { User } from '../models/User.js';
+import { type UserLoginRepository, userLoginRepository } from '../../infrastructure/UserLoginRepository.js';
 
 export interface AuthenticateUserUsecase {
   authenticateUser: (
@@ -30,10 +31,12 @@ export class AuthenticateUserUsecaseImpl implements AuthenticateUserUsecase {
     private readonly userRepository: UserRepository,
     private readonly encryptionService: EncryptionService,
     private readonly jsonWebTokenService: JSONWebTokenService,
+    private readonly userLoginRepository: UserLoginRepository,
   ) {
     this.userRepository = userRepository;
     this.encryptionService = encryptionService;
     this.jsonWebTokenService = jsonWebTokenService;
+    this.userLoginRepository = userLoginRepository;
   }
 
   async authenticateUser(
@@ -45,13 +48,26 @@ export class AuthenticateUserUsecaseImpl implements AuthenticateUserUsecase {
     if (!user) {
       return Result.failure(['cannot authenticate user']);
     }
+
+    let userLogin = await this.userLoginRepository.findByUserId(user.id);
+    if (!userLogin) {
+      userLogin = await this.userLoginRepository.create(user.id);
+    }
+
     const arePasswordIdentical = await this.encryptionService.checkPassword(
       authenticationCommand.password,
       user.hashedPassword,
     );
     if (!arePasswordIdentical) {
+      userLogin.failedAttempt();
+      await userLoginRepository.update(userLogin);
+
       return Result.failure(['cannot authenticate user']);
     }
+
+    userLogin.successfulAttempt();
+    await userLoginRepository.update(userLogin);
+
     return Result.success(
       await this.jsonWebTokenService.generateToken(user.id),
     );
@@ -63,4 +79,5 @@ export const authenticateUserUsecase: AuthenticateUserUsecase
     userRepository,
     encryptionService,
     jsonWebTokenService,
+    userLoginRepository,
   );

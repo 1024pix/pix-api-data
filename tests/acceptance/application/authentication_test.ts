@@ -4,6 +4,7 @@ import { config } from '../../../lib/common/config.js';
 
 describe('Acceptance | authentication', function () {
   afterEach(async function () {
+    await knexAPI('user-logins').delete();
     await knexAPI('users').delete();
   });
 
