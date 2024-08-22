@@ -5,6 +5,7 @@ import Hapi from '@hapi/hapi';
 import { authentication } from './infrastructure/authentication.js';
 import { plugins } from './infrastructure/plugins/plugins.js';
 import { routes } from './routes.js';
+import { handleDomainAndHttpErrors } from './application/pre-response-utils';
 
 const createBareServer = function (): Server {
   const serverConfiguration: ServerOptions = {
@@ -46,8 +47,13 @@ const setupRoutesAndPlugins = async function (server: Server) {
   await server.register(configuration);
 };
 
+const setupErrorHandling = function (server: Server) {
+  server.ext('onPreResponse', handleDomainAndHttpErrors);
+};
+
 async function createServer(): Promise<Server> {
   const server = createBareServer();
+  setupErrorHandling(server);
   setupAuthentication(server);
   await setupRoutesAndPlugins(server);
   return server;

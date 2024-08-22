@@ -1,4 +1,4 @@
-class DomainError extends Error {
+export class DomainError extends Error {
   code: string;
   meta: string;
   constructor(message, code?, meta?) {
