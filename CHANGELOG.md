@@ -1,3 +1,9 @@
+## [0.5.10](https://github.com/1024pix/pix-api-data/compare/v0.5.9...v0.5.10) (2024-08-22)
+
+### :building_construction: Tech
+
+- [#24](https://github.com/1024pix/pix-api-data/pull/24) Configurer un linter fonctionnel.
+
 ## [0.5.9](https://github.com/1024pix/pix-api-data/compare/v0.5.8...v0.5.9) (2024-08-20)
 
 ### :arrow_up: Montée de version
