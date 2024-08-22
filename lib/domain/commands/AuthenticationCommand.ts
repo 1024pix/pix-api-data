@@ -37,24 +37,29 @@ function validatePayload(payload: unknown): {
   } = { username: 'fill_me', password: 'fill_me' };
   if (typeof payload !== 'object' || !payload) {
     messages.push('invalid payload');
-  } else {
+  }
+  else {
     Object.keys(payload)
-      .filter((key) => !['username', 'password'].includes(key))
-      .forEach((key) => messages.push(`unknown attribute: "${key}"`));
+      .filter(key => !['username', 'password'].includes(key))
+      .forEach(key => messages.push(`unknown attribute: "${key}"`));
 
     if (!('username' in payload)) {
       messages.push('"username" is mandatory');
-    } else if (!isValidUsername(payload.username)) {
+    }
+    else if (!isValidUsername(payload.username)) {
       messages.push('"username" is not a string');
-    } else {
+    }
+    else {
       validatedPayload.username = payload.username;
     }
 
     if (!('password' in payload)) {
       messages.push('"password" is mandatory');
-    } else if (!isValidPassword(payload.password)) {
+    }
+    else if (!isValidPassword(payload.password)) {
       messages.push('"password" is not a string');
-    } else {
+    }
+    else {
       validatedPayload.password = payload.password;
     }
   }

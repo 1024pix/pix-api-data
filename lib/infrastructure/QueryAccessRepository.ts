@@ -1,4 +1,4 @@
-import type { UUID } from 'crypto';
+import type { UUID } from 'node:crypto';
 
 import { knexAPI } from '../common/db/knex-database-connections.js';
 import { NotFoundError } from '../domain/errors.js';
@@ -8,13 +8,13 @@ import {
 } from '../domain/models/QueryAccess.js';
 
 export interface QueryAccessRepository {
-  get(_queryId: UUID, _userId: UUID): Promise<QueryAccessModel>;
+  get: (_queryId: UUID, _userId: UUID) => Promise<QueryAccessModel>;
 }
 
-type queryParamsAccessDTO = {
+interface queryParamsAccessDTO {
   name: string;
   value: string;
-};
+}
 
 class QueryAccessRepositoryImpl implements QueryAccessRepository {
   async get(queryId: UUID, userId: UUID): Promise<QueryAccessModel> {
@@ -48,12 +48,13 @@ function transformToQueryAccess(
   return queryParams.reduce((acc, queryParamAccess) => {
     if (acc[queryParamAccess.name]) {
       acc[queryParamAccess.name].push(queryParamAccess.value);
-    } else {
+    }
+    else {
       acc[queryParamAccess.name] = [queryParamAccess.value];
     }
     return acc;
   }, {}) as QueryAccess;
 }
 
-export const queryAccessRepository: QueryAccessRepository =
-  new QueryAccessRepositoryImpl();
+export const queryAccessRepository: QueryAccessRepository
+  = new QueryAccessRepositoryImpl();

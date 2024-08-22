@@ -1,5 +1,6 @@
-import { expect, catchErr, knexAPI, sinon } from '../../../test-helper.js';
-import { User, addUser } from '../../../../scripts/prod/add-user.js';
+import { catchErr, expect, knexAPI, sinon } from '../../../test-helper.js';
+import type { User } from '../../../../scripts/prod/add-user.js';
+import { addUser } from '../../../../scripts/prod/add-user.js';
 import { encryptionService } from '../../../../lib/infrastructure/utils/EncryptionService.js';
 
 describe('Integration | scripts-prod | Add user', function () {
@@ -33,8 +34,8 @@ describe('Integration | scripts-prod | Add user', function () {
       created_at: sinon.match.date,
     });
     expect(arePasswordsIdentical).to.be.true;
-    const uuidRegExp: RegExp =
-      /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi;
+    const uuidRegExp: RegExp
+      = /^[0-9a-f]{8}\b-[0-9a-f]{4}\b-[0-9a-f]{4}\b-[0-9a-f]{4}\b-[0-9a-f]{12}$/i;
     expect(uuidRegExp.test(usersDTO[0].id)).to.be.true;
   });
 

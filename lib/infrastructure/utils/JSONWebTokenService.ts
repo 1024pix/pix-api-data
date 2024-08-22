@@ -1,16 +1,17 @@
-import type { UUID } from 'crypto';
-import { config } from '../../common/config.js';
+import type { UUID } from 'node:crypto';
 import type { Request } from '@hapi/hapi';
 import jsonwebtoken from 'jsonwebtoken';
+import { config } from '../../common/config.js';
+
 const { sign, verify } = jsonwebtoken;
 
-export type AuthenticationToken = {
+export interface AuthenticationToken {
   user_id: UUID;
-};
+}
 export interface JSONWebTokenService {
-  generateToken(_userId: UUID): Promise<string>;
-  extractTokenFromHeader(_request: Request): string;
-  getDecodedToken(_token: string): { user_id: UUID };
+  generateToken: (_userId: UUID) => Promise<string>;
+  extractTokenFromHeader: (_request: Request) => string;
+  getDecodedToken: (_token: string) => { user_id: UUID };
 }
 
 class JSONWebTokenImpl implements JSONWebTokenService {
@@ -21,10 +22,10 @@ class JSONWebTokenImpl implements JSONWebTokenService {
   }
 
   extractTokenFromHeader(request: Request): string {
-    if (!request.headers['authorization']) {
+    if (!request.headers.authorization) {
       return '';
     }
-    const authorizationHeader = request.headers['authorization'];
+    const authorizationHeader = request.headers.authorization;
     if (!authorizationHeader || !authorizationHeader.startsWith('Bearer ')) {
       return '';
     }
@@ -37,7 +38,8 @@ class JSONWebTokenImpl implements JSONWebTokenService {
         user_id: UUID;
       };
       return { user_id: decodedToken.user_id } as AuthenticationToken;
-    } catch (err) {
+    }
+    catch (err) {
       return null;
     }
   }

@@ -4,7 +4,6 @@ import { NotFoundError } from '../../../../lib/domain/errors.js';
 import { QueryAccessModel } from '../../../../lib/domain/models/QueryAccess';
 
 describe('Integration | Repositories | QueryAccessRepository', function () {
-
   afterEach(async function () {
     await knexAPI('query_param_access').delete();
     await knexAPI('query_access').delete();
@@ -23,7 +22,8 @@ describe('Integration | Repositories | QueryAccessRepository', function () {
       let error;
       try {
         await queryAccessRepository.get(queryId, userId);
-      } catch (e) {
+      }
+      catch (e) {
         error = e;
       }
 
@@ -34,7 +34,7 @@ describe('Integration | Repositories | QueryAccessRepository', function () {
   });
 
   context('when query access exists', function () {
-    it('should return the query access', async function() {
+    it('should return the query access', async function () {
       // given
       const queryId = 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11';
       const queryParamId = 1;

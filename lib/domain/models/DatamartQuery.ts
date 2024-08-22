@@ -1,6 +1,7 @@
-import type { UserCommandParam } from '../commands/UserCommand.js';
-import { ParamType, QueryParam } from './QueryCatalogItem.js';
 import moment from 'moment';
+import type { UserCommandParam } from '../commands/UserCommand.js';
+import type { QueryParam } from './QueryCatalogItem.js';
+import { ParamType } from './QueryCatalogItem.js';
 
 export interface DatamartQuery {
   query: string;
@@ -8,10 +9,10 @@ export interface DatamartQuery {
   paramDefinitions: QueryParam[];
 }
 
-export const MATCHING_OPTIONAL_BLOCK_REGEXP =
-  /((?:\[{2}(?:.|\n|\r)*?]{2})+),?/g;
-export const MATCHING_PARAM_BLOCK_REGEXP = /((?:{{.*?}})+),?/g;
-export const PARAM_NAME_REGEXP = /{{(.*)}}/;
+export const MATCHING_OPTIONAL_BLOCK_REGEXP
+  = /((?:\[{2}(?:.|[\n\r])*?\]{2})+),?/g;
+export const MATCHING_PARAM_BLOCK_REGEXP = /((?:\{\{.*?\}\})+),?/g;
+export const PARAM_NAME_REGEXP = /\{\{(.*)\}\}/;
 
 export class DatamartQueryModel {
   constructor(private readonly datamartQuery: DatamartQuery) {}
@@ -28,21 +29,21 @@ export class DatamartQueryModel {
   }
 
   get paramValueNames(): string[] {
-    return this.paramValues.map((paramValue) => paramValue.name);
+    return this.paramValues.map(paramValue => paramValue.name);
   }
 
   get optionalBlocks(): string[] {
     const regExpMatchArrays = [
       ...this.query.matchAll(MATCHING_OPTIONAL_BLOCK_REGEXP),
     ];
-    return regExpMatchArrays.map((regExpMatchArray) => regExpMatchArray[0]);
+    return regExpMatchArrays.map(regExpMatchArray => regExpMatchArray[0]);
   }
 
   isValid(): boolean {
     return (
-      this.checkMandatoryParams() &&
-      this.checkOptionalParams() &&
-      this.checkValueTypes()
+      this.checkMandatoryParams()
+      && this.checkOptionalParams()
+      && this.checkValueTypes()
     );
   }
 
@@ -54,7 +55,7 @@ export class DatamartQueryModel {
 
   private checkOptionalParams(): boolean {
     return (
-      this.optionalBlocks.every((optional) =>
+      this.optionalBlocks.every(optional =>
         this.checkOptionalMissingArgumentIsOk(optional),
       ) ?? true
     );
@@ -64,10 +65,10 @@ export class DatamartQueryModel {
     return (
       new Set(
         [...optional.matchAll(MATCHING_PARAM_BLOCK_REGEXP)]
-          .map((regExpMatchArray) => regExpMatchArray[0])
+          .map(regExpMatchArray => regExpMatchArray[0])
           /* example: {{ myParam }}. $1 = " myParam " */
-          .map((paramNeed) => paramNeed.replace(PARAM_NAME_REGEXP, '$1').trim())
-          .map((paramNeed) => this.paramValueNames.includes(paramNeed)),
+          .map(paramNeed => paramNeed.replace(PARAM_NAME_REGEXP, '$1').trim())
+          .map(paramNeed => this.paramValueNames.includes(paramNeed)),
       ).size === 1
     );
   }
@@ -77,7 +78,7 @@ export class DatamartQueryModel {
       return this.checkValue(
         paramValue.value,
         this.paramDefinitions.find(
-          (paramDefinition) => paramDefinition.name === paramValue.name,
+          paramDefinition => paramDefinition.name === paramValue.name,
         ).type,
       );
     });
@@ -96,12 +97,12 @@ export class DatamartQueryModel {
         );
       case ParamType.STRING_ARRAY:
         return (value as Array<unknown>).every(
-          (item) => typeof item === 'string',
+          item => typeof item === 'string',
         );
       case ParamType.INT_ARRAY:
       case ParamType.FLOAT_ARRAY:
         return (value as Array<unknown>).every(
-          (item) => typeof item === 'number',
+          item => typeof item === 'number',
         );
       case ParamType.BOOLEAN:
         return typeof value === 'boolean';
@@ -110,8 +111,8 @@ export class DatamartQueryModel {
         return typeof value === 'number';
       case ParamType.DATE_TIME:
         return (
-          typeof value === 'string' &&
-          this.checkDateFormat(value, 'YYYY-MM-DD HH:mm:ss')
+          typeof value === 'string'
+          && this.checkDateFormat(value, 'YYYY-MM-DD HH:mm:ss')
         );
     }
   }

@@ -2,7 +2,7 @@ import { knexAPI } from '../common/db/knex-database-connections.js';
 import { User } from '../domain/models/User.js';
 
 export interface UserRepository {
-  findByName(_name: string): Promise<User>;
+  findByName: (_name: string) => Promise<User>;
 }
 class UserRepositoryImpl implements UserRepository {
   async findByName(name: string): Promise<User> {
@@ -10,7 +10,8 @@ class UserRepositoryImpl implements UserRepository {
       .select('*')
       .where('username', name)
       .first();
-    if (!result) return null;
+    if (!result)
+      return null;
     return new User(result.id, result.username, result.hashed_password);
   }
 }

@@ -1,27 +1,25 @@
-import { logger } from '../Logger.js';
 import type { Plugin, Server } from '@hapi/hapi';
 import type { Logger } from 'pino';
+import { logger } from '../Logger.js';
 
 const plugin: Plugin<unknown> = {
   name: 'hapi-pino',
   register: async (server: Server, options: Options): Promise<void> => {
     const logger = options.instance;
 
-    server.ext('onPostStart', async function (): Promise<any> {
+    server.ext('onPostStart', async (): Promise<any> => {
       logger.info(server.info, 'server started');
     });
 
-    server.ext('onPostStop', async function (): Promise<void> {
+    server.ext('onPostStop', async (): Promise<void> => {
       logger.info(server.info, 'server stopped');
     });
 
-    server.events.on('log', function (event): void {
+    server.events.on('log', (event): void => {
       logger.info({ tags: event.tags, data: event.data });
     });
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    server.events.on('request', (request, event): void => {
+    server.events.on('request', (_, event): void => {
       if (event.channel !== 'error') {
         return;
       }
@@ -43,8 +41,8 @@ const plugin: Plugin<unknown> = {
         {
           queryParams: request.query,
           responseTime:
-            (info.completed !== undefined ? info.completed : info.responded) -
-            info.received,
+            (info.completed !== undefined ? info.completed : info.responded)
+            - info.received,
           payload: request.auth.isAuthenticated ? request.payload : {},
           req: request,
           res: request.raw.res,
@@ -55,9 +53,9 @@ const plugin: Plugin<unknown> = {
   },
 };
 
-type Options = {
+interface Options {
   instance: Logger;
-};
+}
 const options: Options = {
   instance: logger,
 };

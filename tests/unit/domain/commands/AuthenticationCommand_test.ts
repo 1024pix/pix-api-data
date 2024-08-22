@@ -13,8 +13,8 @@ describe('Unit | Domain | AuthenticationCommand', function () {
         };
 
         // when
-        const result: Result<AuthenticationCommand> =
-          AuthenticationCommand.buildFromPayload(validPayload);
+        const result: Result<AuthenticationCommand>
+          = AuthenticationCommand.buildFromPayload(validPayload);
 
         // then
         const expectedAuthenticationCommand = new AuthenticationCommand(
@@ -42,8 +42,8 @@ describe('Unit | Domain | AuthenticationCommand', function () {
           const invalidPayload = 'coucou';
 
           // when
-          const result: Result<AuthenticationCommand> =
-            AuthenticationCommand.buildFromPayload(invalidPayload);
+          const result: Result<AuthenticationCommand>
+            = AuthenticationCommand.buildFromPayload(invalidPayload);
 
           // then
           expect(result.isSuccess).to.be.false;
@@ -62,8 +62,8 @@ describe('Unit | Domain | AuthenticationCommand', function () {
           };
 
           // when
-          const result: Result<AuthenticationCommand> =
-            AuthenticationCommand.buildFromPayload(invalidPayload);
+          const result: Result<AuthenticationCommand>
+            = AuthenticationCommand.buildFromPayload(invalidPayload);
 
           // then
           expect(result.isSuccess).to.be.false;
@@ -82,8 +82,8 @@ describe('Unit | Domain | AuthenticationCommand', function () {
           delete invalidPayload.username;
 
           // when
-          const result: Result<AuthenticationCommand> =
-            AuthenticationCommand.buildFromPayload(invalidPayload);
+          const result: Result<AuthenticationCommand>
+            = AuthenticationCommand.buildFromPayload(invalidPayload);
 
           // then
           expect(result.isSuccess).to.be.false;
@@ -98,8 +98,8 @@ describe('Unit | Domain | AuthenticationCommand', function () {
           const invalidPayload = { ...validPayload, username: 123 };
 
           // when
-          const result: Result<AuthenticationCommand> =
-            AuthenticationCommand.buildFromPayload(invalidPayload);
+          const result: Result<AuthenticationCommand>
+            = AuthenticationCommand.buildFromPayload(invalidPayload);
 
           // then
           expect(result.isSuccess).to.be.false;
@@ -117,8 +117,8 @@ describe('Unit | Domain | AuthenticationCommand', function () {
           delete invalidPayload.password;
 
           // when
-          const result: Result<AuthenticationCommand> =
-            AuthenticationCommand.buildFromPayload(invalidPayload);
+          const result: Result<AuthenticationCommand>
+            = AuthenticationCommand.buildFromPayload(invalidPayload);
 
           // then
           expect(result.isSuccess).to.be.false;
@@ -133,8 +133,8 @@ describe('Unit | Domain | AuthenticationCommand', function () {
           const invalidPayload = { ...validPayload, password: 123 };
 
           // when
-          const result: Result<AuthenticationCommand> =
-            AuthenticationCommand.buildFromPayload(invalidPayload);
+          const result: Result<AuthenticationCommand>
+            = AuthenticationCommand.buildFromPayload(invalidPayload);
 
           // then
           expect(result.isSuccess).to.be.false;

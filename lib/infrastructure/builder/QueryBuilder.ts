@@ -1,17 +1,19 @@
-import {
+import type {
   DatamartQueryModel,
+} from '../../domain/models/DatamartQuery.js';
+import {
   MATCHING_PARAM_BLOCK_REGEXP,
   PARAM_NAME_REGEXP,
 } from '../../domain/models/DatamartQuery.js';
 
-const REMOVE_OPTIONAL_CHAR_REGEXP = /\[{2}((.|\n|\r)*)]{2}/;
-type KnexParams = {
+const REMOVE_OPTIONAL_CHAR_REGEXP = /\[{2}((.|[\n\r])*)\]{2}/;
+interface KnexParams {
   [key: string]: string | number | boolean | string[] | number[];
-};
-type KnexQuery = {
+}
+interface KnexQuery {
   query: string;
   params: KnexParams;
-};
+}
 
 export class QueryBuilder {
   queryInputOneLine: string;
@@ -59,7 +61,8 @@ export class QueryBuilder {
           optional,
           optional.replace(REMOVE_OPTIONAL_CHAR_REGEXP, '$1'),
         );
-      } else {
+      }
+      else {
         queryResult = queryResult.replace(optional, '');
       }
     });
@@ -69,10 +72,10 @@ export class QueryBuilder {
   private checkOptionalNeed(optional: string): boolean {
     return (
       [...optional.matchAll(MATCHING_PARAM_BLOCK_REGEXP)]
-        .map((regExpMatchArray) => regExpMatchArray[0])
+        .map(regExpMatchArray => regExpMatchArray[0])
         /* example: {{ myParam }}. $1 = " myParam " */
-        .map((paramNeed) => paramNeed.replace(PARAM_NAME_REGEXP, '$1').trim())
-        .every((paramNeed) =>
+        .map(paramNeed => paramNeed.replace(PARAM_NAME_REGEXP, '$1').trim())
+        .every(paramNeed =>
           this.datamartRequestModel.paramValueNames.includes(paramNeed),
         )
     );

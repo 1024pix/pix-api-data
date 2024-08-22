@@ -1,4 +1,4 @@
-import type { UUID } from 'crypto';
+import type { UUID } from 'node:crypto';
 
 export class User {
   id: UUID;

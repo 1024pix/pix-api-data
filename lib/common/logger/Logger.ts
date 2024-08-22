@@ -17,7 +17,6 @@ if (logging.logForHumans) {
   });
 }
 
-// @ts-expect-error pino does not have a named export
 export const logger = pino.default(
   {
     level: logging.logLevel,

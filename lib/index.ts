@@ -1,11 +1,12 @@
+import process from 'node:process';
 import * as dotenv from 'dotenv';
-
-dotenv.config();
 
 import type { Server } from '@hapi/hapi';
 import { logger } from './common/logger/Logger.js';
 import { createServer } from './server.js';
 import { disconnect } from './common/db/knex-database-connections.js';
+
+dotenv.config();
 let server: Server;
 
 const start = async function () {
@@ -17,8 +18,9 @@ async function _exitOnSignal() {
   try {
     await server.stop({ timeout: 30000 });
     await disconnect();
-  } catch (error) {
-    logger.error("Erreur lors de l'arrêt du serveur:", error);
+  }
+  catch (error) {
+    logger.error('Erreur lors de l\'arrêt du serveur:', error);
   }
 }
 
@@ -38,7 +40,8 @@ process.on(SIGINT, () => {
 (async () => {
   try {
     await start();
-  } catch (error) {
+  }
+  catch (error) {
     logger.error(error);
     throw error;
   }

@@ -1,8 +1,8 @@
+import type { UUID } from 'node:crypto';
 import type { Request, ResponseToolkit } from '@hapi/hapi';
 import boom from '@hapi/boom';
-import { jsonWebTokenService } from './utils/JSONWebTokenService.js';
-import type { UUID } from 'crypto';
 import { knexAPI } from '../common/db/knex-database-connections.js';
+import { jsonWebTokenService } from './utils/JSONWebTokenService.js';
 
 async function _checkIsAuthenticated(
   request: Request,

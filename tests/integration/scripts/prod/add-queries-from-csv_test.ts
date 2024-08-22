@@ -1,4 +1,5 @@
-import { expect, sinon, knexAPI } from '../../../test-helper.js';
+import process from 'node:process';
+import { expect, knexAPI, sinon } from '../../../test-helper.js';
 import {
   FilePath,
   doJob,
@@ -175,23 +176,23 @@ describe('Integration | scripts-prod | Add queries from csv', function () {
       expect(catalogQueriesDTO).to.have.length(2);
       sinon.assert.match(catalogQueriesDTO[0], {
         id: sinon.match(
-          /[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}/,
+          /[0-9a-f]{8}\b-[0-9a-f]{4}\b-[0-9a-f]{4}\b-[0-9a-f]{4}\b-[0-9a-f]{12}/i,
         ),
         sql_query: 'select * from t where id = 1',
       });
       sinon.assert.match(catalogQueriesDTO[1], {
         id: sinon.match(
-          /[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}/,
+          /[0-9a-f]{8}\b-[0-9a-f]{4}\b-[0-9a-f]{4}\b-[0-9a-f]{4}\b-[0-9a-f]{12}/i,
         ),
         sql_query:
           'select * from t where id = {{ mandatoryParam }} [[ AND optional = {{ optionalParam }} ]] [[ AND optional2 = {{ optionalParam2 }} ]]',
       });
       const firstQueryParams = catalogQueryParamsDTO.filter(
-        (paramDTO) => paramDTO.catalog_query_id === catalogQueriesDTO[0].id,
+        paramDTO => paramDTO.catalog_query_id === catalogQueriesDTO[0].id,
       );
       expect(firstQueryParams).to.be.empty;
       const secondQueryParams = catalogQueryParamsDTO.filter(
-        (paramDTO) => paramDTO.catalog_query_id === catalogQueriesDTO[1].id,
+        paramDTO => paramDTO.catalog_query_id === catalogQueriesDTO[1].id,
       );
       expect(secondQueryParams[0]).to.deep.equal({
         catalog_query_id: catalogQueriesDTO[1].id,

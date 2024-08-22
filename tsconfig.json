@@ -2,19 +2,20 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "extends": "@tsconfig/node-lts-strictest-esm/tsconfig.json",
   "compilerOptions": {
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
-    "lib": ["es2023"],
-    "outDir": "build",
+    "target": "ESNext",
     "rootDir": "./",
-    "allowJs": true,
-    "types": ["node", "mocha"],
-    "strict": false,
-    "ignoreDeprecations": "5.0",
-    "esModuleInterop": true,
-    "exactOptionalPropertyTypes": false,
+    "module": "ESNext",
+    "moduleResolution": "Node",
     "resolveJsonModule": true,
+    "types": ["node", "mocha"],
+    "allowJs": true,
+    "strict": false,
+    "exactOptionalPropertyTypes": false,
+    "noPropertyAccessFromIndexSignature": false,
+    "outDir": "build",
+    "ignoreDeprecations": "5.0",
+    "esModuleInterop": true
   },
-  "include": ["**/*.ts", "**/*.js" ],
-  "exclude": ["node_modules", "build", "tests"]
+  "include": ["**/*.ts", "**/*.js"],
+  "exclude": ["node_modules", "build"]
 }
