@@ -1,10 +1,10 @@
-import type { UUID } from 'crypto';
+import type { UUID } from 'node:crypto';
 import { Result } from '../models/Result.js';
 
 export class UserCommand {
   queryId: UUID;
   params: UserCommandParam[];
-  requesterId: UUID
+  requesterId: UUID;
 
   constructor(queryId: UUID, params: UserCommandParam[], requesterId: UUID) {
     this.queryId = queryId;
@@ -34,25 +34,27 @@ export class UserCommand {
   }
 }
 
-export type UserCommandParam = {
+export interface UserCommandParam {
   name: string;
   value: string | number | boolean | string[] | number[];
-};
+}
 
 function isValidUUID(id: unknown): id is UUID {
-  if (typeof id !== 'string') return false;
-  const uuidRegExp: RegExp =
-    /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi;
+  if (typeof id !== 'string')
+    return false;
+
+  const uuidRegExp: RegExp
+    = /^[0-9a-f]{8}\b-[0-9a-f]{4}\b-[0-9a-f]{4}\b-[0-9a-f]{4}\b-[0-9a-f]{12}$/i;
   return uuidRegExp.test(id);
 }
 
 function isValidParam(myObj: { name: unknown; value: unknown }): boolean {
-  const simpleChecks: boolean =
-    myObj &&
-    myObj.name &&
-    typeof myObj.name === 'string' &&
-    myObj.value &&
-    Object.keys(myObj).length === 2;
+  const simpleChecks: boolean
+    = myObj
+    && myObj.name
+    && typeof myObj.name === 'string'
+    && myObj.value
+    && Object.keys(myObj).length === 2;
   let isValueValid: boolean = false;
   if (simpleChecks) {
     const acceptedPrimitiveTypes = ['string', 'boolean', 'number'].includes(
@@ -64,11 +66,12 @@ function isValidParam(myObj: { name: unknown; value: unknown }): boolean {
 }
 
 function isValidArray(array: unknown): boolean {
-  if (!Array.isArray(array)) return false;
+  if (!Array.isArray(array))
+    return false;
   if (array.length === 0) {
     return true;
   }
-  const allTypes = array.map((value) => typeof value);
+  const allTypes = array.map(value => typeof value);
   const uniqTypes = new Set<string>(allTypes);
   if (uniqTypes.size > 1) {
     return false;
@@ -96,28 +99,34 @@ function validatePayload(payload: unknown): {
   } = { queryId: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', params: [] };
   if (typeof payload !== 'object' || !payload) {
     messages.push('invalid payload');
-  } else {
+  }
+  else {
     Object.keys(payload)
-      .filter((key) => !['queryId', 'params'].includes(key))
-      .forEach((key) => messages.push(`unknown attribute: "${key}"`));
+      .filter(key => !['queryId', 'params'].includes(key))
+      .forEach(key => messages.push(`unknown attribute: "${key}"`));
 
     if (!('queryId' in payload)) {
       messages.push('"queryId" is mandatory');
-    } else if (!isValidUUID(payload.queryId)) {
+    }
+    else if (!isValidUUID(payload.queryId)) {
       messages.push('"queryId" is not a valid UUID');
-    } else {
+    }
+    else {
       validatedPayload.queryId = payload.queryId;
     }
 
     if (!('params' in payload)) {
       messages.push('"params" is mandatory');
-    } else if (!Array.isArray(payload.params)) {
+    }
+    else if (!Array.isArray(payload.params)) {
       messages.push('"params" is not a valid array of params');
-    } else {
+    }
+    else {
       for (const item of payload.params) {
         if (!isValidParam(item)) {
           messages.push(`invalid item in "params": ${JSON.stringify(item)}`);
-        } else {
+        }
+        else {
           validatedPayload.params.push(item);
         }
       }

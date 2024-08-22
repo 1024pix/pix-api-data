@@ -1,7 +1,9 @@
 import { expect } from '../../../test-helper.js';
+import type {
+  UserCommandParam,
+} from '../../../../lib/domain/commands/UserCommand.js';
 import {
   UserCommand,
-  UserCommandParam,
 } from '../../../../lib/domain/commands/UserCommand.js';
 import type { Result } from '../../../../lib/domain/models/Result.js';
 
@@ -13,9 +15,9 @@ describe('Unit | Domain | UserCommand', function () {
         123,
         null,
       ];
-
+      // eslint-disable-next-line mocha/no-setup-in-describe
       notValidRequesterId.forEach((requesterId) => {
-        it(`should return a failed CommandResult when requesterId is not a UUID : ${requesterId}`, function() {
+        it(`should return a failed CommandResult when requesterId is not a UUID : ${requesterId}`, function () {
           // given
           const validPayload = {
             queryId: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
@@ -23,8 +25,8 @@ describe('Unit | Domain | UserCommand', function () {
           };
 
           // when
-          const commandResult: Result<UserCommand> =
-            UserCommand.buildFromPayload(validPayload, requesterId);
+          const commandResult: Result<UserCommand>
+            = UserCommand.buildFromPayload(validPayload, requesterId);
 
           // then
           expect(commandResult.isSuccess).to.be.false;
@@ -46,8 +48,8 @@ describe('Unit | Domain | UserCommand', function () {
         const requesterId = 'c6eef19e-3de5-4b91-bcf0-70903af00551';
 
         // when
-        const commandResult: Result<UserCommand> =
-          UserCommand.buildFromPayload(validPayload, requesterId);
+        const commandResult: Result<UserCommand>
+          = UserCommand.buildFromPayload(validPayload, requesterId);
 
         // then
         const expectedUserCommand = new UserCommand(
@@ -76,8 +78,8 @@ describe('Unit | Domain | UserCommand', function () {
         const requesterId = 'c6eef19e-3de5-4b91-bcf0-70903af00551';
 
         // when
-        const commandResult: Result<UserCommand> =
-          UserCommand.buildFromPayload(validPayload, requesterId);
+        const commandResult: Result<UserCommand>
+          = UserCommand.buildFromPayload(validPayload, requesterId);
 
         // then
         const expectedParams: UserCommandParam[] = [];
@@ -124,8 +126,8 @@ describe('Unit | Domain | UserCommand', function () {
           const requesterId = 'c6eef19e-3de5-4b91-bcf0-70903af00551';
 
           // when
-          const commandResult: Result<UserCommand> =
-            UserCommand.buildFromPayload(invalidPayload, requesterId);
+          const commandResult: Result<UserCommand>
+            = UserCommand.buildFromPayload(invalidPayload, requesterId);
 
           // then
           expect(commandResult.isSuccess).to.be.false;
@@ -147,8 +149,8 @@ describe('Unit | Domain | UserCommand', function () {
           const requesterId = 'c6eef19e-3de5-4b91-bcf0-70903af00551';
 
           // when
-          const commandResult: Result<UserCommand> =
-            UserCommand.buildFromPayload(invalidPayload, requesterId);
+          const commandResult: Result<UserCommand>
+            = UserCommand.buildFromPayload(invalidPayload, requesterId);
 
           // then
           expect(commandResult.isSuccess).to.be.false;
@@ -168,8 +170,8 @@ describe('Unit | Domain | UserCommand', function () {
           const requesterId = 'c6eef19e-3de5-4b91-bcf0-70903af00551';
 
           // when
-          const commandResult: Result<UserCommand> =
-            UserCommand.buildFromPayload(invalidPayload, requesterId);
+          const commandResult: Result<UserCommand>
+            = UserCommand.buildFromPayload(invalidPayload, requesterId);
 
           // then
           expect(commandResult.isSuccess).to.be.false;
@@ -185,8 +187,8 @@ describe('Unit | Domain | UserCommand', function () {
           const requesterId = 'c6eef19e-3de5-4b91-bcf0-70903af00551';
 
           // when
-          const commandResult: Result<UserCommand> =
-            UserCommand.buildFromPayload(invalidPayload, requesterId);
+          const commandResult: Result<UserCommand>
+            = UserCommand.buildFromPayload(invalidPayload, requesterId);
 
           // then
           expect(commandResult.isSuccess).to.be.false;
@@ -205,8 +207,8 @@ describe('Unit | Domain | UserCommand', function () {
           const requesterId = 'c6eef19e-3de5-4b91-bcf0-70903af00551';
 
           // when
-          const commandResult: Result<UserCommand> =
-            UserCommand.buildFromPayload(invalidPayload, requesterId);
+          const commandResult: Result<UserCommand>
+            = UserCommand.buildFromPayload(invalidPayload, requesterId);
 
           // then
           expect(commandResult.isSuccess).to.be.false;
@@ -222,8 +224,8 @@ describe('Unit | Domain | UserCommand', function () {
           const requesterId = 'c6eef19e-3de5-4b91-bcf0-70903af00551';
 
           // when
-          const commandResult: Result<UserCommand> =
-            UserCommand.buildFromPayload(invalidPayload, requesterId);
+          const commandResult: Result<UserCommand>
+            = UserCommand.buildFromPayload(invalidPayload, requesterId);
 
           // then
           expect(commandResult.isSuccess).to.be.false;
@@ -254,8 +256,8 @@ describe('Unit | Domain | UserCommand', function () {
           const requesterId = 'c6eef19e-3de5-4b91-bcf0-70903af00551';
 
           // when
-          const commandResult: Result<UserCommand> =
-            UserCommand.buildFromPayload(invalidPayload, requesterId);
+          const commandResult: Result<UserCommand>
+            = UserCommand.buildFromPayload(invalidPayload, requesterId);
 
           // then
           expect(commandResult.isSuccess).to.be.false;
@@ -283,8 +285,8 @@ describe('Unit | Domain | UserCommand', function () {
           const requesterId = 'c6eef19e-3de5-4b91-bcf0-70903af00551';
 
           // when
-          const commandResult: Result<UserCommand> =
-            UserCommand.buildFromPayload(invalidPayload, requesterId);
+          const commandResult: Result<UserCommand>
+            = UserCommand.buildFromPayload(invalidPayload, requesterId);
 
           // then
           expect(commandResult.isSuccess).to.be.false;
@@ -331,8 +333,8 @@ describe('Unit | Domain | UserCommand', function () {
           const requesterId = 'c6eef19e-3de5-4b91-bcf0-70903af00551';
 
           // when
-          const commandResult: Result<UserCommand> =
-            UserCommand.buildFromPayload(invalidPayload, requesterId);
+          const commandResult: Result<UserCommand>
+            = UserCommand.buildFromPayload(invalidPayload, requesterId);
 
           // then
           expect(commandResult.isSuccess).to.be.false;

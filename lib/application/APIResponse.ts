@@ -1,7 +1,7 @@
 import { config } from '../common/config.js';
 import { logger } from '../common/logger/Logger.js';
 
-export enum APIResponseStatuses {
+enum APIResponseStatuses {
   SUCCESS = 'success',
   FAILURE = 'failure',
 }

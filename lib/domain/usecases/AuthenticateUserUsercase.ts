@@ -1,23 +1,29 @@
-import {
-  userRepository,
+import type {
   UserRepository,
 } from '../../infrastructure/UserRepository.js';
 import {
-  encryptionService,
+  userRepository,
+} from '../../infrastructure/UserRepository.js';
+import type {
   EncryptionService,
 } from '../../infrastructure/utils/EncryptionService.js';
 import {
-  jsonWebTokenService,
+  encryptionService,
+} from '../../infrastructure/utils/EncryptionService.js';
+import type {
   JSONWebTokenService,
+} from '../../infrastructure/utils/JSONWebTokenService.js';
+import {
+  jsonWebTokenService,
 } from '../../infrastructure/utils/JSONWebTokenService.js';
 import { Result } from '../models/Result.js';
 import type { AuthenticationCommand } from '../commands/AuthenticationCommand.js';
 import type { User } from '../models/User.js';
 
 export interface AuthenticateUserUsecase {
-  authenticateUser(
+  authenticateUser: (
     _authenticationCommand: AuthenticationCommand,
-  ): Promise<Result<string>>;
+  ) => Promise<Result<string>>;
 }
 class AuthenticateUserUsecaseImpl implements AuthenticateUserUsecase {
   constructor(
@@ -52,8 +58,8 @@ class AuthenticateUserUsecaseImpl implements AuthenticateUserUsecase {
   }
 }
 
-export const authenticateUserUsecase: AuthenticateUserUsecase =
-  new AuthenticateUserUsecaseImpl(
+export const authenticateUserUsecase: AuthenticateUserUsecase
+  = new AuthenticateUserUsecaseImpl(
     userRepository,
     encryptionService,
     jsonWebTokenService,

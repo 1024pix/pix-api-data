@@ -1,8 +1,7 @@
+import process from 'node:process';
+import perf_hooks from 'node:perf_hooks';
+import * as url from 'node:url';
 import * as dotenv from 'dotenv';
-dotenv.config();
-import perf_hooks from 'perf_hooks';
-import * as url from 'url';
-const { performance } = perf_hooks;
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 
@@ -12,6 +11,9 @@ import {
 } from '../../lib/common/db/knex-database-connections.js';
 import { logger } from '../../lib/common/logger/Logger.js';
 import { encryptionService } from '../../lib/infrastructure/utils/EncryptionService.js';
+
+dotenv.config();
+const { performance } = perf_hooks;
 const parseMe = yargs(hideBin(process.argv))
   .option('username', {
     type: 'string',
@@ -27,7 +29,7 @@ const parseMe = yargs(hideBin(process.argv))
   })
   .help();
 
-const addUser = async (user: User): Promise<void> => {
+async function addUser(user: User): Promise<void> {
   const hashedPassword = await encryptionService.hashPassword(user.password);
   try {
     const [userDTO] = await knexAPI('users')
@@ -40,21 +42,22 @@ const addUser = async (user: User): Promise<void> => {
     logger.info(
       `Utilisateur créé avec succès : id - ${userDTO.id} | username - ${userDTO.username} | label - ${userDTO.label}`,
     );
-  } catch (err) {
+  }
+  catch (err) {
     logger.error('Something went wrong when adding user');
     throw err;
   }
-};
+}
 
 const modulePath = url.fileURLToPath(import.meta.url);
 const isLaunchedFromCommandLine = process.argv[1] === modulePath;
 const __filename = modulePath;
 
-export type User = {
+export interface User {
   username: string;
   label: string;
   password: string;
-};
+}
 
 async function main() {
   const startTime = performance.now();
@@ -70,10 +73,12 @@ async function main() {
   if (isLaunchedFromCommandLine) {
     try {
       await main();
-    } catch (error) {
+    }
+    catch (error) {
       logger.error(error);
-      process.exitCode = 1;
-    } finally {
+      process.exit(1);
+    }
+    finally {
       await disconnect();
     }
   }

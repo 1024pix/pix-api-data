@@ -1,6 +1,7 @@
 import { expect } from 'chai';
-import { QueryAccess, QueryAccessModel } from '../../../../lib/domain/models/QueryAccess';
-import { UserCommandParam } from '../../../../lib/domain/commands/UserCommand';
+import type { QueryAccess } from '../../../../lib/domain/models/QueryAccess';
+import { QueryAccessModel } from '../../../../lib/domain/models/QueryAccess';
+import type { UserCommandParam } from '../../../../lib/domain/commands/UserCommand';
 
 describe('Unit | Domain | Models | QueryAccess', function () {
   describe('#areParamsValid', function () {
@@ -9,7 +10,7 @@ describe('Unit | Domain | Models | QueryAccess', function () {
         // given
         const queryAccess: QueryAccess = {
           id: ['123'],
-        }
+        };
 
         const userCommandParams: UserCommandParam[] = [{
           name: 'id',
@@ -29,7 +30,7 @@ describe('Unit | Domain | Models | QueryAccess', function () {
         // given
         const queryAccess: QueryAccess = {
           id: ['123'],
-        }
+        };
 
         const userCommandParams: UserCommandParam[] = [];
 
@@ -46,7 +47,7 @@ describe('Unit | Domain | Models | QueryAccess', function () {
         // given
         const queryAccess: QueryAccess = {
           id: ['123'],
-        }
+        };
 
         const userCommandParams: UserCommandParam[] = [{ name: 'id', value: '456' }];
 

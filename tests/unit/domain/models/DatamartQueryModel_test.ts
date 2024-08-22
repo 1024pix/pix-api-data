@@ -25,6 +25,7 @@ describe('Unit | DatamartQueryModel', function () {
       // then
       expect(query.isValid()).to.be.true;
     });
+
     it('should return false if mandatory parameter value is missing', function () {
       // given
       const query: DatamartQueryModel = new DatamartQueryModel({
@@ -41,6 +42,7 @@ describe('Unit | DatamartQueryModel', function () {
       // then
       expect(query.isValid()).to.be.false;
     });
+
     it('should return true if optional parameter value is missing', function () {
       // given
       const query: DatamartQueryModel = new DatamartQueryModel({

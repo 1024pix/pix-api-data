@@ -1,51 +1,52 @@
+import { env, stdout } from 'node:process';
 import * as dotenv from 'dotenv';
 import ms from 'ms';
 
 dotenv.config();
 
 function _getLogForHumans(): boolean {
-  const processOutputingToTerminal = process.stdout.isTTY;
-  const forceJSONLogs = process.env['LOG_FOR_HUMANS'] === 'false';
+  const processOutputingToTerminal = stdout.isTTY;
+  const forceJSONLogs = env.LOG_FOR_HUMANS === 'false';
   return processOutputingToTerminal && !forceJSONLogs;
 }
 
 function isFeatureEnabled(environmentVariable: string): boolean {
   return environmentVariable === 'true';
 }
-export type Logging = {
+export interface Logging {
   enabled: boolean;
   logLevel: string;
   logForHumans: boolean;
-};
-export type Authentication = {
+}
+export interface Authentication {
   accessTokenLifespanMS: number;
   secret: string;
   bcryptNumberOfSaltRounds: number;
-};
-export type Config = {
+}
+export interface Config {
   environment: string;
   logging: Logging;
   authentication: Authentication;
-};
+}
 
 function _getNumber(numberAsString: string, defaultValue: number): number {
-  const number = parseInt(numberAsString, 10);
-  return isNaN(number) ? defaultValue : number;
+  const number = Number.parseInt(numberAsString, 10);
+  return Number.isNaN(number) ? defaultValue : number;
 }
 
 function buildConfiguration(): Config {
   const config = {
-    environment: process.env['NODE_ENV'] || 'development',
+    environment: env.NODE_ENV || 'development',
     logging: {
-      enabled: isFeatureEnabled(process.env['LOG_ENABLED']),
-      logLevel: process.env['LOG_LEVEL'] || 'info',
+      enabled: isFeatureEnabled(env.LOG_ENABLED),
+      logLevel: env.LOG_LEVEL || 'info',
       logForHumans: _getLogForHumans(),
     },
     authentication: {
-      accessTokenLifespanMS: ms(process.env['ACCESS_TOKEN_LIFESPAN'] || '20m'),
-      secret: process.env['JWT_SECRET'],
+      accessTokenLifespanMS: ms(env.ACCESS_TOKEN_LIFESPAN || '20m'),
+      secret: env.JWT_SECRET,
       bcryptNumberOfSaltRounds: _getNumber(
-        process.env['BCRYPT_NUMBER_OF_SALT_ROUNDS'],
+        env.BCRYPT_NUMBER_OF_SALT_ROUNDS,
         10,
       ),
     },

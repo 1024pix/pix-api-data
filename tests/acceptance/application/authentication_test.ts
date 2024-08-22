@@ -1,4 +1,4 @@
-import { expect, createServer, knexAPI, sinon } from '../../test-helper.js';
+import { createServer, expect, knexAPI, sinon } from '../../test-helper.js';
 import { encryptionService } from '../../../lib/infrastructure/utils/EncryptionService.js';
 import { config } from '../../../lib/common/config.js';
 
@@ -26,9 +26,9 @@ describe('Acceptance | authentication', function () {
       // then
       expect(response.statusCode).to.equal(400);
       expect(JSON.parse(response.payload)).to.deep.equal({
-        error: "Bad Request",
-        message: "Invalid request payload input",
-        statusCode: 400
+        error: 'Bad Request',
+        message: 'Invalid request payload input',
+        statusCode: 400,
       });
     });
   });
@@ -44,7 +44,7 @@ describe('Acceptance | authentication', function () {
         await knexAPI('users').insert({
           id: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
           username: 'gigi_lamoroso',
-          label: "Gigi l'amoroso",
+          label: 'Gigi l\'amoroso',
           hashed_password: hashedPassword,
         });
         const payload = {
@@ -78,7 +78,7 @@ describe('Acceptance | authentication', function () {
         await knexAPI('users').insert({
           id: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
           username: 'gigi_lamoroso',
-          label: "Gigi l'amoroso",
+          label: 'Gigi l\'amoroso',
           hashed_password: hashedPassword,
         });
         const payload = {
@@ -112,7 +112,7 @@ describe('Acceptance | authentication', function () {
         await knexAPI('users').insert({
           id: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
           username: 'gigi_lamoroso',
-          label: "Gigi l'amoroso",
+          label: 'Gigi l\'amoroso',
           hashed_password: hashedPassword,
         });
         const payload = {

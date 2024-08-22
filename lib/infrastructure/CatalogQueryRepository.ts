@@ -1,4 +1,4 @@
-import type { UUID } from 'crypto';
+import type { UUID } from 'node:crypto';
 import { knexAPI } from '../common/db/knex-database-connections.js';
 import type {
   QueryCatalogItem,
@@ -6,7 +6,7 @@ import type {
 } from '../domain/models/QueryCatalogItem.js';
 
 export interface CatalogQueryRepository {
-  find(_requestId: UUID): Promise<QueryCatalogItem>;
+  find: (_requestId: UUID) => Promise<QueryCatalogItem>;
 }
 class CatalogQueryRepositoryImpl implements CatalogQueryRepository {
   async find(queryId: UUID): Promise<QueryCatalogItem> {
@@ -18,7 +18,7 @@ class CatalogQueryRepositoryImpl implements CatalogQueryRepository {
       .select(['name', 'type', 'mandatory'])
       .where('catalog_query_id', queryId);
     return {
-      query: catalogQueryDTO?.['sql_query'],
+      query: catalogQueryDTO?.sql_query,
       params: catalogQueryParamsDTO.map(
         (paramDTO: { name: string; type: string; mandatory: boolean }) =>
           ({
@@ -31,5 +31,5 @@ class CatalogQueryRepositoryImpl implements CatalogQueryRepository {
   }
 }
 
-export const catalogQueryRepository: CatalogQueryRepository =
-  new CatalogQueryRepositoryImpl();
+export const catalogQueryRepository: CatalogQueryRepository
+  = new CatalogQueryRepositoryImpl();

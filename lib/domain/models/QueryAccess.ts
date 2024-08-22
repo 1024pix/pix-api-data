@@ -1,8 +1,8 @@
 import type { UserCommandParam } from '../commands/UserCommand.js';
 
-export type QueryAccess = {
+export interface QueryAccess {
   [key: string]: string[];
-};
+}
 
 export class QueryAccessModel {
   constructor(private queryAccess: QueryAccess) {}

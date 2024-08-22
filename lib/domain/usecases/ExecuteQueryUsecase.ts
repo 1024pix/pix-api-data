@@ -1,9 +1,13 @@
-import {
+import type {
   CatalogQueryRepository,
-  catalogQueryRepository,
 } from '../../infrastructure/CatalogQueryRepository.js';
 import {
+  catalogQueryRepository,
+} from '../../infrastructure/CatalogQueryRepository.js';
+import type {
   DatamartRepository,
+} from '../../infrastructure/DatamartRepository.js';
+import {
   datamartRepository,
 } from '../../infrastructure/DatamartRepository.js';
 import {
@@ -17,7 +21,7 @@ import type { QueryCatalogItem } from '../models/QueryCatalogItem.js';
 import { Result } from '../models/Result.js';
 
 export interface ExecuteQueryUseCase {
-  executeQuery(_userCommand: UserCommand): Promise<Result<DatamartResponse>>;
+  executeQuery: (_userCommand: UserCommand) => Promise<Result<DatamartResponse>>;
 }
 
 export class ExecuteQueryUseCaseImpl implements ExecuteQueryUseCase {
@@ -34,8 +38,8 @@ export class ExecuteQueryUseCaseImpl implements ExecuteQueryUseCase {
   async executeQuery(
     userCommand: UserCommand,
   ): Promise<Result<DatamartResponse>> {
-    const queryCatalogItem: QueryCatalogItem =
-      await this.catalogQueryRepository.find(userCommand.queryId);
+    const queryCatalogItem: QueryCatalogItem
+      = await this.catalogQueryRepository.find(userCommand.queryId);
     if (!queryCatalogItem.query) {
       return Result.failure(['cannot run requested query']);
     }
@@ -49,7 +53,8 @@ export class ExecuteQueryUseCaseImpl implements ExecuteQueryUseCase {
       if (!queryAccess.areParamsValid(userCommand.params)) {
         return Result.failure(['No access to requested params']);
       }
-    } catch (e) {
+    }
+    catch (e) {
       return Result.failure(['User is not allowed to run this query']);
     }
 
@@ -62,14 +67,14 @@ export class ExecuteQueryUseCaseImpl implements ExecuteQueryUseCase {
       return Result.failure(['cannot run requested query']);
     }
 
-    const datamartResponse: DatamartResponse =
-      await this.datamartRepository.find(datamartQueryModel);
+    const datamartResponse: DatamartResponse
+      = await this.datamartRepository.find(datamartQueryModel);
     return Result.success(datamartResponse);
   }
 }
 
-export const executeQueryUseCase: ExecuteQueryUseCase =
-  new ExecuteQueryUseCaseImpl(
+export const executeQueryUseCase: ExecuteQueryUseCase
+  = new ExecuteQueryUseCaseImpl(
     datamartRepository,
     catalogQueryRepository,
     queryAccessRepository,

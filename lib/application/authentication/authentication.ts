@@ -5,8 +5,8 @@ import { APIResponse } from '../APIResponse.js';
 import { authenticateUserUsecase } from '../../domain/usecases/AuthenticateUserUsercase.js';
 
 export async function authenticate(clientRequest: Request, h: ResponseToolkit) {
-  const authenticationCommandValidationResult: Result<AuthenticationCommand> =
-    AuthenticationCommand.buildFromPayload(clientRequest.payload);
+  const authenticationCommandValidationResult: Result<AuthenticationCommand>
+    = AuthenticationCommand.buildFromPayload(clientRequest.payload);
   if (authenticationCommandValidationResult.isFailure) {
     return h
       .response(
@@ -17,8 +17,8 @@ export async function authenticate(clientRequest: Request, h: ResponseToolkit) {
       .code(400);
   }
 
-  const userAuthenticationResult =
-    await authenticateUserUsecase.authenticateUser(
+  const userAuthenticationResult
+    = await authenticateUserUsecase.authenticateUser(
       authenticationCommandValidationResult.resultData,
     );
   if (userAuthenticationResult.isFailure) {

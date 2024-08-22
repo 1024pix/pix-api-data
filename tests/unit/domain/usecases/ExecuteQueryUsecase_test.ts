@@ -1,22 +1,21 @@
-import { UUID } from 'crypto';
-import { CatalogQueryRepository } from '../../../../lib/infrastructure/CatalogQueryRepository';
-import { ParamType, QueryCatalogItem } from '../../../../lib/domain/models/QueryCatalogItem';
+import type { UUID } from 'node:crypto';
+import type { CatalogQueryRepository } from '../../../../lib/infrastructure/CatalogQueryRepository';
+import type { QueryCatalogItem } from '../../../../lib/domain/models/QueryCatalogItem';
+import { ParamType } from '../../../../lib/domain/models/QueryCatalogItem';
 import { ExecuteQueryUseCaseImpl } from '../../../../lib/domain/usecases/ExecuteQueryUsecase';
-import { DatamartRepository } from '../../../../lib/infrastructure/DatamartRepository';
-import { DatamartResponse } from '../../../../lib/domain/models/DatamartResponse';
-import { DatamartQueryModel } from '../../../../lib/domain/models/DatamartQuery';
+import type { DatamartRepository } from '../../../../lib/infrastructure/DatamartRepository';
+import type { DatamartResponse } from '../../../../lib/domain/models/DatamartResponse';
+import type { DatamartQueryModel } from '../../../../lib/domain/models/DatamartQuery';
 import { expect } from '../../../test-helper';
-import { UserCommand, UserCommandParam } from '../../../../lib/domain/commands/UserCommand';
-import { QueryAccessRepository } from '../../../../lib/infrastructure/QueryAccessRepository';
+import type { UserCommand, UserCommandParam } from '../../../../lib/domain/commands/UserCommand';
+import type { QueryAccessRepository } from '../../../../lib/infrastructure/QueryAccessRepository';
 import { type QueryAccess, QueryAccessModel } from '../../../../lib/domain/models/QueryAccess';
 import { NotFoundError } from '../../../../lib/domain/errors.js';
 
 describe('Unit | Domain | Usecases | ExecuteQueryUsecase', function () {
-
   describe('#executeQuery', function () {
-
     context('when query does not exist', function () {
-      it('should return failed result', async function() {
+      it('should return failed result', async function () {
         // given
         class DatamartRepositoryMock implements DatamartRepository {
           async find(_datamartQueryModel: DatamartQueryModel): Promise<DatamartResponse> {
@@ -48,7 +47,7 @@ describe('Unit | Domain | Usecases | ExecuteQueryUsecase', function () {
         const userCommand = {
           queryId,
           params: [],
-          requesterId
+          requesterId,
         } as UserCommand;
 
         // when
@@ -61,12 +60,10 @@ describe('Unit | Domain | Usecases | ExecuteQueryUsecase', function () {
     });
 
     context('when query exists', function () {
-
       context('when user is not allowed for this query', function () {
-
-        it('should return failed result', async function() {
+        it('should return failed result', async function () {
           // given
-          const expectedResult = ['User is not allowed to run this query']
+          const expectedResult = ['User is not allowed to run this query'];
           class DatamartRepositoryMock implements DatamartRepository {
             async find(_datamartQueryModel: DatamartQueryModel): Promise<DatamartResponse> {
               return { result: [] } as DatamartResponse;
@@ -110,11 +107,10 @@ describe('Unit | Domain | Usecases | ExecuteQueryUsecase', function () {
       });
 
       context('when user is allowed for this query', function () {
-
         context('when userCommand params are unauthorized', function () {
-          it('should return failed result', async function() {
+          it('should return failed result', async function () {
             // given
-            const expectedError = ['No access to requested params']
+            const expectedError = ['No access to requested params'];
             class DatamartRepositoryMock implements DatamartRepository {
               async find(_datamartQueryModel: DatamartQueryModel): Promise<DatamartResponse> {
                 return { result: [] } as DatamartResponse;
@@ -126,7 +122,6 @@ describe('Unit | Domain | Usecases | ExecuteQueryUsecase', function () {
                 return { query: 'select * from tests', params: [] } as QueryCatalogItem;
               }
             }
-
 
             class QueryAccessModelMock extends QueryAccessModel {
               constructor(queryAccess: QueryAccess) {
@@ -144,7 +139,6 @@ describe('Unit | Domain | Usecases | ExecuteQueryUsecase', function () {
               }
             }
 
-
             const datamartRepository: DatamartRepository = new DatamartRepositoryMock();
             const queryRepository: CatalogQueryRepository = new QueryRepositoryMock();
             const queryAccessRepository: QueryAccessRepository = new QueryAccessRepositoryMock();
@@ -157,7 +151,7 @@ describe('Unit | Domain | Usecases | ExecuteQueryUsecase', function () {
             const userCommand = {
               queryId,
               params: [],
-              requesterId
+              requesterId,
             } as UserCommand;
 
             // when
@@ -170,12 +164,10 @@ describe('Unit | Domain | Usecases | ExecuteQueryUsecase', function () {
         });
 
         context('when userCommand params are authorized', function () {
-
           context('when params are invalid', function () {
-
-            it('should return failed result', async function() {
+            it('should return failed result', async function () {
               // given
-              const expectedResult = ['cannot run requested query']
+              const expectedResult = ['cannot run requested query'];
               class DatamartRepositoryMock implements DatamartRepository {
                 async find(_datamartQueryModel: DatamartQueryModel): Promise<DatamartResponse> {
                   return { result: [] } as DatamartResponse;
@@ -204,7 +196,6 @@ describe('Unit | Domain | Usecases | ExecuteQueryUsecase', function () {
                 }
               }
 
-
               const datamartRepository: DatamartRepository = new DatamartRepositoryMock();
               const queryRepository: CatalogQueryRepository = new QueryRepositoryMock();
               const queryAccessRepository: QueryAccessRepository = new QueryAccessRepositoryMock();
@@ -230,10 +221,9 @@ describe('Unit | Domain | Usecases | ExecuteQueryUsecase', function () {
           });
 
           context('when params are valid', function () {
-
-            it('should return the query', async function() {
+            it('should return the query', async function () {
               // given
-              const expectedResult = [{ test: Symbol('expected-result') }]
+              const expectedResult = [{ test: Symbol('expected-result') }];
               class DatamartRepositoryMock implements DatamartRepository {
                 async find(_datamartQueryModel: DatamartQueryModel): Promise<DatamartResponse> {
                   return { result: expectedResult } as DatamartResponse;
@@ -262,7 +252,6 @@ describe('Unit | Domain | Usecases | ExecuteQueryUsecase', function () {
                 }
               }
 
-
               const datamartRepository: DatamartRepository = new DatamartRepositoryMock();
               const queryRepository: CatalogQueryRepository = new QueryRepositoryMock();
               const queryAccessRepository: QueryAccessRepository = new QueryAccessRepositoryMock();
@@ -275,7 +264,7 @@ describe('Unit | Domain | Usecases | ExecuteQueryUsecase', function () {
               const userCommand = {
                 queryId,
                 params: [{ name: 'foo', value: 'bar' }],
-                requesterId
+                requesterId,
               } as UserCommand;
 
               // when

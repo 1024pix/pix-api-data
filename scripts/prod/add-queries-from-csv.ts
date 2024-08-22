@@ -1,23 +1,26 @@
+import perf_hooks from 'node:perf_hooks';
+import process from 'node:process';
+import * as url from 'node:url';
+import { readFile } from 'node:fs/promises';
+import path from 'node:path';
+import type { Buffer } from 'node:buffer';
+import yargs from 'yargs';
+import { hideBin } from 'yargs/helpers';
 import * as dotenv from 'dotenv';
-import perf_hooks from 'perf_hooks';
-import * as url from 'url';
-import { logger } from '../../lib/common/logger/Logger.js';
+import Papa from 'papaparse';
+import type { Knex } from 'knex';
+import { ParamType } from '../../lib/domain/models/QueryCatalogItem.js';
 import {
   disconnect,
   knexAPI,
 } from '../../lib/common/db/knex-database-connections.js';
-import yargs from 'yargs';
-import { hideBin } from 'yargs/helpers';
-import { readFile } from 'fs/promises';
-import path from 'path';
-import Papa from 'papaparse';
+import { logger } from '../../lib/common/logger/Logger.js';
 import {
   MATCHING_OPTIONAL_BLOCK_REGEXP,
   MATCHING_PARAM_BLOCK_REGEXP,
   PARAM_NAME_REGEXP,
 } from '../../lib/domain/models/DatamartQuery.js';
-import { ParamType } from '../../lib/domain/models/QueryCatalogItem.js';
-import type { Knex } from 'knex';
+
 dotenv.config();
 const { performance } = perf_hooks;
 
@@ -30,11 +33,9 @@ const parseMe = yargs(hideBin(process.argv))
   .option('run', {
     type: 'boolean',
     description:
-      "Option pour effectuer et persister l'insertion en BDD des requêtes dans le catalogue à condition qu'elles soient toutes valides.",
+      'Option pour effectuer et persister l\'insertion en BDD des requêtes dans le catalogue à condition qu\'elles soient toutes valides.',
   })
   .help();
-
-export { FilePath, doJob };
 
 class QueryChecker {
   query: string;
@@ -64,8 +65,8 @@ class QueryChecker {
     if (query.trim().length === 0) {
       return new QueryChecker('', [], [], lineNumber, []);
     }
-    const { queryWithoutOptionalBlocks, optionalParams } =
-      extractOptionalParameters(query);
+    const { queryWithoutOptionalBlocks, optionalParams }
+      = extractOptionalParameters(query);
     const { mandatoryParams } = extractMandatoryParameters(
       queryWithoutOptionalBlocks,
     );
@@ -121,20 +122,17 @@ class FilePath {
   }
 }
 
-type ProvidedParam = {
+interface ProvidedParam {
   name: string;
   type: string;
   mandatory: boolean;
   provided: boolean;
-};
+}
 
-const doJob = async (
-  filePath: FilePath,
-  run: boolean,
-): Promise<{ errorMessagesByQuery: string[][]; sqlByQuery: string[][] }> => {
+async function doJob(filePath: FilePath, run: boolean): Promise<{ errorMessagesByQuery: string[][]; sqlByQuery: string[][] }> {
   logger.info(`Récupération des requêtes depuis le fichier...`);
   const { errorMessagesByQuery, queries } = await parseQueriesFromCsv(filePath);
-  if (queries.length === 0 || queries.some((query) => !query.isValid)) {
+  if (queries.length === 0 || queries.some(query => !query.isValid)) {
     logger.error(
       'Sortie prématurée: au moins une requête dans le fichier est invalide.',
     );
@@ -154,9 +152,11 @@ const doJob = async (
     for (const query of queries) {
       sqlByQuery[query.lineNumberInCSV] = await addQueryToCatalog(query, trx);
     }
-    if (run) await trx.commit();
+    if (run)
+      await trx.commit();
     else await trx.rollback();
-  } catch (err) {
+  }
+  catch (err) {
     logger.error(
       `Sortie prématurée: l'insertion en catalogue s'est mal passée.`,
     );
@@ -168,7 +168,7 @@ const doJob = async (
     errorMessagesByQuery: [],
     sqlByQuery,
   };
-};
+}
 
 async function parseQueriesFromCsv(
   filePath: FilePath,
@@ -177,7 +177,8 @@ async function parseQueriesFromCsv(
   let buffer: Buffer;
   try {
     buffer = await readFile(filePath.fullPath);
-  } catch (err) {
+  }
+  catch (err) {
     logger.error('Erreur lors de la lecture du fichier');
     throw err;
   }
@@ -188,8 +189,8 @@ async function parseQueriesFromCsv(
   }
   const data: string[][] = parsedCSVData.data as string[][];
   const queries: QueryChecker[] = [];
-  const dataWithoutEmptyLines = data.filter((line) =>
-    line.some((cell) => cell.trim().length > 0),
+  const dataWithoutEmptyLines = data.filter(line =>
+    line.some(cell => cell.trim().length > 0),
   );
   for (const [lineNumber, line] of dataWithoutEmptyLines.entries()) {
     const queryChecker = QueryChecker.fromCSVLine(line, lineNumber);
@@ -232,19 +233,19 @@ function extractOptionalParameters(query: string): {
   queryWithoutOptionalBlocks: string;
   optionalParams: string[];
 } {
-  let cloneQuery = query + '';
+  let cloneQuery = `${query}`;
   const optionalParams: string[] = [];
   const regExpMatchOptionalArrays = [
     ...cloneQuery.matchAll(MATCHING_OPTIONAL_BLOCK_REGEXP),
   ];
   const optionalBlocks = regExpMatchOptionalArrays.map(
-    (regExpMatchArray) => regExpMatchArray[0],
+    regExpMatchArray => regExpMatchArray[0],
   );
   if (optionalBlocks.length > 0) {
     for (const optionalBlock of optionalBlocks) {
       const optionalParam = [
         ...optionalBlock.matchAll(PARAM_NAME_GLOBAL_REGEXP),
-      ].map((regExpMatchArray) => regExpMatchArray[1].slice(1, -1))[0];
+      ].map(regExpMatchArray => regExpMatchArray[1].slice(1, -1))[0];
       optionalParams.push(optionalParam);
       cloneQuery = cloneQuery.replace(optionalBlock, '');
     }
@@ -260,19 +261,19 @@ function extractMandatoryParameters(query: string): {
   queryWithoutMandatoryBlocks: string;
   mandatoryParams: string[];
 } {
-  let cloneQuery = query + '';
+  let cloneQuery = `${query}`;
   const mandatoryParams: string[] = [];
   const regExpMatchMandatoryArrays = [
     ...cloneQuery.matchAll(MATCHING_PARAM_BLOCK_REGEXP),
   ];
   const mandatoryBlocks = regExpMatchMandatoryArrays.map(
-    (regExpMatchArray) => regExpMatchArray[0],
+    regExpMatchArray => regExpMatchArray[0],
   );
   if (mandatoryBlocks.length > 0) {
     for (const mandatoryBlock of mandatoryBlocks) {
       const mandatoryParam = [
         ...mandatoryBlock.matchAll(PARAM_NAME_GLOBAL_REGEXP),
-      ].map((regExpMatchArray) => regExpMatchArray[1].slice(1, -1))[0];
+      ].map(regExpMatchArray => regExpMatchArray[1].slice(1, -1))[0];
       mandatoryParams.push(mandatoryParam);
       cloneQuery = cloneQuery.replace(mandatoryBlock, '');
     }
@@ -286,22 +287,26 @@ function extractMandatoryParameters(query: string): {
 
 function parseProvidedParameters(rawParams: string[]): ProvidedParam[] {
   const providedParams: ProvidedParam[] = [];
+  // eslint-disable-next-line regexp/no-super-linear-backtracking
   const PARAM_NAME_REGEXP = /name *: *([^,\\}]*)[,\\}]/g;
+  // eslint-disable-next-line regexp/no-super-linear-backtracking
   const PARAM_TYPE_REGEXP = /type *: *([^,\\}]*)[,\\}]/g;
+  // eslint-disable-next-line regexp/no-super-linear-backtracking
   const PARAM_MANDATORY_REGEXP = /mandatory *: *([^,\\}]*)[,\\}]/g;
   for (const rawParam of rawParams) {
-    if (rawParam.trim().length === 0) continue;
+    if (rawParam.trim().length === 0)
+      continue;
     const nameParam = [...rawParam.matchAll(PARAM_NAME_REGEXP)].map(
-      (regExpMatchArray) =>
-        regExpMatchArray[1].replaceAll('"', '').replaceAll("'", ''),
+      regExpMatchArray =>
+        regExpMatchArray[1].replaceAll('"', '').replaceAll('\'', ''),
     )[0];
     const typeParam = [...rawParam.matchAll(PARAM_TYPE_REGEXP)].map(
-      (regExpMatchArray) =>
-        regExpMatchArray[1].replaceAll('"', '').replaceAll("'", ''),
+      regExpMatchArray =>
+        regExpMatchArray[1].replaceAll('"', '').replaceAll('\'', ''),
     )[0];
     const mandatoryParam = [...rawParam.matchAll(PARAM_MANDATORY_REGEXP)].map(
-      (regExpMatchArray) =>
-        regExpMatchArray[1].replaceAll('"', '').replaceAll("'", ''),
+      regExpMatchArray =>
+        regExpMatchArray[1].replaceAll('"', '').replaceAll('\'', ''),
     )[0];
     providedParams.push({
       name: nameParam,
@@ -310,8 +315,8 @@ function parseProvidedParameters(rawParams: string[]): ProvidedParam[] {
         mandatoryParam === 'true'
           ? true
           : mandatoryParam === 'false'
-          ? false
-          : null,
+            ? false
+            : null,
       provided: false,
     });
   }
@@ -339,7 +344,7 @@ function checkParam(
 ): string[] {
   const errorMessages: string[] = [];
   const providedParamWithName = providedParams.find(
-    (providedParam) => providedParam.name === param,
+    providedParam => providedParam.name === param,
   );
   if (!providedParamWithName) {
     errorMessages.push(
@@ -393,7 +398,8 @@ async function main() {
   logger.info(`Script lancé avec le fichier ${file}.`);
   if (!run) {
     logger.info(`Test à blanc, aucune insertion persistée`);
-  } else {
+  }
+  else {
     logger.info(`Exécution réelle avec persistence des insertions.`);
   }
   const { errorMessagesByQuery, sqlByQuery } = await doJob(
@@ -423,11 +429,15 @@ async function main() {
   if (isLaunchedFromCommandLine) {
     try {
       await main();
-    } catch (error) {
+    }
+    catch (error) {
       logger.error(error);
-      process.exitCode = 1;
-    } finally {
+      process.exit(1);
+    }
+    finally {
       await disconnect();
     }
   }
 })();
+
+export { FilePath, doJob };

@@ -1,13 +1,13 @@
-export type QueryCatalogItem = {
+export interface QueryCatalogItem {
   query: string;
   params: QueryParam[];
-};
+}
 
-export type QueryParam = {
+export interface QueryParam {
   name: string;
   type: ParamType;
   mandatory: boolean;
-};
+}
 
 export enum ParamType {
   STRING = 'string',

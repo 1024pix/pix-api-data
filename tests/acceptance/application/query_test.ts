@@ -1,10 +1,10 @@
+import type { UUID } from 'node:crypto';
 import {
-  expect,
   createServer,
-  knexAPI,
+  expect,
   generateValidRequestAuthorizationHeader,
+  knexAPI,
 } from '../../test-helper.js';
-import { UUID } from 'crypto';
 
 describe('Acceptance | query', function () {
   let headers: string;
@@ -15,7 +15,7 @@ describe('Acceptance | query', function () {
     await knexAPI('users').insert({
       id: userId,
       username: 'gigi_lamoroso',
-      label: "Gigi l'amoroso",
+      label: 'Gigi l\'amoroso',
       hashed_password: 'coucou',
     });
     headers = await generateValidRequestAuthorizationHeader(userId);
@@ -126,7 +126,6 @@ describe('Acceptance | query', function () {
             messages: [],
           });
         });
-
       });
     });
 

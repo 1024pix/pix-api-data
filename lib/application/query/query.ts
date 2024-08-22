@@ -9,10 +9,10 @@ export async function execute(
   clientRequest: Request,
   h: ResponseToolkit,
 ): Promise<ResponseObject> {
-  const requesterId = clientRequest.auth.credentials['userId'];
+  const requesterId = clientRequest.auth.credentials.userId;
 
-  const userCommandValidationResult: Result<UserCommand> =
-    UserCommand.buildFromPayload(clientRequest.payload, requesterId);
+  const userCommandValidationResult: Result<UserCommand>
+    = UserCommand.buildFromPayload(clientRequest.payload, requesterId);
   if (userCommandValidationResult.isFailure) {
     return h
       .response(APIResponse.failure(userCommandValidationResult.errorMessages))

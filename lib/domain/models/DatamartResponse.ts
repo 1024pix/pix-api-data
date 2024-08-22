@@ -1,3 +1,3 @@
-export type DatamartResponse = {
+export interface DatamartResponse {
   result: object[];
-};
+}
