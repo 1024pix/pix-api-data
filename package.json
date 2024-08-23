@@ -75,7 +75,7 @@
     "@types/yargs": "^17.0.24",
     "chai": "^5.0.0",
     "depcheck": "^1.4.3",
-    "eslint": "^8.42.0",
+    "eslint": "^9.0.0",
     "eslint-plugin-format": "^0.1.2",
     "eslint-plugin-mocha": "^10.1.0",
     "mocha": "^10.2.0",
