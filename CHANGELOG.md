@@ -1,3 +1,9 @@
+## [0.6.2](https://github.com/1024pix/pix-api-data/compare/v0.6.1...v0.6.2) (2024-08-23)
+
+### :arrow_up: Montée de version
+
+- [#27](https://github.com/1024pix/pix-api-data/pull/27) Update dependency eslint to v9
+
 ## [0.6.1](https://github.com/1024pix/pix-api-data/compare/v0.6.0...v0.6.1) (2024-08-23)
 
 ### :bug: Correction
