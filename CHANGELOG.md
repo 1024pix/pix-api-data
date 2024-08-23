@@ -1,3 +1,9 @@
+# [0.6.0](https://github.com/1024pix/pix-api-data/compare/v0.5.10...v0.6.0) (2024-08-23)
+
+### :rocket: Amélioration
+
+- [#22](https://github.com/1024pix/pix-api-data/pull/22) Bloquer temporairement ou non un compte en fonction du nombre de tentatives de connexion (PIX-13290).
+
 ## [0.5.10](https://github.com/1024pix/pix-api-data/compare/v0.5.9...v0.5.10) (2024-08-22)
 
 ### :building_construction: Tech
