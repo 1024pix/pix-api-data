@@ -1,5 +1,5 @@
 import boom from '@hapi/boom';
-import { UserIsTemporaryBlocked } from '../domain/errors';
+import { UserIsTemporaryBlocked } from '../domain/errors.js';
 
 function _mapToHttpError(error) {
   switch (error.constructor) {

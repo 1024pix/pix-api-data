@@ -1,4 +1,4 @@
-import * as checkIfUserIsBlockedUseCase from './usecases/checkIfUserIsBlocked';
+import * as checkIfUserIsBlockedUseCase from './usecases/checkIfUserIsBlocked.js';
 
 async function checkIfUserIsBlocked(request, h) {
   const { username } = request.payload;

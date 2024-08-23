@@ -5,7 +5,7 @@ import Hapi from '@hapi/hapi';
 import { authentication } from './infrastructure/authentication.js';
 import { plugins } from './infrastructure/plugins/plugins.js';
 import { routes } from './routes.js';
-import { handleDomainAndHttpErrors } from './application/pre-response-utils';
+import { handleDomainAndHttpErrors } from './application/pre-response-utils.js';
 
 const createBareServer = function (): Server {
   const serverConfiguration: ServerOptions = {
