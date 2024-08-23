@@ -17,7 +17,7 @@ export interface JSONWebTokenService {
 class JSONWebTokenImpl implements JSONWebTokenService {
   async generateToken(userId: UUID): Promise<string> {
     return sign({ user_id: userId }, config.authentication.secret, {
-      expiresIn: config.authentication.accessTokenLifespanMS,
+      expiresIn: config.authentication.accessTokenLifespan,
     });
   }
 

@@ -1,6 +1,5 @@
 import { env, stdout } from 'node:process';
 import * as dotenv from 'dotenv';
-import ms from 'ms';
 
 dotenv.config();
 
@@ -19,7 +18,7 @@ export interface Logging {
   logForHumans: boolean;
 }
 export interface Authentication {
-  accessTokenLifespanMS: number;
+  accessTokenLifespan: string;
   secret: string;
   bcryptNumberOfSaltRounds: number;
 };
@@ -50,7 +49,7 @@ function buildConfiguration(): Config {
       logForHumans: _getLogForHumans(),
     },
     authentication: {
-      accessTokenLifespanMS: ms(env.ACCESS_TOKEN_LIFESPAN || '20m'),
+      accessTokenLifespan: env.ACCESS_TOKEN_LIFESPAN || '20m',
       secret: env.JWT_SECRET,
       bcryptNumberOfSaltRounds: _getNumber(
         env.BCRYPT_NUMBER_OF_SALT_ROUNDS,
