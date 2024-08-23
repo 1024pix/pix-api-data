@@ -1,3 +1,10 @@
+## [0.6.1](https://github.com/1024pix/pix-api-data/compare/v0.6.0...v0.6.1) (2024-08-23)
+
+### :bug: Correction
+
+- [#26](https://github.com/1024pix/pix-api-data/pull/26) Ajouter la librairie manquante 
+- [#25](https://github.com/1024pix/pix-api-data/pull/25) Corriger la durée des tokens (PIX-13928).
+
 # [0.6.0](https://github.com/1024pix/pix-api-data/compare/v0.5.10...v0.6.0) (2024-08-23)
 
 ### :rocket: Amélioration
