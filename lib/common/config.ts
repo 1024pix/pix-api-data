@@ -22,12 +22,19 @@ export interface Authentication {
   accessTokenLifespanMS: number;
   secret: string;
   bcryptNumberOfSaltRounds: number;
+};
+export interface Login {
+  temporaryBlockingThresholdFailureCount: number;
+  temporaryBlockingBaseTimeMs: number;
+  blockingLimitFailureCount: number;
 }
+
 export interface Config {
   environment: string;
   logging: Logging;
   authentication: Authentication;
-}
+  login: Login;
+};
 
 function _getNumber(numberAsString: string, defaultValue: number): number {
   const number = Number.parseInt(numberAsString, 10);
@@ -49,6 +56,14 @@ function buildConfiguration(): Config {
         env.BCRYPT_NUMBER_OF_SALT_ROUNDS,
         10,
       ),
+    },
+    login: {
+      temporaryBlockingThresholdFailureCount: _getNumber(
+        env.LOGIN_TEMPORARY_BLOCKING_THRESHOLD_FAILURE_COUNT,
+        10,
+      ),
+      temporaryBlockingBaseTimeMs: ms(env.LOGIN_TEMPORARY_BLOCKING_BASE_TIME || '2m'),
+      blockingLimitFailureCount: _getNumber(env.LOGIN_BLOCKING_LIMIT_FAILURE_COUNT, 50),
     },
   };
   if (config.environment === 'test') {

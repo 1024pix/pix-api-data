@@ -23,6 +23,7 @@ describe('Acceptance | query', function () {
 
   afterEach(async function () {
     await knexAPI('query_access').delete();
+    await knexAPI('user-logins').delete();
     await knexAPI('users').delete();
     await knexAPI('catalog_queries').delete();
   });

@@ -1,6 +1,7 @@
 import type { Server } from '@hapi/hapi';
 import Joi from 'joi';
 
+import { checkIfUserIsBlocked } from '../security-pre-handlers.js';
 import { authenticate } from './authentication.js';
 
 const register = async function (server: Server) {
@@ -16,6 +17,7 @@ const register = async function (server: Server) {
             password: Joi.string().required(),
           }).label('AuthenticationPayload'),
         },
+        pre: [{ method: checkIfUserIsBlocked }],
         handler: authenticate,
         tags: ['api', 'authentication'],
       },

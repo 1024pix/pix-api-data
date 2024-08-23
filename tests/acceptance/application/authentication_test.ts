@@ -4,6 +4,7 @@ import { config } from '../../../lib/common/config.js';
 
 describe('Acceptance | authentication', function () {
   afterEach(async function () {
+    await knexAPI('user-logins').delete();
     await knexAPI('users').delete();
   });
 
@@ -138,6 +139,116 @@ describe('Acceptance | authentication', function () {
           token_type: 'Bearer',
           expires_in: config.authentication.accessTokenLifespanMS,
         });
+      });
+    });
+  });
+
+  context('User blocking', function () {
+    context('when user fails to authenticate for the threshold failure count', function () {
+      it('replies an unauthorized error and blocks the user for the blocking time', async function () {
+        // given
+        const rawPassword = 'un_super_mdp';
+        const hashedPassword = await encryptionService.hashPassword(
+          rawPassword,
+        );
+        const userId = 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11';
+        await knexAPI('users').insert({
+          id: userId,
+          username: 'gigi_lamoroso',
+          label: 'Gigi l\'amoroso',
+          hashed_password: hashedPassword,
+        });
+        await knexAPI('user-logins').insert({ userId, failureCount: 9 });
+
+        const payload = {
+          username: 'gigi_lamoroso',
+          password: 'bad-password',
+        };
+        const server = await createServer();
+
+        // when
+        const { statusCode } = await server.inject({
+          method: 'POST',
+          url: '/token',
+          payload,
+        });
+
+        // then
+        expect(statusCode).to.equal(401);
+        const userLogin = await knexAPI('user-logins').where({ userId }).first();
+        expect(userLogin.failureCount).to.equal(10);
+        expect(userLogin.temporaryBlockedUntil).to.exist;
+      });
+    });
+
+    context('when user successfully authenticate but still blocked', function () {
+      it('replies a forbidden error and keep on blocking the user for the blocking time', async function () {
+        // given
+        const rawPassword = 'un_super_mdp';
+        const hashedPassword = await encryptionService.hashPassword(
+          rawPassword,
+        );
+        const userId = 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11';
+        await knexAPI('users').insert({
+          id: userId,
+          username: 'gigi_lamoroso',
+          label: 'Gigi l\'amoroso',
+          hashed_password: hashedPassword,
+        });
+        await knexAPI('user-logins').insert({ userId, failureCount: 10, temporaryBlockedUntil: new Date(Date.now() + 3600 * 1000) });
+
+        const payload = {
+          username: 'gigi_lamoroso',
+          password: rawPassword,
+        };
+        const server = await createServer();
+
+        // when
+        const { statusCode } = await server.inject({
+          method: 'POST',
+          url: '/token',
+          payload,
+        });
+
+        // then
+        expect(statusCode).to.equal(403);
+      });
+    });
+
+    context('when user successfully authenticate after being blocked', function () {
+      it('resets the failure count and the temporary blocked until date', async function () {
+        // given
+        const rawPassword = 'un_super_mdp';
+        const hashedPassword = await encryptionService.hashPassword(
+          rawPassword,
+        );
+        const userId = 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11';
+        await knexAPI('users').insert({
+          id: userId,
+          username: 'gigi_lamoroso',
+          label: 'Gigi l\'amoroso',
+          hashed_password: hashedPassword,
+        });
+        await knexAPI('user-logins').insert({ userId, failureCount: 10, temporaryBlockedUntil: new Date('2023-10-10') });
+
+        const payload = {
+          username: 'gigi_lamoroso',
+          password: rawPassword,
+        };
+        const server = await createServer();
+
+        // when
+        const { statusCode } = await server.inject({
+          method: 'POST',
+          url: '/token',
+          payload,
+        });
+
+        // then
+        expect(statusCode).to.equal(200);
+        const userLogin = await knexAPI('user-logins').where({ userId }).first();
+        expect(userLogin.failureCount).to.equal(0);
+        expect(userLogin.temporaryBlockedUntil).to.be.null;
       });
     });
   });

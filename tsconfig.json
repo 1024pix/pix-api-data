@@ -4,8 +4,8 @@
   "compilerOptions": {
     "target": "ESNext",
     "rootDir": "./",
-    "module": "ESNext",
-    "moduleResolution": "Node",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "resolveJsonModule": true,
     "types": ["node", "mocha"],
     "allowJs": true,
