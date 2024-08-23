@@ -28,12 +28,12 @@ export class APIResponse<TYPE_DATA> {
   static authenticationSuccess(accessToken: string): APIResponse<{
     access_token: string;
     token_type: string;
-    expires_in: number;
+    expires_in: string;
   }> {
     return new APIResponse(APIResponseStatuses.SUCCESS, [], {
       access_token: accessToken,
       token_type: 'Bearer',
-      expires_in: config.authentication.accessTokenLifespanMS,
+      expires_in: config.authentication.accessTokenLifespan,
     });
   }
 

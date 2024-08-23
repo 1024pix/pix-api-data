@@ -137,7 +137,7 @@ describe('Acceptance | authentication', function () {
         sinon.assert.match(parsedResponse.data, {
           access_token: sinon.match.string,
           token_type: 'Bearer',
-          expires_in: config.authentication.accessTokenLifespanMS,
+          expires_in: config.authentication.accessTokenLifespan,
         });
       });
     });
