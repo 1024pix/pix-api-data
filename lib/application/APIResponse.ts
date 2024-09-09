@@ -1,3 +1,4 @@
+import { Readable } from 'node:stream';
 import { config } from '../common/config.js';
 import { logger } from '../common/logger/Logger.js';
 
@@ -24,6 +25,30 @@ export class APIResponse<TYPE_DATA> {
   static success<TYPE_DATA>(data: TYPE_DATA): APIResponse<TYPE_DATA> {
     return new APIResponse<TYPE_DATA>(APIResponseStatuses.SUCCESS, [], data);
   }
+
+  static successStream(data: Readable): Readable {
+    const stream = new Readable({
+      read() {},
+    });
+    stream.push('{"status":"success","data":[');
+
+    let isFirstLine = true;
+
+    data.on('data', (row) => {
+      if (!isFirstLine) {
+        stream.push(',');
+      }
+      isFirstLine = false;
+      stream.push(JSON.stringify(row));
+    });
+
+    data.on('end', () => {
+      stream.push('], "messages": []}');
+      stream.push(null);
+    });
+
+    return stream;
+  };
 
   static authenticationSuccess(accessToken: string): APIResponse<{
     access_token: string;

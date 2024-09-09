@@ -29,6 +29,6 @@ export async function execute(
   }
 
   return h.response(
-    APIResponse.success(queryExecutionResult.resultData.result),
-  );
+    APIResponse.successStream(queryExecutionResult.resultData.result),
+  ).type('application.json');
 }
