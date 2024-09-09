@@ -54,7 +54,7 @@ export class ExecuteQueryUseCaseImpl implements ExecuteQueryUseCase {
         return Result.failure(['No access to requested params']);
       }
     }
-    catch (e) {
+    catch {
       return Result.failure(['User is not allowed to run this query']);
     }
 
