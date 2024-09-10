@@ -39,7 +39,7 @@ class JSONWebTokenImpl implements JSONWebTokenService {
       };
       return { user_id: decodedToken.user_id } as AuthenticationToken;
     }
-    catch (err) {
+    catch {
       return null;
     }
   }
