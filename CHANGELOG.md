@@ -1,3 +1,9 @@
+## [0.6.4](https://github.com/1024pix/pix-api-data/compare/v0.6.3...v0.6.4) (2024-09-10)
+
+### :building_construction: Tech
+
+- [#31](https://github.com/1024pix/pix-api-data/pull/31) Simplifier les tests unitaires de l'use-case ExecuteQuery
+
 ## [0.6.3](https://github.com/1024pix/pix-api-data/compare/v0.6.2...v0.6.3) (2024-09-06)
 
 ### :arrow_up: Montée de version
