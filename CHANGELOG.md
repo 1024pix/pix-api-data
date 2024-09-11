@@ -1,3 +1,9 @@
+# [0.8.0](https://github.com/1024pix/pix-api-data/compare/v0.7.0...v0.8.0) (2024-09-11)
+
+### :rocket: Amélioration
+
+- [#33](https://github.com/1024pix/pix-api-data/pull/33) Retourner du csv si l'utilisateur le souhaite (PIX-14238).
+
 # [0.7.0](https://github.com/1024pix/pix-api-data/compare/v0.6.4...v0.7.0) (2024-09-11)
 
 ### :rocket: Amélioration
