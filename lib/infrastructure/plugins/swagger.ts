@@ -9,5 +9,14 @@ export const swaggerPlugin = {
       title: 'API Data Documentation',
       version: packageJson.version,
     },
+    securityDefinitions: {
+      Bearer: {
+        'type': 'apiKey',
+        'name': 'Authorization',
+        'in': 'header',
+        'x-keyPrefix': 'Bearer ',
+      },
+    },
+    security: [{ Bearer: [] }],
   },
 };
