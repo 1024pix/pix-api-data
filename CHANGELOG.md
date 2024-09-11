@@ -1,3 +1,9 @@
+# [0.7.0](https://github.com/1024pix/pix-api-data/compare/v0.6.4...v0.7.0) (2024-09-11)
+
+### :rocket: Amélioration
+
+- [#32](https://github.com/1024pix/pix-api-data/pull/32) Streamer les réponses des requêtes (PIX-14215.
+
 ## [0.6.4](https://github.com/1024pix/pix-api-data/compare/v0.6.3...v0.6.4) (2024-09-10)
 
 ### :building_construction: Tech
