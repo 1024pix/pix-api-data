@@ -63,7 +63,7 @@ describe('Acceptance | query', function () {
           const queryId = 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11';
           await knexAPI('catalog_queries').insert({
             id: queryId,
-            sql_query: 'SELECT COUNT(*) FROM public.data_ref_academies',
+            sql_query: 'SELECT COUNT(*) FROM public.data_ref_academies UNION SELECT 1;',
           });
           await knexAPI('query_access').insert({
             query_id: queryId,
@@ -87,7 +87,7 @@ describe('Acceptance | query', function () {
           expect(response.statusCode).to.equal(200);
           expect(JSON.parse(response.payload)).to.deep.equal({
             status: 'success',
-            data: [{ count: 33 }],
+            data: [{ count: 1 }, { count: 33 }],
             messages: [],
           });
         });

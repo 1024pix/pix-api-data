@@ -1,1 +1,1 @@
-ignores: ["@tsconfig/node-lts-strictest-esm"]
+ignores: ["@tsconfig/node-lts-strictest-esm", "pg-query-stream"]

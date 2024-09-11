@@ -68,7 +68,7 @@ export class ExecuteQueryUseCaseImpl implements ExecuteQueryUseCase {
     }
 
     const datamartResponse: DatamartResponse
-      = await this.datamartRepository.find(datamartQueryModel);
+      = this.datamartRepository.find(datamartQueryModel);
     return Result.success(datamartResponse);
   }
 }

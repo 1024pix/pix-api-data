@@ -4,17 +4,17 @@ import type { DatamartQueryModel } from '../domain/models/DatamartQuery.js';
 import { QueryBuilder } from './builder/QueryBuilder.js';
 
 export interface DatamartRepository {
-  find: (datamartQueryModel: DatamartQueryModel) => Promise<DatamartResponse>;
+  find: (datamartQueryModel: DatamartQueryModel) => DatamartResponse;
 }
 class DatamartRepositoryImpl implements DatamartRepository {
-  async find(
+  find(
     datamartQueryModel: DatamartQueryModel,
-  ): Promise<DatamartResponse> {
+  ): DatamartResponse {
     const queryBuilder = new QueryBuilder(datamartQueryModel);
     const knexQuery = queryBuilder.build();
-    const result = await knexDatamart.raw(knexQuery.query, knexQuery.params);
+    const stream = knexDatamart.raw(knexQuery.query, knexQuery.params).stream();
     return {
-      result: result.rows,
+      result: stream,
     } as DatamartResponse;
   }
 }

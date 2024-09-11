@@ -1,3 +1,4 @@
+import { Readable } from 'node:stream';
 import { catalogQueryRepository } from '../../../../lib/infrastructure/CatalogQueryRepository.js';
 import { ParamType } from '../../../../lib/domain/models/QueryCatalogItem.js';
 import { ExecuteQueryUseCaseImpl } from '../../../../lib/domain/usecases/ExecuteQueryUsecase.js';
@@ -149,7 +150,10 @@ describe('Unit | Domain | Usecases | ExecuteQueryUsecase', function () {
           context('when params are valid', function () {
             it('should return the query', async function () {
               // given
-              const expectedResult = [{ test: Symbol('expected-result') }];
+              const expectedResult = 'expected-result';
+              const readable = new Readable();
+              readable.push(expectedResult);
+              readable.push(null);
 
               const queryId = 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11';
               const requesterId = 'c6eef19e-3de5-4b91-bcf0-70903af00551';
@@ -173,7 +177,7 @@ describe('Unit | Domain | Usecases | ExecuteQueryUsecase', function () {
               const queryCatalogItem = { query: 'select * from tests', params: [{ name: 'foo', type: ParamType.STRING, mandatory: true }] };
               sinon.stub(catalogQueryRepository, 'find').resolves(queryCatalogItem);
               sinon.stub(queryAccessRepository, 'get').withArgs(queryId, requesterId).resolves(new QueryAccessModelMock({} as QueryAccess));
-              sinon.stub(datamartRepository, 'find').resolves({ result: expectedResult } as DatamartResponse);
+              sinon.stub(datamartRepository, 'find').returns({ result: readable } as DatamartResponse);
 
               const executeQueryUsecase = new ExecuteQueryUseCaseImpl(datamartRepository, catalogQueryRepository, queryAccessRepository);
 
@@ -182,7 +186,11 @@ describe('Unit | Domain | Usecases | ExecuteQueryUsecase', function () {
 
               // then
               expect(result.isSuccess).to.be.true;
-              expect(result.resultData.result).to.deep.equal(expectedResult);
+              const data = [];
+              for await (const row of result.resultData.result) {
+                data.push(row.toString());
+              }
+              expect(data).to.deep.equal([expectedResult]);
             });
           });
         });
