@@ -1,5 +1,7 @@
+import { Readable } from 'node:stream';
 import type { Request, ResponseObject, ResponseToolkit } from '@hapi/hapi';
 
+import { Transform } from '@json2csv/node';
 import { UserCommand } from '../../domain/commands/UserCommand.js';
 import type { Result } from '../../domain/models/Result.js';
 import { executeQueryUseCase } from '../../domain/usecases/ExecuteQueryUsecase.js';
@@ -28,7 +30,15 @@ export async function execute(
       .code(422);
   }
 
+  if (clientRequest.headers.accept === 'text/csv') {
+    const parser = new Transform({}, {}, { objectMode: true });
+
+    // cf: https://github.com/hapijs/hapi/issues/3733#issuecomment-361944940
+    const wrappedStream = new Readable().wrap(queryExecutionResult.resultData.result.pipe(parser));
+    return h.response(wrappedStream).type('text/csv');
+  }
+
   return h.response(
     APIResponse.successStream(queryExecutionResult.resultData.result),
-  ).type('application.json');
+  ).type('application/json');
 }

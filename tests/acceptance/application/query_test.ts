@@ -127,6 +127,38 @@ describe('Acceptance | query', function () {
             messages: [],
           });
         });
+
+        context('when user request response in csv', function () {
+          it('should return a csv response with status code 200', async function () {
+            // given
+            const queryId = '26f6efcc-ce13-4b20-b6ea-5bebae6115af';
+            await knexAPI('catalog_queries').insert({
+              id: queryId,
+              sql_query: `SELECT COUNT(*) as count, 'A' as value FROM public.data_ref_academies UNION SELECT 10, 'B'`,
+            });
+            await knexAPI('query_access').insert({
+              query_id: queryId,
+              user_id: userId,
+            });
+            const payload = {
+              queryId,
+              params: <any>[],
+            };
+
+            // when
+            const server = await createServer();
+            const response = await server.inject({
+              method: 'POST',
+              url: '/query',
+              payload,
+              headers: { authorization: headers, accept: 'text/csv' },
+            });
+
+            // then
+            expect(response.statusCode).to.equal(200);
+            expect(response.payload).to.deep.equal('"count","value"\n10,"B"\n33,"A"');
+          });
+        });
       });
     });
 
