@@ -1,3 +1,11 @@
+## [0.8.1](https://github.com/1024pix/pix-api-data/compare/v0.8.0...v0.8.1) (2024-09-18)
+
+### :arrow_up: Montée de version
+
+- [#36](https://github.com/1024pix/pix-api-data/pull/36) Lock file maintenance 
+- [#30](https://github.com/1024pix/pix-api-data/pull/30) Lock file maintenance 
+- [#23](https://github.com/1024pix/pix-api-data/pull/23) Update dependency postgres to v15.8
+
 # [0.8.0](https://github.com/1024pix/pix-api-data/compare/v0.7.0...v0.8.0) (2024-09-11)
 
 ### :rocket: Amélioration
