@@ -1,0 +1,41 @@
+name: wait-for-status-checks
+on:
+  pull_request:
+  status: {}
+jobs:
+  enforce-all-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Use correct sha
+        run: |
+          echo "before: $GITHUB_SHA"
+          if [ "$GITHUB_EVENT_NAME" == "pull_request" ]; then
+           GITHUB_SHA=${{ github.event.pull_request.head.sha }}
+          fi
+          echo COMMIT_SHA=$GITHUB_SHA >> $GITHUB_ENV
+          echo "after: $GITHUB_SHA"
+
+      - name: Wait for status checks
+        run: |
+          STATUS="pending"
+          echo "Listen for commit $COMMIT_SHA"
+          WAITED="0"
+          SLEEP_TIME="60"
+          while [ "$STATUS" == "pending" ] && [ "$WAITED" -le 240 ]
+          do
+            sleep ${SLEEP_TIME}
+            WAITED=$((WAITED+SLEEP_TIME))
+            STATUS=$(gh api /repos/${{ github.repository  }}/commits/"${COMMIT_SHA}"/status -q .state)
+          echo "status : $STATUS"
+          echo "waited  $WAITED s"
+          done
+          echo "status : $STATUS"
+          if [ "$STATUS" != "success" ]
+            then exit 1
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.PIX_SERVICE_ACTIONS_TOKEN }}
