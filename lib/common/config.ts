@@ -17,6 +17,7 @@ export interface Logging {
   enabled: boolean;
   logLevel: string;
   logForHumans: boolean;
+  opsEventIntervalInSeconds: number;
 }
 export interface Authentication {
   accessTokenLifespan: string;
@@ -48,6 +49,7 @@ function buildConfiguration(): Config {
       enabled: isFeatureEnabled(env.LOG_ENABLED),
       logLevel: env.LOG_LEVEL || 'info',
       logForHumans: _getLogForHumans(),
+      opsEventIntervalInSeconds: _getNumber(env.OPS_EVENT_INTERVAL_IN_SECONDS, 15),
     },
     authentication: {
       accessTokenLifespan: env.ACCESS_TOKEN_LIFESPAN || '20m',
