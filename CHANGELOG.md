@@ -1,3 +1,9 @@
+## [0.8.3](https://github.com/1024pix/pix-api-data/compare/v0.8.2...v0.8.3) (2024-09-23)
+
+### :coffee: Autre
+
+- [#34](https://github.com/1024pix/pix-api-data/pull/34) Utiliser le swagger en étant connecté
+
 ## [0.8.2](https://github.com/1024pix/pix-api-data/compare/v0.8.1...v0.8.2) (2024-09-23)
 
 ### :arrow_up: Montée de version
