@@ -1,3 +1,9 @@
+## [0.8.4](https://github.com/1024pix/pix-api-data/compare/v0.8.3...v0.8.4) (2024-09-23)
+
+### :building_construction: Tech
+
+- [#39](https://github.com/1024pix/pix-api-data/pull/39) Remonter les métriques du container et des pools de connexions
+
 ## [0.8.3](https://github.com/1024pix/pix-api-data/compare/v0.8.2...v0.8.3) (2024-09-23)
 
 ### :coffee: Autre
