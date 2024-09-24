@@ -1,3 +1,9 @@
+## [0.8.5](https://github.com/1024pix/pix-api-data/compare/v0.8.4...v0.8.5) (2024-09-24)
+
+### :building_construction: Tech
+
+- [#40](https://github.com/1024pix/pix-api-data/pull/40) Réduire la taille du bundle Scalingo
+
 ## [0.8.4](https://github.com/1024pix/pix-api-data/compare/v0.8.3...v0.8.4) (2024-09-23)
 
 ### :building_construction: Tech
