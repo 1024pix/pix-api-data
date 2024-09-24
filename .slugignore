@@ -1,0 +1,14 @@
+.circleci
+.github
+data
+docs
+tests
+
+.depcheckrc
+.mocharc.json
+.nvmrc
+.prettierrc
+docker-compose.yaml
+eslint.config.js
+sample.env
+renovate.json
