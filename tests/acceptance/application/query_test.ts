@@ -64,6 +64,7 @@ describe('Acceptance | query', function () {
           await knexAPI('catalog_queries').insert({
             id: queryId,
             sql_query: 'SELECT COUNT(*) FROM public.data_ref_academies UNION SELECT 1;',
+            name: 'foo',
           });
           await knexAPI('query_access').insert({
             query_id: queryId,
@@ -100,6 +101,7 @@ describe('Acceptance | query', function () {
           await knexAPI('catalog_queries').insert({
             id: queryId,
             sql_query: 'SELECT COUNT(*) FROM public.data_ref_academies',
+            name: 'foo',
           });
           await knexAPI('query_access').insert({
             query_id: queryId,
@@ -135,6 +137,7 @@ describe('Acceptance | query', function () {
             await knexAPI('catalog_queries').insert({
               id: queryId,
               sql_query: `SELECT COUNT(*) as count, 'A' as value FROM public.data_ref_academies UNION SELECT 10, 'B'`,
+              name: 'foo',
             });
             await knexAPI('query_access').insert({
               query_id: queryId,
@@ -170,6 +173,7 @@ describe('Acceptance | query', function () {
         await knexAPI('catalog_queries').insert({
           id: otherQueryId,
           sql_query: 'SELECT COUNT(*) FROM public.data_ref_academies',
+          name: 'foo',
         });
         const payload = {
           queryId,

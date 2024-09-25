@@ -43,6 +43,7 @@ describe('Integration | Repositories | QueryAccessRepository', function () {
       await knexAPI('catalog_queries').insert({
         id: queryId,
         sql_query: 'SELECT * FROM public.data_ref_academies LIMIT {{ limit}}',
+        name: 'foo',
       });
       await knexAPI('catalog_query_params').insert({
         id: queryParamId,

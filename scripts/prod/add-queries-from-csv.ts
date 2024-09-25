@@ -38,6 +38,7 @@ const parseMe = yargs(hideBin(process.argv))
   .help();
 
 class QueryChecker {
+  name: string;
   query: string;
   mandatoryParamsInQuery: string[];
   optionalParamsInQuery: string[];
@@ -46,12 +47,14 @@ class QueryChecker {
   isValid: boolean;
 
   constructor(
+    name: string,
     query: string,
     mandatoryParamsInQuery: string[],
     optionalParamsInQuery: string[],
     lineNumberInCSV: number,
     providedParams: ProvidedParam[],
   ) {
+    this.name = name;
     this.query = query;
     this.mandatoryParamsInQuery = mandatoryParamsInQuery;
     this.optionalParamsInQuery = optionalParamsInQuery;
@@ -61,18 +64,23 @@ class QueryChecker {
   }
 
   static fromCSVLine(csvLine: string[], lineNumber: number): QueryChecker {
-    const query = csvLine[0];
+    const name = csvLine[0].trim();
+    if (name.length === 0) {
+      return new QueryChecker('', '', [], [], lineNumber, []);
+    }
+    const query = csvLine[1];
     if (query.trim().length === 0) {
-      return new QueryChecker('', [], [], lineNumber, []);
+      return new QueryChecker('', '', [], [], lineNumber, []);
     }
     const { queryWithoutOptionalBlocks, optionalParams }
       = extractOptionalParameters(query);
     const { mandatoryParams } = extractMandatoryParameters(
       queryWithoutOptionalBlocks,
     );
-    const providedParams = parseProvidedParameters(csvLine.slice(1));
+    const providedParams = parseProvidedParameters(csvLine.slice(2));
 
     return new QueryChecker(
+      name,
       query,
       mandatoryParams,
       optionalParams,
@@ -211,6 +219,7 @@ async function addQueryToCatalog(
   const sqlQueries: string[] = [];
   const knexQueryToExecute_query = trx('catalog_queries')
     .insert({
+      name: queryChecker.name,
       sql_query: queryChecker.query,
     })
     .returning('id');
