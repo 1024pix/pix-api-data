@@ -105,11 +105,11 @@ describe('Integration | scripts-prod | Add queries from csv', function () {
       expect(insertedQueriesCnt).to.equal(0);
       expect(insertedQueryParamsCnt).to.equal(0);
       expect(sqlByQuery[0]).to.have.members([
-        `insert into "catalog_queries" ("sql_query") values ('select * from t where id = 1') returning "id"`,
+        `insert into "catalog_queries" ("name", "sql_query") values ('foo 1', 'select * from t where id = 1') returning "id"`,
       ]);
       sinon.assert.match(
         sqlByQuery[1][0],
-        `insert into "catalog_queries" ("sql_query") values ('select * from t where id = {{ mandatoryParam }} [[ AND optional = {{ optionalParam }} ]] [[ AND optional2 = {{ optionalParam2 }} ]]') returning "id"`,
+        `insert into "catalog_queries" ("name", "sql_query") values ('foo 2', 'select * from t where id = {{ mandatoryParam }} [[ AND optional = {{ optionalParam }} ]] [[ AND optional2 = {{ optionalParam2 }} ]]') returning "id"`,
       );
       sinon.assert.match(
         sqlByQuery[1][1],
