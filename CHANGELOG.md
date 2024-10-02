@@ -1,3 +1,9 @@
+# [0.9.0](https://github.com/1024pix/pix-api-data/compare/v0.8.6...v0.9.0) (2024-10-02)
+
+### :rocket: Amélioration
+
+- [#41](https://github.com/1024pix/pix-api-data/pull/41) Nommer les requêtes du catalogue
+
 ## [0.8.6](https://github.com/1024pix/pix-api-data/compare/v0.8.5...v0.8.6) (2024-09-30)
 
 ### :arrow_up: Montée de version
