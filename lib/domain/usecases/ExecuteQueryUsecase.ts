@@ -1,12 +1,15 @@
 import type {
   CatalogQueryRepository,
 } from '../../infrastructure/CatalogQueryRepository.js';
-import {
-  catalogQueryRepository,
-} from '../../infrastructure/CatalogQueryRepository.js';
 import type {
   DatamartRepository,
 } from '../../infrastructure/DatamartRepository.js';
+import type { UserCommand } from '../commands/UserCommand.js';
+import type { DatamartResponse } from '../models/DatamartResponse.js';
+import type { QueryCatalogItem } from '../models/QueryCatalogItem.js';
+import {
+  catalogQueryRepository,
+} from '../../infrastructure/CatalogQueryRepository.js';
 import {
   datamartRepository,
 } from '../../infrastructure/DatamartRepository.js';
@@ -14,10 +17,7 @@ import {
   type QueryAccessRepository,
   queryAccessRepository,
 } from '../../infrastructure/QueryAccessRepository.js';
-import type { UserCommand } from '../commands/UserCommand.js';
 import { DatamartQueryModel } from '../models/DatamartQuery.js';
-import type { DatamartResponse } from '../models/DatamartResponse.js';
-import type { QueryCatalogItem } from '../models/QueryCatalogItem.js';
 import { Result } from '../models/Result.js';
 
 export interface ExecuteQueryUseCase {

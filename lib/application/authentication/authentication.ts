@@ -1,8 +1,8 @@
 import type { Request, ResponseToolkit } from '@hapi/hapi';
 import type { Result } from '../../domain/models/Result.js';
 import { AuthenticationCommand } from '../../domain/commands/AuthenticationCommand.js';
-import { APIResponse } from '../APIResponse.js';
 import { authenticateUserUsecase } from '../../domain/usecases/AuthenticateUserUsecase.js';
+import { APIResponse } from '../APIResponse.js';
 
 export async function authenticate(clientRequest: Request, h: ResponseToolkit) {
   const authenticationCommandValidationResult: Result<AuthenticationCommand>

@@ -1,6 +1,6 @@
-import { knexDatamart } from '../common/db/knex-database-connections.js';
-import type { DatamartResponse } from '../domain/models/DatamartResponse.js';
 import type { DatamartQueryModel } from '../domain/models/DatamartQuery.js';
+import type { DatamartResponse } from '../domain/models/DatamartResponse.js';
+import { knexDatamart } from '../common/db/knex-database-connections.js';
 import { QueryBuilder } from './builder/QueryBuilder.js';
 
 export interface DatamartRepository {

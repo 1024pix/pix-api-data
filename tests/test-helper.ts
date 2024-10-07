@@ -2,9 +2,9 @@ import type { UUID } from 'node:crypto';
 import * as chai from 'chai';
 import * as sinon from 'sinon';
 import sinonChai from 'sinon-chai';
-import { createServer } from '../lib/server';
 import { knexAPI } from '../lib/common/db/knex-database-connections.js';
-import { jsonWebTokenService } from '../lib/infrastructure/utils/JSONWebTokenService';
+import { jsonWebTokenService } from '../lib/infrastructure/utils/JSONWebTokenService.js';
+import { createServer } from '../lib/server.js';
 
 const expect = chai.expect;
 chai.use(sinonChai);

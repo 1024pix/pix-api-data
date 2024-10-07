@@ -1,14 +1,14 @@
-import { env } from 'node:process';
 import type { Server, ServerOptions } from '@hapi/hapi';
-import Hapi from '@hapi/hapi';
-
+import { env } from 'node:process';
 import Oppsy from '@1024pix/oppsy';
+
+import Hapi from '@hapi/hapi';
+import { handleDomainAndHttpErrors } from './application/pre-response-utils.js';
+import { config } from './common/config.js';
 import { knexAPI, knexDatamart } from './common/db/knex-database-connections.js';
 import { authentication } from './infrastructure/authentication.js';
 import { plugins } from './infrastructure/plugins/plugins.js';
 import { routes } from './routes.js';
-import { handleDomainAndHttpErrors } from './application/pre-response-utils.js';
-import { config } from './common/config.js';
 
 const createBareServer = function (): Server {
   const serverConfiguration: ServerOptions = {

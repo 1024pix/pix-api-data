@@ -1,11 +1,11 @@
-import { expect } from '../../../test-helper.js';
 import type {
   UserCommandParam,
 } from '../../../../lib/domain/commands/UserCommand.js';
+import type { Result } from '../../../../lib/domain/models/Result.js';
 import {
   UserCommand,
 } from '../../../../lib/domain/commands/UserCommand.js';
-import type { Result } from '../../../../lib/domain/models/Result.js';
+import { expect } from '../../../test-helper.js';
 
 describe('Unit | Domain | UserCommand', function () {
   describe('buildFromPayload', function () {

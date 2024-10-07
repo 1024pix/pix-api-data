@@ -1,9 +1,9 @@
 import process from 'node:process';
-import { expect, knexAPI, sinon } from '../../../test-helper.js';
 import {
-  FilePath,
   doJob,
+  FilePath,
 } from '../../../../scripts/prod/add-queries-from-csv.js';
+import { expect, knexAPI, sinon } from '../../../test-helper.js';
 
 describe('Integration | scripts-prod | Add queries from csv', function () {
   let run: boolean;

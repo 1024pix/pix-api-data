@@ -1,6 +1,6 @@
-import { expect } from '../../../test-helper.js';
-import { AuthenticationCommand } from '../../../../lib/domain/commands/AuthenticationCommand.js';
 import type { Result } from '../../../../lib/domain/models/Result.js';
+import { AuthenticationCommand } from '../../../../lib/domain/commands/AuthenticationCommand.js';
+import { expect } from '../../../test-helper.js';
 
 describe('Unit | Domain | AuthenticationCommand', function () {
   describe('buildFromPayload', function () {

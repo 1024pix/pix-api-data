@@ -1,15 +1,14 @@
+import type { Knex } from 'knex';
+import type { Buffer } from 'node:buffer';
+import { readFile } from 'node:fs/promises';
+import path from 'node:path';
 import perf_hooks from 'node:perf_hooks';
 import process from 'node:process';
 import * as url from 'node:url';
-import { readFile } from 'node:fs/promises';
-import path from 'node:path';
-import type { Buffer } from 'node:buffer';
-import yargs from 'yargs';
-import { hideBin } from 'yargs/helpers';
 import * as dotenv from 'dotenv';
 import Papa from 'papaparse';
-import type { Knex } from 'knex';
-import { ParamType } from '../../lib/domain/models/QueryCatalogItem.js';
+import yargs from 'yargs';
+import { hideBin } from 'yargs/helpers';
 import {
   disconnect,
   knexAPI,
@@ -20,6 +19,7 @@ import {
   MATCHING_PARAM_BLOCK_REGEXP,
   PARAM_NAME_REGEXP,
 } from '../../lib/domain/models/DatamartQuery.js';
+import { ParamType } from '../../lib/domain/models/QueryCatalogItem.js';
 
 dotenv.config();
 const { performance } = perf_hooks;
@@ -449,4 +449,4 @@ async function main() {
   }
 })();
 
-export { FilePath, doJob };
+export { doJob, FilePath };
