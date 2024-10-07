@@ -1,3 +1,9 @@
+## [0.9.2](https://github.com/1024pix/pix-api-data/compare/v0.9.1...v0.9.2) (2024-10-07)
+
+### :arrow_up: Montée de version
+
+- [#35](https://github.com/1024pix/pix-api-data/pull/35) Update dependency sinon to v19 (dossier racine)
+
 ## [0.9.1](https://github.com/1024pix/pix-api-data/compare/v0.9.0...v0.9.1) (2024-10-07)
 
 ### :arrow_up: Montée de version
