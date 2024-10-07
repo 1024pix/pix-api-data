@@ -1,3 +1,9 @@
+## [0.9.4](https://github.com/1024pix/pix-api-data/compare/v0.9.3...v0.9.4) (2024-10-07)
+
+### :arrow_up: Montée de version
+
+- [#29](https://github.com/1024pix/pix-api-data/pull/29) Update dependency @antfu/eslint-config to v3 (dossier racine)
+
 ## [0.9.3](https://github.com/1024pix/pix-api-data/compare/v0.9.2...v0.9.3) (2024-10-07)
 
 ### :arrow_up: Montée de version
