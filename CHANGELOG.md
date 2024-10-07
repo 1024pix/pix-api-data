@@ -1,3 +1,9 @@
+## [0.9.3](https://github.com/1024pix/pix-api-data/compare/v0.9.2...v0.9.3) (2024-10-07)
+
+### :arrow_up: Montée de version
+
+- [#44](https://github.com/1024pix/pix-api-data/pull/44) Update dependency @types/sinon-chai to v4 (dossier racine)
+
 ## [0.9.2](https://github.com/1024pix/pix-api-data/compare/v0.9.1...v0.9.2) (2024-10-07)
 
 ### :arrow_up: Montée de version
