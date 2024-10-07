@@ -1,7 +1,7 @@
-import { expect, knexAPI } from '../../../test-helper.js';
-import { queryAccessRepository } from '../../../../lib/infrastructure/QueryAccessRepository.js';
 import { NotFoundError } from '../../../../lib/domain/errors.js';
 import { QueryAccessModel } from '../../../../lib/domain/models/QueryAccess';
+import { queryAccessRepository } from '../../../../lib/infrastructure/QueryAccessRepository.js';
+import { expect, knexAPI } from '../../../test-helper.js';
 
 describe('Integration | Repositories | QueryAccessRepository', function () {
   afterEach(async function () {

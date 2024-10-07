@@ -1,7 +1,7 @@
-import { expect } from 'chai';
-import type { QueryAccess } from '../../../../lib/domain/models/QueryAccess';
-import { QueryAccessModel } from '../../../../lib/domain/models/QueryAccess';
 import type { UserCommandParam } from '../../../../lib/domain/commands/UserCommand';
+import type { QueryAccess } from '../../../../lib/domain/models/QueryAccess';
+import { expect } from 'chai';
+import { QueryAccessModel } from '../../../../lib/domain/models/QueryAccess';
 
 describe('Unit | Domain | Models | QueryAccess', function () {
   describe('#areParamsValid', function () {

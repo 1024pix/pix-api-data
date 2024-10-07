@@ -1,5 +1,5 @@
-import process from 'node:process';
 import perf_hooks from 'node:perf_hooks';
+import process from 'node:process';
 import * as url from 'node:url';
 import * as dotenv from 'dotenv';
 import yargs from 'yargs';

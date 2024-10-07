@@ -60,4 +60,4 @@ const options: Options = {
   instance: logger,
 };
 
-export { plugin, options };
+export { options, plugin };

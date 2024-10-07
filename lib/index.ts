@@ -1,10 +1,10 @@
-import process from 'node:process';
-import * as dotenv from 'dotenv';
-
 import type { Server } from '@hapi/hapi';
+import process from 'node:process';
+
+import * as dotenv from 'dotenv';
+import { disconnect } from './common/db/knex-database-connections.js';
 import { logger } from './common/logger/Logger.js';
 import { createServer } from './server.js';
-import { disconnect } from './common/db/knex-database-connections.js';
 
 dotenv.config();
 let server: Server;

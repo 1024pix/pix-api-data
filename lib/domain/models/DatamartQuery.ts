@@ -1,6 +1,6 @@
-import moment from 'moment';
 import type { UserCommandParam } from '../commands/UserCommand.js';
 import type { QueryParam } from './QueryCatalogItem.js';
+import moment from 'moment';
 import { ParamType } from './QueryCatalogItem.js';
 
 export interface DatamartQuery {

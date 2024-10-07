@@ -1,9 +1,9 @@
 import type { UUID } from 'node:crypto';
-import { knexAPI } from '../common/db/knex-database-connections.js';
 import type {
   QueryCatalogItem,
   QueryParam,
 } from '../domain/models/QueryCatalogItem.js';
+import { knexAPI } from '../common/db/knex-database-connections.js';
 
 export interface CatalogQueryRepository {
   find: (_requestId: UUID) => Promise<QueryCatalogItem>;

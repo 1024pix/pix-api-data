@@ -1,5 +1,5 @@
-import type { UUID } from 'node:crypto';
 import type { Request, ResponseToolkit } from '@hapi/hapi';
+import type { UUID } from 'node:crypto';
 import boom from '@hapi/boom';
 import { knexAPI } from '../common/db/knex-database-connections.js';
 import { jsonWebTokenService } from './utils/JSONWebTokenService.js';

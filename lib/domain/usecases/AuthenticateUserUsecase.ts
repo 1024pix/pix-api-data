@@ -1,25 +1,25 @@
 import type {
   UserRepository,
 } from '../../infrastructure/UserRepository.js';
-import {
-  userRepository,
-} from '../../infrastructure/UserRepository.js';
 import type {
   EncryptionService,
-} from '../../infrastructure/utils/EncryptionService.js';
-import {
-  encryptionService,
 } from '../../infrastructure/utils/EncryptionService.js';
 import type {
   JSONWebTokenService,
 } from '../../infrastructure/utils/JSONWebTokenService.js';
+import type { AuthenticationCommand } from '../commands/AuthenticationCommand.js';
+import type { User } from '../models/User.js';
+import { type UserLoginRepository, userLoginRepository } from '../../infrastructure/UserLoginRepository.js';
+import {
+  userRepository,
+} from '../../infrastructure/UserRepository.js';
+import {
+  encryptionService,
+} from '../../infrastructure/utils/EncryptionService.js';
 import {
   jsonWebTokenService,
 } from '../../infrastructure/utils/JSONWebTokenService.js';
 import { Result } from '../models/Result.js';
-import type { AuthenticationCommand } from '../commands/AuthenticationCommand.js';
-import type { User } from '../models/User.js';
-import { type UserLoginRepository, userLoginRepository } from '../../infrastructure/UserLoginRepository.js';
 
 export interface AuthenticateUserUsecase {
   authenticateUser: (

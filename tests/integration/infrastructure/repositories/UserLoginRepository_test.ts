@@ -1,6 +1,6 @@
-import { expect, knexAPI, sinon } from '../../../test-helper.js';
-import { userLoginRepository } from '../../../../lib/infrastructure/UserLoginRepository.js';
 import { UserLogin } from '../../../../lib/domain/models/UserLogin.js';
+import { userLoginRepository } from '../../../../lib/infrastructure/UserLoginRepository.js';
+import { expect, knexAPI, sinon } from '../../../test-helper.js';
 
 describe('Integration | Repository | UserLoginRepository', function () {
   let userId;

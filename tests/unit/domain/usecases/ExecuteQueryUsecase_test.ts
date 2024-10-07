@@ -1,14 +1,14 @@
+import type { UserCommand, UserCommandParam } from '../../../../lib/domain/commands/UserCommand.js';
+import type { DatamartResponse } from '../../../../lib/domain/models/DatamartResponse.js';
 import { Readable } from 'node:stream';
-import { catalogQueryRepository } from '../../../../lib/infrastructure/CatalogQueryRepository.js';
+import { NotFoundError } from '../../../../lib/domain/errors.js';
+import { type QueryAccess, QueryAccessModel } from '../../../../lib/domain/models/QueryAccess.js';
 import { ParamType } from '../../../../lib/domain/models/QueryCatalogItem.js';
 import { ExecuteQueryUseCaseImpl } from '../../../../lib/domain/usecases/ExecuteQueryUsecase.js';
+import { catalogQueryRepository } from '../../../../lib/infrastructure/CatalogQueryRepository.js';
 import { datamartRepository } from '../../../../lib/infrastructure/DatamartRepository.js';
-import { expect, sinon } from '../../../test-helper.js';
-import type { UserCommand, UserCommandParam } from '../../../../lib/domain/commands/UserCommand.js';
 import { queryAccessRepository } from '../../../../lib/infrastructure/QueryAccessRepository.js';
-import { type QueryAccess, QueryAccessModel } from '../../../../lib/domain/models/QueryAccess.js';
-import { NotFoundError } from '../../../../lib/domain/errors.js';
-import type { DatamartResponse } from '../../../../lib/domain/models/DatamartResponse.js';
+import { expect, sinon } from '../../../test-helper.js';
 
 describe('Unit | Domain | Usecases | ExecuteQueryUsecase', function () {
   describe('#executeQuery', function () {

@@ -1,11 +1,11 @@
-import { expect, sinon } from '../../../test-helper.js';
-import { userRepository } from '../../../../lib/infrastructure/UserRepository.js';
-import { userLoginRepository } from '../../../../lib/infrastructure/UserLoginRepository.js';
 import { AuthenticationCommand } from '../../../../lib/domain/commands/AuthenticationCommand.js';
 import { Result } from '../../../../lib/domain/models/Result.js';
 import { AuthenticateUserUsecaseImpl } from '../../../../lib/domain/usecases/AuthenticateUserUsecase.js';
+import { userLoginRepository } from '../../../../lib/infrastructure/UserLoginRepository.js';
+import { userRepository } from '../../../../lib/infrastructure/UserRepository.js';
 import { encryptionService } from '../../../../lib/infrastructure/utils/EncryptionService.js';
 import { jsonWebTokenService } from '../../../../lib/infrastructure/utils/JSONWebTokenService.js';
+import { expect, sinon } from '../../../test-helper.js';
 
 describe('Unit | Domain | Usecases | AuthenticateUserUsecase', function () {
   let findByNameStub;

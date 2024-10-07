@@ -1,5 +1,5 @@
-import type { UUID } from 'node:crypto';
 import type { Request } from '@hapi/hapi';
+import type { UUID } from 'node:crypto';
 import jsonwebtoken from 'jsonwebtoken';
 import { config } from '../../common/config.js';
 
