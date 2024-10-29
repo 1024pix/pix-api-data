@@ -83,7 +83,7 @@
     "eslint-plugin-format": "^0.1.2",
     "eslint-plugin-mocha": "^10.1.0",
     "mocha": "^10.2.0",
-    "npm-run-all2": "^6.0.0",
+    "npm-run-all2": "^7.0.0",
     "sinon": "^19.0.0",
     "sinon-chai": "^4.0.0",
     "tsx": "^4.15.7",
