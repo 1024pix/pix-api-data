@@ -1,3 +1,9 @@
+## [0.9.8](https://github.com/1024pix/pix-api-data/compare/v0.9.7...v0.9.8) (2024-11-14)
+
+### :arrow_up: Montée de version
+
+- [#47](https://github.com/1024pix/pix-api-data/pull/47) Update dependency npm-run-all2 to v7 (dossier racine)
+
 ## [0.9.7](https://github.com/1024pix/pix-api-data/compare/v0.9.6...v0.9.7) (2024-11-08)
 
 ### :arrow_up: Montée de version
