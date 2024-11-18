@@ -1,3 +1,10 @@
+## [0.9.11](https://github.com/1024pix/pix-api-data/compare/v0.9.10...v0.9.11) (2024-11-18)
+
+### :arrow_up: Montée de version
+
+- [#49](https://github.com/1024pix/pix-api-data/pull/49) Update dependency node to v22 
+- [#52](https://github.com/1024pix/pix-api-data/pull/52) Update dependency pino-pretty to v13 (dossier racine)
+
 ## [0.9.10](https://github.com/1024pix/pix-api-data/compare/v0.9.9...v0.9.10) (2024-11-18)
 
 ### :arrow_up: Montée de version
