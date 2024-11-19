@@ -1,3 +1,9 @@
+## [0.9.12](https://github.com/1024pix/pix-api-data/compare/v0.9.11...v0.9.12) (2024-11-19)
+
+### :arrow_up: Montée de version
+
+- [#46](https://github.com/1024pix/pix-api-data/pull/46) Update dependency @types/node to v22 (dossier racine)
+
 ## [0.9.11](https://github.com/1024pix/pix-api-data/compare/v0.9.10...v0.9.11) (2024-11-18)
 
 ### :arrow_up: Montée de version
