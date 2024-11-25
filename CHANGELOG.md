@@ -1,3 +1,9 @@
+## [0.9.13](https://github.com/1024pix/pix-api-data/compare/v0.9.12...v0.9.13) (2024-11-25)
+
+### :arrow_up: Montée de version
+
+- [#53](https://github.com/1024pix/pix-api-data/pull/53) Lock file maintenance (dossier racine)
+
 ## [0.9.12](https://github.com/1024pix/pix-api-data/compare/v0.9.11...v0.9.12) (2024-11-19)
 
 ### :arrow_up: Montée de version
