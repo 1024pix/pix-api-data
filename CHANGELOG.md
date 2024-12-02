@@ -1,3 +1,9 @@
+# [0.10.0](https://github.com/1024pix/pix-api-data/compare/v0.9.14...v0.10.0) (2024-12-02)
+
+### :rocket: Amélioration
+
+- [#56](https://github.com/1024pix/pix-api-data/pull/56) mise à jour du csv d'exemple (pix-15295)
+
 ## [0.9.14](https://github.com/1024pix/pix-api-data/compare/v0.9.13...v0.9.14) (2024-12-02)
 
 ### :arrow_up: Montée de version
