@@ -185,11 +185,14 @@ Il s'utilise sur un container Scalingo de la manière suivante :
 scalingo -a <nom-application-scalingo> run --file ./my_awesome_queries.csv "node build/scripts/prod/add-queries-from-csv.js --file /tmp/uploads/my_awesome_queries.csv"
 ```
 
+
 Le script est assorti d'une option `--run` laquelle permet de réaliser et de persister l'insertion des requêtes.
 
 ```bash
 scalingo -a <nom-application-scalingo> run --file ./my_awesome_queries.csv "node build/scripts/prod/add-queries-from-csv.js --file /tmp/uploads/my_awesome_queries.csv --run"
 ```
+
+En fonction de l'environnement, il peut s'avérer nécessaire de préciser `--region osc-secnum-fr1`
 
 ## Ajout d'un utilisateur
 
@@ -198,6 +201,7 @@ Il est réalisé en ajoutant un enregistrement dans la tables Users en BDD à l'
 ```bash
 scalingo --app <nom-application-scalingo> run "node build/scripts/prod/add-user.js --username <userName> --label <userLabel> --password <userPassword>"
 ```
+En fonction de l'environnement, il peut s'avérer nécessaire de préciser `--region osc-secnum-fr1`
 
 ## Utilisation de l'API
 
