@@ -1,4 +1,5 @@
 import type { UUID } from 'node:crypto';
+import type { UserCommandParam } from '../../../lib/domain/commands/UserCommand.js';
 import {
   createServer,
   expect,
@@ -24,6 +25,8 @@ describe('Acceptance | query', function () {
   afterEach(async function () {
     await knexAPI('query_access').delete();
     await knexAPI('user-logins').delete();
+    await knexAPI('query_param_access').delete();
+    await knexAPI('catalog_query_params').delete();
     await knexAPI('users').delete();
     await knexAPI('catalog_queries').delete();
   });
@@ -33,7 +36,7 @@ describe('Acceptance | query', function () {
       // given
       const payload = {
         queryIdddddddd: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
-        params: <any>[],
+        params: <UserCommandParam[]>[],
       };
 
       // when
@@ -72,7 +75,7 @@ describe('Acceptance | query', function () {
           });
           const payload = {
             queryId,
-            params: <any>[],
+            params: <UserCommandParam[]>[],
           };
 
           // when
@@ -109,7 +112,7 @@ describe('Acceptance | query', function () {
           });
           const payload = {
             queryId,
-            params: <any>[],
+            params: <UserCommandParam[]>[],
           };
 
           // when
@@ -130,6 +133,319 @@ describe('Acceptance | query', function () {
           });
         });
 
+        context('when user uses params', function () {
+          context('when user does not have access to param', function () {
+            it('should return a proper error with status code 422', async function () {
+              // given
+              const queryId = '26f6efcc-ce13-4b20-b6ea-5bebae6115af';
+              const otherUserId = '26f6efcc-ce13-4b20-b6ea-5bebae6115ae';
+
+              await knexAPI('users').insert({
+                id: otherUserId,
+                username: 'gigi_lamorosa',
+                label: 'Gigi l\'amorosa',
+                hashed_password: 'coucou',
+              });
+
+              await knexAPI('catalog_queries').insert({
+                id: queryId,
+                sql_query: `SELECT COUNT(*) as count FROM public.data_ref_academies where nom = {{ academie }}`,
+                name: 'foo',
+              });
+              await knexAPI('query_access').insert({
+                query_id: queryId,
+                user_id: userId,
+              });
+              await knexAPI('catalog_query_params').insert({
+                id: 1,
+                catalog_query_id: queryId,
+                name: 'acamdemie',
+                type: 'string',
+                mandatory: true,
+              });
+              await knexAPI('query_param_access').insert({
+                id: queryId,
+                user_id: otherUserId,
+                query_param_id: 1,
+                value: 'Bordeaux',
+              });
+
+              const payload = {
+                queryId,
+                params: <UserCommandParam[]>[{ name: 'academie', value: 'Paris' }],
+              };
+
+              // when
+              const server = await createServer();
+              const response = await server.inject({
+                method: 'POST',
+                url: '/query',
+                payload,
+                headers: { authorization: headers },
+              });
+              // then
+              expect(response.statusCode).to.equal(422);
+              expect(JSON.parse(response.payload)).to.deep.equal({
+                status: 'failure',
+                messages: ['No access to requested params'],
+              });
+            });
+          });
+          context('when user has access to param', function () {
+            it('should return a proper payload response with status code 200', async function () {
+            // given
+              const queryId = '26f6efcc-ce13-4b20-b6ea-5bebae6115af';
+
+              await knexAPI('catalog_queries').insert({
+                id: queryId,
+                sql_query: `SELECT COUNT(*) as count FROM public.data_ref_academies where nom = {{ academie }}`,
+                name: 'foo',
+              });
+              await knexAPI('query_access').insert({
+                query_id: queryId,
+                user_id: userId,
+              });
+              await knexAPI('catalog_query_params').insert({
+                id: 1,
+                catalog_query_id: queryId,
+                name: 'academie',
+                type: 'string',
+                mandatory: true,
+              });
+              await knexAPI('query_param_access').insert({
+                id: queryId,
+                user_id: userId,
+                query_param_id: 1,
+                value: 'Bordeaux',
+              });
+
+              const payload = {
+                queryId,
+                params: <UserCommandParam[]>[{ name: 'academie', value: 'Bordeaux' }],
+              };
+
+              // when
+              const server = await createServer();
+              const response = await server.inject({
+                method: 'POST',
+                url: '/query',
+                payload,
+                headers: { authorization: headers },
+              });
+
+              // then
+              expect(response.statusCode).to.equal(200);
+              expect(JSON.parse(response.payload)).to.deep.equal({
+                status: 'success',
+                data: [{ count: 1 }],
+                messages: [],
+              });
+            });
+          });
+          context('when user does not have access to value', function () {
+            it('should return a proper error with status code 422', async function () {
+              // given
+              const queryId = '26f6efcc-ce13-4b20-b6ea-5bebae6115af';
+
+              await knexAPI('catalog_queries').insert({
+                id: queryId,
+                sql_query: `SELECT COUNT(*) as count FROM public.data_ref_academies where nom = {{ academie }}`,
+                name: 'foo',
+              });
+              await knexAPI('query_access').insert({
+                query_id: queryId,
+                user_id: userId,
+              });
+              await knexAPI('catalog_query_params').insert({
+                id: 1,
+                catalog_query_id: queryId,
+                name: 'academie',
+                type: 'string',
+                mandatory: true,
+              });
+              await knexAPI('query_param_access').insert({
+                id: queryId,
+                user_id: userId,
+                query_param_id: 1,
+                value: 'Bordeaux',
+              });
+
+              const payload = {
+                queryId,
+                params: <UserCommandParam[]>[{ name: 'academie', value: 'Paris' }],
+              };
+
+              // when
+              const server = await createServer();
+              const response = await server.inject({
+                method: 'POST',
+                url: '/query',
+                payload,
+                headers: { authorization: headers },
+              });
+
+              // then
+              expect(response.statusCode).to.equal(422);
+              expect(JSON.parse(response.payload)).to.deep.equal({
+                status: 'failure',
+                messages: ['No access to requested params'],
+              });
+            });
+          });
+
+          context('when user does not have access to wildcard', function () {
+            it('should return a proper error with status code 422', async function () {
+              // given
+              const queryId = '26f6efcc-ce13-4b20-b6ea-5bebae6115af';
+
+              await knexAPI('catalog_queries').insert({
+                id: queryId,
+                sql_query: `SELECT COUNT(*) as count FROM public.data_ref_academies where nom = {{ academie }}`,
+                name: 'foo',
+              });
+              await knexAPI('query_access').insert({
+                query_id: queryId,
+                user_id: userId,
+              });
+              await knexAPI('catalog_query_params').insert({
+                id: 1,
+                catalog_query_id: queryId,
+                name: 'academie',
+                type: 'string',
+                mandatory: true,
+              });
+              await knexAPI('query_param_access').insert({
+                id: queryId,
+                user_id: userId,
+                query_param_id: 1,
+                value: 'Bordeaux',
+              });
+
+              const payload = {
+                queryId,
+                params: <UserCommandParam[]>[{ name: 'academie', value: 'Paris' }],
+              };
+
+              // when
+              const server = await createServer();
+              const response = await server.inject({
+                method: 'POST',
+                url: '/query',
+                payload,
+                headers: { authorization: headers },
+              });
+
+              // then
+              expect(response.statusCode).to.equal(422);
+              expect(JSON.parse(response.payload)).to.deep.equal({
+                status: 'failure',
+                messages: ['No access to requested params'],
+              });
+            });
+          });
+
+          context('when user has access to wildcard', function () {
+            it('should return a proper payload response with status code 200 when catalog_params is string', async function () {
+              // given
+              const queryId = '26f6efcc-ce13-4b20-b6ea-5bebae6115af';
+
+              await knexAPI('catalog_queries').insert({
+                id: queryId,
+                sql_query: `SELECT COUNT(*) as count FROM public.data_ref_academies where nom = {{ academie }}`,
+                name: 'foo',
+              });
+              await knexAPI('query_access').insert({
+                query_id: queryId,
+                user_id: userId,
+              });
+              await knexAPI('catalog_query_params').insert({
+                id: 1,
+                catalog_query_id: queryId,
+                name: 'academie',
+                type: 'string',
+                mandatory: true,
+              });
+              await knexAPI('query_param_access').insert({
+                id: queryId,
+                user_id: userId,
+                query_param_id: 1,
+                value: 'any',
+              });
+
+              const payload = {
+                queryId,
+                params: <UserCommandParam[]>[{ name: 'academie', value: 'Bordeaux' }],
+              };
+
+              // when
+              const server = await createServer();
+              const response = await server.inject({
+                method: 'POST',
+                url: '/query',
+                payload,
+                headers: { authorization: headers },
+              });
+
+              // then
+              expect(response.statusCode).to.equal(200);
+              expect(JSON.parse(response.payload)).to.deep.equal({
+                status: 'success',
+                data: [{ count: 1 }],
+                messages: [],
+              });
+            });
+
+            it('should return a proper payload response with status code 200 when catalog_params is int', async function () {
+              // given
+              const queryId = '26f6efcc-ce13-4b20-b6ea-5bebae6115af';
+
+              await knexAPI('catalog_queries').insert({
+                id: queryId,
+                sql_query: `SELECT COUNT(*) as count FROM public.data_ref_academies where id = {{ academieId }}`,
+                name: 'foo',
+              });
+              await knexAPI('query_access').insert({
+                query_id: queryId,
+                user_id: userId,
+              });
+              await knexAPI('catalog_query_params').insert({
+                id: 1,
+                catalog_query_id: queryId,
+                name: 'academieId',
+                type: 'int',
+                mandatory: true,
+              });
+              await knexAPI('query_param_access').insert({
+                id: queryId,
+                user_id: userId,
+                query_param_id: 1,
+                value: 'any',
+              });
+
+              const payload = {
+                queryId,
+                params: <UserCommandParam[]>[{ name: 'academieId', value: 1 }],
+              };
+
+              // when
+              const server = await createServer();
+              const response = await server.inject({
+                method: 'POST',
+                url: '/query',
+                payload,
+                headers: { authorization: headers },
+              });
+
+              // then
+              expect(response.statusCode).to.equal(200);
+              expect(JSON.parse(response.payload)).to.deep.equal({
+                status: 'success',
+                data: [{ count: 1 }],
+                messages: [],
+              });
+            });
+          });
+        });
         context('when user request response in csv', function () {
           it('should return a csv response with status code 200', async function () {
             // given
@@ -145,7 +461,7 @@ describe('Acceptance | query', function () {
             });
             const payload = {
               queryId,
-              params: <any>[],
+              params: <UserCommandParam[]>[],
             };
 
             // when
@@ -177,7 +493,7 @@ describe('Acceptance | query', function () {
         });
         const payload = {
           queryId,
-          params: <any>[],
+          params: <UserCommandParam[]>[],
         };
 
         // when

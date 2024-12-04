@@ -58,5 +58,22 @@ describe('Unit | Domain | Models | QueryAccess', function () {
         expect(queryAccessModel.areParamsValid(userCommandParams)).to.be.false;
       });
     });
+
+    context('when userCommandParams has access to all values', function () {
+      it('should return true', function () {
+        // given
+        const queryAccess: QueryAccess = {
+          id: ['any'],
+        };
+
+        const userCommandParams: UserCommandParam[] = [{ name: 'id', value: '456' }];
+
+        // when
+        const queryAccessModel = new QueryAccessModel(queryAccess);
+
+        // then
+        expect(queryAccessModel.areParamsValid(userCommandParams)).to.be.true;
+      });
+    });
   });
 });
