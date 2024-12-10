@@ -1,3 +1,9 @@
+## [0.10.2](https://github.com/1024pix/pix-api-data/compare/v0.10.1...v0.10.2) (2024-12-10)
+
+### :coffee: Autre
+
+- [#58](https://github.com/1024pix/pix-api-data/pull/58) Préciser la région dans les commandes du README
+
 ## [0.10.1](https://github.com/1024pix/pix-api-data/compare/v0.10.0...v0.10.1) (2024-12-10)
 
 ### :arrow_up: Montée de version
