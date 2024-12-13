@@ -29,7 +29,7 @@
     "preinstall": "npx check-engine",
     "start": "tsx ./lib/index.ts",
     "start:prod": "npm run build && node ./build/lib",
-    "start:watch": "nodemon tsx ./lib/index.ts",
+    "start:watch": "tsx --watch  ./lib/index.ts",
     "test": "NODE_ENV=test npm run db:prepare && npm run test:api",
     "test:api": "for testType in 'unit' 'integration' 'acceptance'; do npm run test:api:$testType || status=1 ; done ; exit $status",
     "test:api:path": "NODE_ENV=test mocha --config .mocharc.json --exit --recursive --reporter=${MOCHA_REPORTER:-dot}",

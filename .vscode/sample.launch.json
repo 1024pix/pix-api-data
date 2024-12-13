@@ -1,0 +1,29 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "api start",
+      "outputCapture": "std",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}",
+      "cwd": "${workspaceRoot}",
+      "envFile": "${workspaceFolder}/.env"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "api watch",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "start:watch"],
+      "restart": true,
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "cwd": "${workspaceRoot}",
+      "outputCapture": "std",
+      "skipFiles": ["<node_internals>/**"],
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ]
+}

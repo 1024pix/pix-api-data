@@ -60,6 +60,15 @@ Puis lancer les commandes suivantes :
 - `npm run db:reset` -> reset de la base `API_DATABASE` contenant les requêtes et les utilisateurs
 - `npm run start` -> démarrage du serveur Node
 
+### Liste des API
+
+Vous pouvez trouver la liste des API disponibles via la documentation OpenAPI et Swagger
+
+- Interface : <http://localhost:3000/documentation>
+  - Utile pour parcourir et explorer les API
+- Mode brut <http://localhost:3000/swagger.json>
+  - Utile pour les automatisation et les import dans vos outils de tests type Postman
+
 ### Tests autos
 
 - `npm run test`
@@ -185,7 +194,6 @@ Il s'utilise sur un container Scalingo de la manière suivante :
 scalingo -a <nom-application-scalingo> run --file ./my_awesome_queries.csv "node build/scripts/prod/add-queries-from-csv.js --file /tmp/uploads/my_awesome_queries.csv"
 ```
 
-
 Le script est assorti d'une option `--run` laquelle permet de réaliser et de persister l'insertion des requêtes.
 
 ```bash
@@ -201,6 +209,7 @@ Il est réalisé en ajoutant un enregistrement dans la tables Users en BDD à l'
 ```bash
 scalingo --app <nom-application-scalingo> run "node build/scripts/prod/add-user.js --username <userName> --label <userLabel> --password <userPassword>"
 ```
+
 En fonction de l'environnement, il peut s'avérer nécessaire de préciser `--region osc-secnum-fr1`
 
 ## Utilisation de l'API
