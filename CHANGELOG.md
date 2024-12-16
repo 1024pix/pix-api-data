@@ -1,3 +1,13 @@
+# [0.11.0](https://github.com/1024pix/pix-api-data/compare/v0.10.2...v0.11.0) (2024-12-16)
+
+### :rocket: Amélioration
+
+- [#59](https://github.com/1024pix/pix-api-data/pull/59) Ajout de la possibilité * comme paramètre (PIX-15594) 
+
+### :building_construction: Tech
+
+- [#63](https://github.com/1024pix/pix-api-data/pull/63) Proposition de modifications pour le setup de developement
+
 ## [0.10.2](https://github.com/1024pix/pix-api-data/compare/v0.10.1...v0.10.2) (2024-12-10)
 
 ### :coffee: Autre
