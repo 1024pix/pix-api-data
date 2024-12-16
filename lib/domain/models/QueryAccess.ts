@@ -13,7 +13,7 @@ export class QueryAccessModel {
 
   areParamsValid(params: UserCommandParam[]): boolean {
     return params.every((param) => {
-      return this.queryAccess[param.name]?.includes(param.value.toString());
+      return this.queryAccess[param.name]?.includes(param.value.toString()) || this.queryAccess[param.name]?.toString() === 'any';
     });
   }
 }
