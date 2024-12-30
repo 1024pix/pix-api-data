@@ -1,3 +1,9 @@
+## [0.11.2](https://github.com/1024pix/pix-api-data/compare/v0.11.1...v0.11.2) (2024-12-30)
+
+### :arrow_up: Montée de version
+
+- [#54](https://github.com/1024pix/pix-api-data/pull/54) Update dependency postgres to v15.10
+
 ## [0.11.1](https://github.com/1024pix/pix-api-data/compare/v0.11.0...v0.11.1) (2024-12-30)
 
 ### :arrow_up: Montée de version
